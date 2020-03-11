@@ -1,5 +1,13 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block layout-content
+  div.View.WelcomeView
+    h1.Banner foodSloth
+    div.Message
+      div.Title
+        h3 Your food will always arrive!....
+        h1 Eventually.....
+      span.Details Sign up for the Sloth life now!
+    div.NavButtons
+      a(href="/user")
+          div.NavButton Sloths Login here!
