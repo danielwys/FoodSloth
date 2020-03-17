@@ -150,7 +150,7 @@ a {
   box-shadow: var(--ui-shawdow);
 }
 .WelcomeView {
-  background: url("sloth_leaf.jpg") left bottom;
+  background: url("../sloth_leaf.jpg") left bottom;
   background-size: cover;
 }
 .UserView {

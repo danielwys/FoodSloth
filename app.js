@@ -25,6 +25,19 @@ app.get("/", (req, res) => {
 app.get("/user", (req, res) => {
   res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
+app.get("/deliver", (req, res) => {
+  res.render("user", { title: "Rider", userProfile: { nickname: "Rider0" } });
+});
+app.get("/restaurant", (req, res) => {
+  res.render("restaurant", { title: "Restaurant", userProfile: { nickname: "Restaurant0" } });
+});
+app.get("/manager", (req, res) => {
+  res.render("manager", { title: "Manager", userProfile: { nickname: "Manager0" } });
+});
+app.get("/signup", (req, res) => {
+  res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
+});
+
 
 /**
  * Server Activation
