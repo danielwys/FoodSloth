@@ -154,6 +154,18 @@ a {
   background-size: cover;
 }
 .UserView {
-  background: url("https://cdn.auth0.com/blog/whatabyte/patio.png") left bottom;
+  background: url("../sloth_user.jpg") right bottom;
+  background-size: 1200px;
+}
+.RiderView {
+  background: url("../sloth_cycling.jpg") right;
+  background-size: 1500px;
+}
+.ManagerView {
+  background: url("../sloth_reading.jpg") right;
+  background-size: cover;
+}
+.RestaurantView {
+  background: url("../sloth_writing.jpg") right;
   background-size: cover;
 }

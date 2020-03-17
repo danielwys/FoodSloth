@@ -25,8 +25,8 @@ app.get("/", (req, res) => {
 app.get("/user", (req, res) => {
   res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
-app.get("/deliver", (req, res) => {
-  res.render("user", { title: "Rider", userProfile: { nickname: "Rider0" } });
+app.get("/rider", (req, res) => {
+  res.render("rider", { title: "Rider", userProfile: { nickname: "Rider0" } });
 });
 app.get("/restaurant", (req, res) => {
   res.render("restaurant", { title: "Restaurant", userProfile: { nickname: "Restaurant0" } });
