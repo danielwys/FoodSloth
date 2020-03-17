@@ -1,8 +1,13 @@
 block variables
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61f5890d2023df05665f26ba5b1b54ab5777d3b4
 doctype html
-html
+html(lang="en")
   head
     meta(charset="utf-8")
+<<<<<<< HEAD
     link(rel="shortcut icon", href="/favicon.ico")
     meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
     meta(name="theme-color", content="#000000")
@@ -11,3 +16,15 @@ html
   body
     div#root
       block layout-content
+=======
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div.top-bar.d-flex.flex-column.flex-md-row.align-items-center.p-3.px-md-4.mb-3.bg-white.border-bottom.box-shadow
+      h5.my-0.mr-md-auto.font-weight-normal
+      nav.my-2.my-md-0.mr-md-3
+        a.p-2.text-dark(href="/", title="Home") Home
+    block content
+    footer.
+      Built with #[a(href="https://expressjs.com/") Express.js], for AY2019/20 CS2102.
+>>>>>>> 61f5890d2023df05665f26ba5b1b54ab5777d3b4
