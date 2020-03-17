@@ -1,32 +1,41 @@
-const pg = require('pg');
-const path = require('path');
-const express = require('express');
-const constants = require('./constants');
-const bodyParser = require('body-parser');
-const mainRouter = require('./api/all');
-const queryExecuter = require('./database/dbExecuter.js');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-const app = express();
-app.set('port', constants.PORT_CONNECTION);
-app.set('view engine', 'ejs');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
-app.use(express.static(__dirname + '/public')); //place to server static files
-app.use(bodyParser.urlencoded({ extended: true })); //for retrieving form data
+var app = express();
 
-//set routers
-app.use('/', mainRouter);
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-app.listen(app.get('port'), function() {
-	console.log("Server has started running....");
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-	//Example to add new user
-	// queryExecuter.addAccount('portato', 'baron chan', 'developer dude', 23,
-	// 'MALE', 'baron504@gmail.com', 'Singapore', 'ADMIN');
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-	//Example to add new project
-	// queryExecuter.addProject('myProject101', 'Art', '','fun thing',
-	// 	new Date(), new Date(), 9001.00, 'dartteon');
-
-	//Example to add fund
-	// queryExecuter.addFund(1, 'dartheon', 100.99, new Date());
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;

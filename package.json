@@ -1,42 +1,16 @@
 {
-  "name": "cs2102database",
-  "version": "0.0.1",
+  "name": "cs2102",
+  "version": "0.0.0",
   "private": true,
-  "description": "My app description",
   "scripts": {
-    "full-start": "cd ./frontend && npm install && npm run-script start && cd ./.. && nodemon server.js",
-    "start": "nodemon app.js",
-    "populate": "node database/populate/populateAll.js",
-    "droptables": "node database/schema/dropSchema.js",
-    "maketables": "node database/schema/createSchema.js",
-    "resetdb": "npm run droptables && npm run maketables && npm run populate"
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
-    "bookshelf": "^0.9.2",
-    "capitalize": "^1.0.0",
-    "compression": "^1.6.2",
-    "debug": "~2.6.3",
-    "dotenv": "^4.0.0",
-    "ejs": "~2.5.6",
-    "express": "~4.15.2",
-    "express-flash": "0.0.2",
-    "express-session": "^1.2.1",
-    "express-validator": "^2.20.4",
-    "jade": "^1.11.0",
-    "knex": "^0.10.0",
-    "method-override": "^2.3.5",
-    "morgan": "~1.8.1",
-    "moment": "^2.18.1",
-    "nodemailer": "^2.3.0",
-    "nodemon": "^1.12.1",
-    "pg": "^6.1.2",
-    "serve-favicon": "~2.4.2",
-    "rx": "^4.1.0",
-    "rx-node": "^1.0.2"
-  },
-  "devDependencies": {},
-  "engines": {
-    "node": "6.1.0"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
   }
 }
