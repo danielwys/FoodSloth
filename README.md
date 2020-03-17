@@ -7,3 +7,20 @@
 1. execute by running `npm run dev`
 1. website is available on "http://localhost:8000/"
   <br/> note: the website is not available unless `npm run dev` is executing
+  
+## Setting up temporary database using postgresql for given queries.js file
+1. psql postgres
+1. CREATE ROLE me WITH LOGIN PASSWORD 'password';
+1. # ALTER ROLE me CREATEDB; (
+1. psql -d postgres -U me
+1. CREATE DATABASE api;
+1. \c api
+1. CREATE TABLE users (
+  ID SERIAL PRIMARY KEY,
+  name VARCHAR(30),
+  email VARCHAR(30)
+);
+1. INSERT INTO users (name, email)
+  VALUES ('Jerry', 'jerry@example.com'), ('George', 'george@example.com'); (add random entries)
+## install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
+  1. npm i express pg
