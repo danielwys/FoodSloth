@@ -5,4 +5,5 @@
 1. `npm install` to install relevant node modules
 1. `npm install nodemon` to install necessary nodemon modules
 1. execute by running `npm run dev`
-1. website is available on 'http://localhost:8000/'
+1. website is available on "http://localhost:8000/"
+  <br/> note: the website is not available unless `npm run dev` is executing
