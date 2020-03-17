@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>StartKicker</title>
+  <% include ../partials/header %>
+
+  <link rel="stylesheet" href="/styles/stats.css">
+</head>
+<body>
+  <% include ../partials/navbar %>
+
+  <!-- Content Here -->
+  <div class="container">
+  <h1><%= reportTitle %></h1>
+  <br>
+  <% include ./results %>
+  </div>
+
+  <% include ../partials/footer %>
+  <% include ../partials/scripts %>
+</body>
+</html>

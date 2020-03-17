@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>StartKicker</title>
+	<% include ../partials/header %>
+	<link rel="stylesheet" href="/styles/viewProject.css">
+</head>
+<body>
+	<% include ../partials/navbar %>
+	<br><br><br>
+	<div class="container">
+		<div class="row">
+			<img class="image col-md-6" src="https://i.imgur.com/Q5TwaU6.jpg">
+			<div class="col-md-6">
+				<div class="title"><h1><%= title %><h1></div>
+				<div class="categorycard mod-inline"><div class="categorycard-content"><%= category %></div></div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="funding-status">
+							<h2>Funding Status:</h2>
+							<% if (is_funded) { %>
+								<h1 style="color: #008744">Success</h1>
+							<% } else { %>
+								<h1 style="color: #d62d20">Not Funded</h1>
+							<% } %>
+							<h3><%= percent_funded %>% funded</h3>
+							<h4>$<%= amount_funded %> / $<%= amount_sought %> goal</h4>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="latest-pledge">
+							<h4>Latest Pledge:</h4>
+							<% if (backers.length) { %>
+							<h3>$<%= backers[backers.length - 1].amount %></h3>
+							<h4>From <%= backers[backers.length - 1].username %></h4>
+							<h4>On <%= backers[backers.length - 1].date %></h4>
+							<button type="button" class="btn" data-toggle="modal" data-target=".backers-modal">See all backers</button><br><br>
+							<% } else { %>
+							<h3>No Backers yet, be the FIRST!</h3>
+							<% } %>
+							<% if (username !== "") { %>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".pledge-modal">Pledge Now</button>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="modal fade pledge-modal" tabindex="-1" role="dialog" aria-labelledby="pledge-modal" aria-hidden="true">
+		  <div class="modal-dialog modal-md">
+		    <div class="modal-content">
+		      <h2>You (<%= username %>)</h2>
+		      <h3>are pledging</h3>
+		      <form action="/invest" method="post">
+		      	<input style="display: none;" value=<%= username%> name="username" ></input>
+		      	<input class="form-control pledge-amount" placeholder="USD 0.00" name="amount"></input><br>
+		      	<input style="display: none;" value=<%= projectId%> name="projectId" ></input>
+		     	<button type="submit" class="btn"><h3>Invest Now</h3></button><br><br>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade backers-modal" tabindex="-1" role="dialog" aria-labelledby="backers-modal" aria-hidden="true">
+		  <div class="modal-dialog modal-md">
+		    <div class="modal-content">
+		      <h2>Backers</h2>
+			  <% for(var i=0; i < backers.length; i++) { %>
+			   <div><b><%= backers[i].username %></b> backed <b><%= title %></b> for <b>$<%= backers[i].amount %></b> on <%= backers[i].date %></td></div>
+			  <% } %>
+		    </div>
+		  </div>
+		</div>
+		<div class="row">
+			<label>Description</label>
+			<p><%= description %></p>
+		</div>
+		<br>
+		<div class="row">
+			<label>About the Owner</label>
+			<p><%= owner_username %>, <%= owner %></p>
+			<p><%= owner_country %></p>
+			<% if (username == owner_username) { %>
+
+			<p> You are the owner!</p>
+		      <form action=<%="/projects/" + projectId + "/update" %> method="get">
+		     	<button type="submit" class="btn"><h4>UPDATE!</h4></button>
+		     </form>
+		     <br>
+		      <form action=<%="/project/" + projectId + "/delete" %> method="post">
+		     	<button type="submit" class="btn"><h4>DELETE</h4></button>
+		     </form>
+
+			<% } %>
+		</div>
+	</div>
+	<% include ../partials/scripts %>
+</body>
+</html>

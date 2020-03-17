@@ -1,34 +1,32 @@
-/**
- * Required External Modules
- */
-const express = require("express");
-const path = require("path");
-/**
- * App Variables
- */
+const pg = require('pg');
+const path = require('path');
+const express = require('express');
+const constants = require('./constants');
+const bodyParser = require('body-parser');
+const mainRouter = require('./api/all');
+const queryExecuter = require('./database/dbExecuter.js');
+
 const app = express();
-const port = process.env.PORT || "8000";
+app.set('port', constants.PORT_CONNECTION);
+app.set('view engine', 'ejs');
 
-/**
- *  App Configuration
- */
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname + '/public')); //place to server static files
+app.use(bodyParser.urlencoded({ extended: true })); //for retrieving form data
 
-/**
- * Routes Definitions
- */
-app.get("/", (req, res) => {
-  res.render("index", { title: "Home" });
-});
-app.get("/user", (req, res) => {
-  res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
-});
+//set routers
+app.use('/', mainRouter);
 
-/**
- * Server Activation
- */
-app.listen(port, () => {
-  console.log(`Listening to requests on http://localhost:${port}`);
+app.listen(app.get('port'), function() {
+	console.log("Server has started running....");
+
+	//Example to add new user
+	// queryExecuter.addAccount('portato', 'baron chan', 'developer dude', 23,
+	// 'MALE', 'baron504@gmail.com', 'Singapore', 'ADMIN');
+
+	//Example to add new project
+	// queryExecuter.addProject('myProject101', 'Art', '','fun thing',
+	// 	new Date(), new Date(), 9001.00, 'dartteon');
+
+	//Example to add fund
+	// queryExecuter.addFund(1, 'dartheon', 100.99, new Date());
 });

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>StartKicker - Search Result</title>
+
+  <% include ../partials/header %>
+  <link rel="stylesheet" href="styles/search.css">
+</head>
+<body>
+  <% include ../partials/navbar %>
+
+  <div class="search-banner">
+    <div class="container">
+      <div class="search-banner-title">Browse Projects</div>
+      <div class="search-banner-input-container">
+        <div class="search-input">
+          <input type="text" class="form-control search-input-form"
+            name="title"
+            placeholder="Search project.."
+            id="titleInput">
+          <span class="glyphicon glyphicon-search search-input-logo"></span>
+        </div>
+      </div>
+      <h4>Search in</h4>
+      <div class="row" id="searchCategories">
+      </div>
+      <button action="submit" class="btn btn-primary" onclick="searchProject()">
+        <span class="glyphicon glyphicon-search"></span>
+        Search
+      </button>
+    </div>
+  </div>
+
+  <div class="container search-result">
+    <div class="section-header">
+      <div class="section-title">
+        Search Results : &nbsp;<%= params.title %><br>
+        Category:&nbsp;&nbsp;
+        <% params.categories.forEach(function(category) { %>
+          <%= category %> &nbsp;
+        <% }); %>
+      </div>
+      <div class="section-nav">
+        <!-- <span>Sort by</span>
+        <div class="dropdown" style="display: inline-block;">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Name
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+            <li><a value="name">Name</a></li>
+            <li><a value="start_date">Start date</a></li>
+            <li><a value="end_date">End date</a></li>
+          </ul>
+        </div> -->
+      </div>
+    </div>
+    <div class="row">
+      <% if(projects.length>0) { %>
+      <% projects.forEach(function(project) { %>
+      <div class="col-lg-3">
+        <div class="projectcard" onclick="openProject(<%= project.pid %>)">
+          <div class="projectcard-content">
+            <div class="project-title"><%= project.title %></div>
+            <div class="project-owner">Brought to you by <%= project.fullname %></div>
+            <div class="project-owner"><%= project.country %></div>
+            <div class="project-description">
+              <%= project.description %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+      <% } else { %>
+            <h1><div class="project-title col-lg-12 col-md-12 text-center">No projects found</div></h1>
+      <% } %>
+
+    </div>
+  </div>
+
+  <% include ../partials/footer %>
+  <% include ../partials/scripts %>
+  <script src="scripts/search.js"></script>
+</body>
+</html>

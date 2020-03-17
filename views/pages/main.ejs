@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>StartKicker</title>
+  <% include ../partials/header %>
+
+  <link rel="stylesheet" href="styles/home.css">
+</head>
+<body>
+  <% include ../partials/navbar %>
+  <% if (username === "") { %>
+    <div class="main-banner">
+      <h2 class="main-banner-title">Start a new project!</h2>
+      <button class="btn btn-white btn-lg"
+        data-toggle="modal" data-target="#loginModal">Login</button>
+    </div>
+  <% } %>
+  <div class="container-fluid featured">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">Featured Projects</div>
+        <div class="section-nav"></div>
+      </div>
+    </div>
+
+    <div id="carousel-featured" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#carousel-featured" data-slide-to="0" class="active"></li>
+        <% if(projects.length>4) { %>
+        <li data-target="#carousel-featured" data-slide-to="1"></li>
+        <% } %>
+        <% if(projects.length>8) { %>
+        <li data-target="#carousel-featured" data-slide-to="2"></li>
+        <% } %>
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <div class="container carousel-featured-container">
+            <div class="row">
+              <% for(let i=0; i<4; i++) { %>
+              <div class="col-lg-3">
+                <div class="projectcard" onclick="openProject(<%= projects[i].pid %>)">
+                  <div class="projectcard-content">
+                    <div class="project-title"><%= projects[i].title %></div>
+                    <div class="project-owner"><%= projects[i].fullname %>, <%= projects[i].country %></div>
+                    <div class="project-description">
+                      <%= projects[i].description %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% if(projects.length>4) { %>
+        <div class="item">
+          <div class="container carousel-featured-container">
+            <div class="row">
+              <% for(let i=4; i<(projects.length>=8?8:projects.length); i++) { %>
+              <div class="col-lg-3">
+                <div class="projectcard" onclick="openProject(<%= projects[i].pid %>)">
+                  <div class="projectcard-content">
+                    <div class="project-title"><%= projects[i].title %></div>
+                    <div class="project-owner"><%= projects[i].fullname %>, <%= projects[i].country %></div>
+                    <div class="project-description">
+                      <%= projects[i].description %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% if(projects.length>8) { %>
+        <div class="item">
+          <div class="container carousel-featured-container">
+            <div class="row">
+              <% for(let i=8; i<projects.length; i++) { %>
+              <div class="col-lg-3">
+                <div class="projectcard" onclick="openProject(<%= projects[i].pid %>)">
+                  <div class="projectcard-content">
+                    <div class="project-title"><%= projects[i].title %></div>
+                    <div class="project-owner"><%= projects[i].fullname %>, <%= projects[i].country %></div>
+                    <div class="project-description">
+                      <%= projects[i].description %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <!-- Controls -->
+      <a class="left carousel-control" href="#carousel-featured" role="button"
+        data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#carousel-featured" role="button"
+        data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+  </div>
+  <div class="browse">
+    <div class="container ">
+      <div class="section-header">
+        <div class="section-title">Browse Projects</div>
+      </div>
+      <form action="/projects" method="GET">
+      <div class="browse-search-container">
+        <div class="search-input">
+          <input type="text"
+            name="title"
+            class="browse-search-input form-control search-input-form"
+            placeholder="Search project..">
+          <span class="glyphicon glyphicon-search search-input-logo"></span>
+        </div>
+      </div>
+      <div class="row">
+        <% categories.forEach(function(category) { %>
+        <div class="col-lg-3">
+          <div class="categorycard" onclick="openCategory('<%= category.name %>')">
+            <div class="categorycard-content">
+              <%= category.name %>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      </form>
+    </div>
+  </div>
+  <% include ../partials/footer %>
+  <% include ../partials/scripts %>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
