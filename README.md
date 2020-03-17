@@ -22,5 +22,5 @@
 );
 1. INSERT INTO users (name, email)
   VALUES ('Jerry', 'jerry@example.com'), ('George', 'george@example.com'); (add random entries)
-## Install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
-  1. `npm i express pg`
+1. `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
+1. run node backend/index.js, list of all users in json format available on http://localhost:8000/users
