@@ -11,7 +11,7 @@
 ## Setting up temporary database using postgresql for given queries.js file
 1. psql postgres
 1. CREATE ROLE me WITH LOGIN PASSWORD 'password';
-1. # ALTER ROLE me CREATEDB; (
+1. ALTER ROLE me CREATEDB; 
 1. psql -d postgres -U me
 1. CREATE DATABASE api;
 1. \c api
@@ -23,4 +23,4 @@
 1. INSERT INTO users (name, email)
   VALUES ('Jerry', 'jerry@example.com'), ('George', 'george@example.com'); (add random entries)
 ## install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
-  1. npm i express pg
+  1. `npm i express pg`
