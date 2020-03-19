@@ -7,7 +7,12 @@ block layout-content
       div.Title
         h3 We provide the delivery sloths
         h1 You provide the cash
-      pre.Details=JSON.stringify(userProfile, null, 2)
+    div.form-signin
+      input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
+      <br>
+      input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
     div.NavButtons
+      a(href="/signin")
+        div.NavButton SignIn
       a(href="/logout")
         div.NavButton Log out

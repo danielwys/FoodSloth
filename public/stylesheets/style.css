@@ -125,7 +125,7 @@ a {
   width: 100%;
   justify-content: space-around;
   align-items: center;
-  padding: 0 20px;
+  padding: 10 20px;
 }
 
 .NavButton {
@@ -168,4 +168,31 @@ a {
 .RestaurantView {
   background: url("../sloth_writing.jpg") right;
   background-size: cover;
+}
+
+.form-signin {
+  width: 50%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  float: left;
+  font-family: var(--logo-font);
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
