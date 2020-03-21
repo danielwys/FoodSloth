@@ -3,14 +3,6 @@ extends layout
 block layout-content
   div.View.RestaurantView
     h1.Banner Here lies your data
-    div.Data
-      h2 title
-      table
-        tr
-          td oh look
-          td a table
-          td but wait
-        tr
-          td there's more!
-          td what else?
-          td a chair!
+    //- include utils is crucial to do call the mixin
+    include utils
+    +create_table(title, data_list, headers)

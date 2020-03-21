@@ -38,10 +38,12 @@ app.get("/signup", (req, res) => {
   res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
 app.get("/data", (req, res) => {
-  var json = [{ pizza: "Diavolaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },{ pizza: "Hawaiianaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }]
-  res.render("data",{ title: "Data", data_list: json })
+  // template for get requests, assuming the json is in this form
+  // assumes each json item has same key names
+  var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "Im hungry maybe I should rly foodsloth some mcspicy", bada: "boom", Lee: "Hsien Loong" }];
+  var titles = Object.keys(jsonlist[0]);
+  res.render("data", { title: "Data", data_list: jsonlist, headers: titles })
 })
-
 
 /**
  * Server Activation
