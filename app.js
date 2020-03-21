@@ -37,6 +37,10 @@ app.get("/manager", (req, res) => {
 app.get("/signup", (req, res) => {
   res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
+app.get("/data", (req, res) => {
+  var json = [{ pizza: "Diavolaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },{ pizza: "Hawaiianaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }]
+  res.render("data",{ title: "Data", data_list: json })
+})
 
 
 /**

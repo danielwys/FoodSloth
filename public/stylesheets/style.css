@@ -60,6 +60,18 @@ a {
   cursor: pointer;
   user-select: none;
 }
+table {
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 10px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 
 #root {
   display: flex;
@@ -102,7 +114,16 @@ a {
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
 }
-
+.Data {
+  background: white;
+  padding: 30px;
+  border-bottom: var(--ui-shawdow-border);
+  box-shadow: var(--ui-shawdow);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
 .Message {
   background: white;
   padding: 30px;
