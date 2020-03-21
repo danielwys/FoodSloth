@@ -1,20 +1,27 @@
 # cs2102
 
 ## Installation guide
+### Frontend
 1. `git clone https://github.com/dawo5010/cs2102.git` to clone the repo
-1. `npm install` to install relevant node modules
-1. `npm install nodemon` to install necessary nodemon modules
-1. execute by running `npm run dev`
-1. website is available on "http://localhost:8000/"
+2. `npm install` to install relevant node modules
+3. `npm install nodemon` to install nodemon
+4. Execute by running `npm run dev`
+5. Website is available on localhost:8000
   <br/> note: the website is not available unless `npm run dev` is executing
+
+### Backend
+1. Navigate to the backend folder
+2. `npm install` to install the relevant node modules
+3. Start server with `node index.js`
+4. Backend is available at localhost:8001
   
 ## Setting up temporary database using postgresql for given queries.js file
 1. psql postgres
-1. CREATE ROLE me WITH LOGIN PASSWORD 'password';
-1. ALTER ROLE me CREATEDB; 
-1. psql -d postgres -U me
-1. CREATE DATABASE api;
-1. \c api
+2. CREATE ROLE me WITH LOGIN PASSWORD 'password';
+3. ALTER ROLE me CREATEDB; 
+4. psql -d postgres -U me
+5. CREATE DATABASE api;
+6. \c api
 1. CREATE TABLE users (
   ID SERIAL PRIMARY KEY,
   name VARCHAR(30),
