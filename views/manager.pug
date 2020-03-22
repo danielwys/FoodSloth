@@ -5,7 +5,9 @@ block layout-content
     h1.Banner Manager
     div.Message
       div.Title
-        h3 Click to view summary of your store
+        h3 Sign in to view summary of your store
+    div.form-signin
+      input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Manager ID" required autofocus)
     div.NavButtons
-      a(href="/logout")
-        div.NavButton Log out
+      a(href="/")
+        div.NavButton Back

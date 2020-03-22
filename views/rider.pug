@@ -2,12 +2,15 @@ extends layout
 
 block layout-content
   div.View.RiderView
-    h1.Banner Welcome, #{userProfile.nickname}!
+    h1.Banner Welcome!
     div.Message
       div.Title
         h3 Please log in with your rider ID
         h1 Manage your work schedule
-      pre.Details=JSON.stringify(userProfile, null, 2)
+    div.form-signin
+      input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Rider ID" required autofocus)
     div.NavButtons
-      a(href="/logout")
-        div.NavButton Log out
+      a(href="/signin")
+        div.NavButton Sign in
+      a(href="/")
+        div.NavButton Back

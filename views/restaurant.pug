@@ -2,12 +2,13 @@ extends layout
 
 block layout-content
   div.View.RestaurantView
-    h1.Banner Welcome, #{userProfile.nickname}!
+    h1.Banner Welcome!
     div.Message
       div.Title
         h3 Please log in with your restaurant ID
         h1 Manage your menu
-      pre.Details=JSON.stringify(userProfile, null, 2)
+    div.form-signin
+      input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Restaurant ID" required autofocus)
     div.NavButtons
-      a(href="/logout")
-        div.NavButton Log out
+      a(href="/")
+        div.NavButton Back
