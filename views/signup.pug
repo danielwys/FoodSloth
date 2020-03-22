@@ -2,12 +2,21 @@ extends layout
 
 block layout-content
   div.View.UserView
-    h1.Banner Welcome!
+    h1.Banner Welcome to FoodSloth
     div.Message
       div.Title
-        h3 Please enter your name
+        h3 Please enter a user ID
         h1 and a password
-      pre.Details=JSON.stringify(userProfile, null, 2)
+    div.form-signin
+      input(type="email" name="name" id="inputName" class="form-control" placeholder="Name" required autofocus)
+      <br>
+      input(type="email" name="username" id="inputUserID" class="form-control" placeholder="User ID" required autofocus)
+      <br>
+      input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
+      <br>
+      input(type="address" name="address" id="inputAddress" class="form-control" placeholder="Main address" required autofocus)
     div.NavButtons
-      a(href="/logout")
-        div.NavButton Log out
+      a(href="/create")
+        div.NavButton Create
+      a(href="/")
+        div.NavButton Back

@@ -217,3 +217,9 @@ tr:nth-child(even) {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+.form-signin input[type="address"] > .form-signin {
+  max-width: 990px;
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
