@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block layout-content
   div.View.UserView
@@ -12,7 +12,7 @@ block layout-content
       <br>
       input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
     div.NavButtons
-      a(href="/signin")
+      a(href="/signinUser")
         div.NavButton Sign In
       a(href="/")
         div.NavButton Back
