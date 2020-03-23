@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block layout-content
   div.View.RiderView
@@ -10,7 +10,7 @@ block layout-content
     div.form-signin
       input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Rider ID" required autofocus)
     div.NavButtons
-      a(href="/signin")
+      a(href="/signinRider")
         div.NavButton Sign in
       a(href="/")
         div.NavButton Back

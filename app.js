@@ -23,10 +23,19 @@ app.get("/", (req, res) => {
   res.render("index", { title: "Home" });
 });
 app.get("/user", (req, res) => {
-  res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
+  res.render("user/user", { title: "Profile", userProfile: { nickname: "Auth0" } });
+});
+app.get("/signinUser", (req, res) => {
+  res.render("user/userMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
+});
+app.get("/neworder", (req, res) => {
+  res.render("user/newOrder", { title: "Profile", userProfile: { nickname: "Auth0" } });
+});
+app.get("/signinRider", (req, res) => {
+  res.render("rider/riderMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
 app.get("/rider", (req, res) => {
-  res.render("rider", { title: "Rider", userProfile: { nickname: "Rider0" } });
+  res.render("rider/rider", { title: "Rider", userProfile: { nickname: "Rider0" } });
 });
 app.get("/restaurant", (req, res) => {
   res.render("restaurant", { title: "Restaurant", userProfile: { nickname: "Restaurant0" } });
