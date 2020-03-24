@@ -1,20 +1,32 @@
 extends layout
 
 block layout-content
-  div.View.UserView
-    h1.Banner Welcome to FoodSloth
-    div.Message
-      div.Title
-        h3 Please enter a user ID
-        h1 and a password
+  div.View.WelcomeView
+    div.Banner
+      h1 Tell us who you are!
     div.form-signin
-      input(type="email" name="name" id="inputName" class="form-control" placeholder="Name" required autofocus)
-      <br>
+      h3 Please enter 
       input(type="email" name="username" id="inputUserID" class="form-control" placeholder="User ID" required autofocus)
       <br>
       input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
-      <br>
-      input(type="address" name="address" id="inputAddress" class="form-control" placeholder="Main address" required autofocus)
+      style.
+         input[type=text], select {
+         width: 50%;
+         padding: 12px 20px;
+         margin: 8px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+         box-sizing: border-box;
+         font-size: 16px;
+         font: "Merriweather Sans", sans-serif;
+          }
+      form(action='/Type' method="post")
+          select(name='dropDown', id='')
+                  option='Customer'
+                  option= 'Rider'
+                  option= 'Restaurant'
+                  option= 'Manager'
     div.NavButtons
       a(href="/create")
         div.NavButton Create

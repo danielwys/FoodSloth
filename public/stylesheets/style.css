@@ -126,7 +126,9 @@ tr:nth-child(even) {
 }
 .Message {
   background: white;
+  float: top-left;
   padding: 30px;
+  width: 100%
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
 }
@@ -192,12 +194,15 @@ tr:nth-child(even) {
 }
 
 .form-signin {
+  background: whitesmoke;
   width: 50%;
   max-width: 330px;
   padding: 15px;
   margin: auto;
-  float: left;
+  float: center;
   font-family: var(--logo-font);
+  align-items: center;
+  justify-content: center;
 }
 .form-signin .checkbox {
   font-weight: 400;
