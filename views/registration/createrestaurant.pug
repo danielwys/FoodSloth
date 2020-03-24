@@ -1,0 +1,20 @@
+extends ../layout
+
+block layout-content
+  div.View.RestaurantView
+    div.Banner
+      h1 Howdy Food! 
+      h1 I need to know more...
+    div.form-signin
+      h3 Please fill in
+      input(type="email" name="restaurantName" id="inputRestaurantName" class="form-control" placeholder="Restaurant Name" required autofocus)
+      <br>
+      input(type="password" name="minOrder" id="inputMinOrder" class="form-control" placeholder="Minimum Order Amount" required autofocus)
+      <br>
+      input(type="password" name="deliveryFee" id="inputDeliveryFee" class="form-control" placeholder="Delivery Fee" required autofocus)
+    <br>
+    div.NavButtons
+      a(href="/")
+        div.NavButton Confirm
+      a(href="/")
+        div.NavButton Back

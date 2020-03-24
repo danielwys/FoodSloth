@@ -1,0 +1,19 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    div.Banner
+      h1 Howdy Sloth! 
+      h1 I need to know more...
+    div.form-signin
+      h3 Name 
+      input(type="email" name="name" id="inputCname" class="form-control" placeholder="Name" required autofocus)
+      <br>
+      <br>
+      h3 16-digit 
+      h3 credit card number
+      input(type="password" name="creditCardNumber" id="inputCreditCardNumber" class="form-control" placeholder="Credit Card Number" required autofocus)
+    <br>
+    div.NavButtons
+      a(href="/")
+        div.NavButton Back
