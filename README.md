@@ -15,19 +15,12 @@
 3. Start server with `node index.js`
 4. Backend is available at localhost:8001
   
-## Setting up temporary database using postgresql for given queries.js file
-1. psql postgres
-2. CREATE ROLE me WITH LOGIN PASSWORD 'password';
-3. ALTER ROLE me CREATEDB; 
-4. psql -d postgres -U me
-5. CREATE DATABASE api;
-6. \c api
-1. CREATE TABLE users (
-  ID SERIAL PRIMARY KEY,
-  name VARCHAR(30),
-  email VARCHAR(30)
-);
-1. INSERT INTO users (name, email)
-  VALUES ('Jerry', 'jerry@example.com'), ('George', 'george@example.com'); (add random entries)
+### Setting up localdatabase using postgresql for given queries.js file
+1. navigate to backend folder
+2. psql postgres
+5. CREATE DATABASE project;
+6. \c project
+1. create tables using sql/tables.sql
+1. insert values for each table according to labeled order in sql folder
 1. `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
-1. run `node backend/index.js`, list of all users in json format available on http://localhost:8001/users
+1. run `node index.js`, list of all users in json format available on http://localhost:8001/users
