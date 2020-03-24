@@ -1,0 +1,9 @@
+insert into MWS (riderId, startDay, shift) values (36, 3, 2);
+insert into MWS (riderId, startDay, shift) values (37, 6, 4);
+insert into MWS (riderId, startDay, shift) values (40, 2, 4);
+insert into MWS (riderId, startDay, shift) values (42, 4, 3);
+insert into MWS (riderId, startDay, shift) values (44, 3, 4);
+insert into MWS (riderId, startDay, shift) values (45, 6, 4);
+insert into MWS (riderId, startDay, shift) values (48, 1, 2);
+insert into MWS (riderId, startDay, shift) values (49, 2, 3);
+insert into MWS (riderId, startDay, shift) values (50, 1, 4);

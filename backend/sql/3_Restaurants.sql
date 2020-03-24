@@ -1,0 +1,10 @@
+insert into Restaurants (restaurantId, restaurantName) values (26, 'Aufderhar, Torphy and Kohler');
+insert into Restaurants (restaurantId, restaurantName) values (27, 'Leffler-Skiles');
+insert into Restaurants (restaurantId, restaurantName) values (28, 'Mosciski-Tillman');
+insert into Restaurants (restaurantId, restaurantName) values (29, 'Jerde-Marquardt');
+insert into Restaurants (restaurantId, restaurantName) values (30, 'Leuschke, Bednar and Lockman');
+insert into Restaurants (restaurantId, restaurantName) values (31, 'Kshlerin, Parisian and Sporer');
+insert into Restaurants (restaurantId, restaurantName) values (32, 'Bashirian-Harber');
+insert into Restaurants (restaurantId, restaurantName) values (33, 'Konopelski, Kunze and Kihn');
+insert into Restaurants (restaurantId, restaurantName) values (34, 'Emard, Bernhard and Senger');
+insert into Restaurants (restaurantId, restaurantName) values (35, 'Sipes, Reilly and Yundt');
