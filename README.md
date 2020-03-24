@@ -18,9 +18,10 @@
 ### Setting up localdatabase using postgresql for given queries.js file
 1. navigate to backend folder
 2. psql postgres
-5. CREATE DATABASE project;
-6. \c project
-1. create tables using sql/tables.sql
-1. insert values for each table according to labeled order in sql folder
-1. `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
-1. run `node index.js`, list of all users in json format available on http://localhost:8001/users
+3. CREATE DATABASE project;
+4. \c project
+5. create tables using sql/tables.sql
+6. insert values for each table according to labeled order in sql folder
+7. change password and user values in queries.js according to your own account and password(if any)
+8. `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
+9. run `node index.js`, list of all users in json format available on http://localhost:8001/users
