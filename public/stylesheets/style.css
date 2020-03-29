@@ -143,14 +143,13 @@ tr:nth-child(even) {
   line-height: 1.5em;
 }
 
-.NavButtons {
+.NavButtons, .EditButton {
   display: flex;
   width: 100%;
   justify-content: space-around;
   align-items: center;
   padding: 10 20px;
 }
-
 .NavButton {
   display: flex;
   justify-content: center;
@@ -158,6 +157,27 @@ tr:nth-child(even) {
 
   height: 55px;
   width: 200px;
+
+  background: var(--highlight);
+
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+
+  text-transform: capitalize;
+
+  border-bottom: var(--ui-shawdow-border);
+  box-shadow: var(--ui-shawdow);
+}
+.EditButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 55px;
+  width: 55px;
 
   background: var(--highlight);
 

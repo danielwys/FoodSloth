@@ -53,6 +53,8 @@ app.get("/neworder", (req, res) => {
 });
 var orderedItems = []
 var Restaurant = ""
+var Address = ["Thomson", "Clementi", "West Coast"]
+var deliveryAddress= ""
 app.post("/neworder2", (req, res) => {
   if (req.body.dropDown != null) {
     Restaurant = req.body.dropDown;
@@ -69,12 +71,43 @@ app.post("/neworder2", (req, res) => {
     Quantity: ['1', '2', '3', '4', '5']
   })
 });
-app.post("/newOrder3" , (req, res) => {
-  res.render("newOrder3",{
-      items: orderedItems
+app.get("/neworder2", (req, res) => {
+  res.render("user/newOrder2", { title: "Select Food",
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+    Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
+    Quantity: ['1', '2', '3', '4', '5']
   })
 });
-app.get("")
+app.get("/newOrder3" , (req, res) => {
+  res.render("user/newOrder3",{ title: "Select Address",
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+    address: Address,
+  })
+});
+app.post("/payment" , (req, res) => {
+  deliveryAddress = req.body.dropDown3
+  res.render("user/payment",{ title: "Select Payment",
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+    deliveryAddress: deliveryAddress,
+  })
+});
+app.get("/editOrder" , (req, res) => {
+  res.render("user/editOrder",{
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+  })
+});
+app.post("/editOrder", (req, res) => {
+  var order = req.body.edits;
+  orderedItems.pop(order);
+  res.render("user/editOrder", { title: "Edit Order",
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+  })
+});
 
 app.get("/signinRider", (req, res) => {
   res.render("rider/riderMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
