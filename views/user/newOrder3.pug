@@ -1,0 +1,25 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Satisfy your craving!
+    div.Message
+      div.Title
+        h1 Confirm your order
+        h2 with #{Restaurant}
+        <br>
+        <br>
+        table
+            tr
+                td='Item'
+                td='Quantity'
+            tr
+                each rec in orderItems
+                    tr
+                        td=rec.item
+                        td=rec.quantity
+        a(href="/editOrder")
+            div.EditButton Edit
+    div.NavButtons  
+      a(href="/newOrder2")
+        div.NavButton Back
