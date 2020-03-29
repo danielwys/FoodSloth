@@ -1,0 +1,36 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Satisfy your craving!
+    div.Message
+      div.Title
+        h1 Confirm your order
+        h2 with #{Restaurant}
+        <br>
+        <br>
+        table
+            tr
+                td='Item'
+                td='Quantity'
+            tr
+                each rec in orderItems
+                    tr
+                        td=rec.item
+                        td=rec.quantity
+        a(href="/editOrder")
+            div.EditButton Edit
+        <br>
+        h2 Where would you like your food delivered?
+        <br>
+        <br>
+        div.dropdown
+          form(action='/payment' method="POST")
+            label(for='address') Address
+            select(name='dropDown3', id='')
+              each add in address
+                option=add
+              input(type='submit', value='Select')
+    div.NavButtons  
+      a(href="/newOrder2")
+        div.NavButton Back

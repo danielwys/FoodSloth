@@ -1,0 +1,16 @@
+extends ../mainLayout
+
+block layout-content
+  div.View.RiderView
+    h1.Banner What would you like to do?
+      
+    h2.Message
+      table
+        tr
+            th= "Accept a New Order"
+            th= "Current Data"
+        tr
+        // insert utils.pug once data is in 
+    div.NavButtons
+      a(href="/")
+        div.NavButton Logout

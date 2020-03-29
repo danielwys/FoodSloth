@@ -1,0 +1,20 @@
+extends ../mainLayout
+
+block layout-content
+  div.View.UserView
+    h1.Banner What do you need today?
+      
+    h2.Message
+      table
+        tr
+            th= "Make a New Order"
+            th= "Current Activity"
+        tr
+                td= ""
+                    div.NavButtons
+                      a(href="/neworder")
+                        div.NavButton New Order
+                td= ""
+    div.NavButtons
+      a(href="/")
+        div.NavButton Logout

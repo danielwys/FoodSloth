@@ -1,0 +1,13 @@
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('oczp', 7, 5, '2020-03-29 10:36:58', '2020-05-01 05:40:44');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('ajzgs', 20, 2, '2020-03-28 15:19:37', '2020-05-22 16:11:58');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('ovpgjchq', 14, 1, '2020-05-01 10:10:36', '2020-05-25 08:23:51');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('vgnl', 8, 1, '2020-05-07 21:37:16', '2020-05-22 00:14:08');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('dwu', 22, 5, '2020-03-05 14:26:23', '2020-05-02 10:51:54');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('gecvlfq', 23, 2, '2020-03-08 20:02:58', '2020-04-09 04:32:50');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('xrk', 23, 2, '2020-03-18 16:00:58', '2020-04-24 09:06:54');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('dtykrsaxvo', 7, 2, '2020-05-03 02:37:05', '2020-03-20 05:06:46');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('jnzc', 6, 2, '2020-03-01 22:07:23', '2020-05-05 07:02:07');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('ocnzjfe', 22, 3, '2020-03-01 09:45:05', '2020-03-22 14:00:40');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('psmot', 22, 3, '2020-04-08 14:22:45', '2020-05-13 10:46:43');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('odcw', 13, 4, '2020-03-08 22:20:26', '2020-03-17 22:19:21');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('ksphag', 11, 1, '2020-03-15 05:24:59', '2020-04-26 00:41:21');

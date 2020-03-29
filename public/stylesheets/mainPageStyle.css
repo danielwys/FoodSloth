@@ -99,7 +99,7 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   width: 100%;
 
@@ -114,23 +114,26 @@ tr:nth-child(even) {
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
 }
-.CenteredMessage {
+.Data {
   background: white;
-  padding: 20px;
+  opacity: 1;
+  padding: 30px;
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  width: 100%;
 }
 .Message {
   background: white;
-  float: top-left;
+  opacity: 0.9;
   padding: 30px;
-  width: 100%
+  width: 100%;
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
+  float: center;
 }
 
 .Message > .Title {
@@ -143,13 +146,14 @@ tr:nth-child(even) {
   line-height: 1.5em;
 }
 
-.NavButtons, .EditButton {
+.NavButtons {
   display: flex;
   width: 100%;
   justify-content: space-around;
   align-items: center;
-  padding: 10 20px;
+  padding: 30px;
 }
+
 .NavButton {
   display: flex;
   justify-content: center;
@@ -171,117 +175,20 @@ tr:nth-child(even) {
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
 }
-.EditButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 55px;
-  width: 55px;
-
-  background: var(--highlight);
-
-  border-radius: 30px;
-
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-
-  text-transform: capitalize;
-
-  border-bottom: var(--ui-shawdow-border);
-  box-shadow: var(--ui-shawdow);
-}
-.WelcomeView {
-  background: url("../sloth_leaf.jpg") left bottom;
-  background-size: cover;
-}
 .UserView {
-  background: url("../sloth_user.jpg") right bottom;
-  background-size: 1200px;
-}
-.RiderView {
-  background: url("../sloth_cycling.jpg") right;
-  background-size: 1500px;
-}
-.ManagerView {
-  background: url("../sloth_reading.jpg") right;
-  background-size: cover;
-}
-.RestaurantView {
-  background: url("../sloth_writing.jpg") right;
-  background-size: cover;
-}
-.form-add-menu {
-  width: 50%;
-  max-width: 330px;
-  padding: 15px;
-}
-.form-add-menu .form-menu-item {
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin {
-  background: white;
-  width: 100%;
-  max-width: 330px;
-  padding: 30px;
-  margin: auto;
-  float: top-left;
-  font-family: var(--logo-font);
-  align-items: center;
-  justify-content: center;
-}
-.form-signin .checkbox {
-  font-weight: 400;
-}
-.form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="address"] > .form-signin {
-  max-width: 990px;
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.dropdown input[type=text], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  box-sizing: border-box;
-  font-size: 16px;
-  font-weight: bold;
-}
-.dropdown input[type=submit] {
-  width: 100%;
-  background: var(--highlight);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-}
-.dropdown input[type=submit]:hover {
-  background: var(--highlight);
-}
+    background: url("../sloth_user.jpg") right bottom;
+    background-size: 1200px;
+  }
+  .RiderView {
+    background: url("../sloth_cycling.jpg") right;
+    background-size: 1500px;
+  }
+  .ManagerView {
+    background: url("../sloth_reading.jpg") right;
+    background-size: cover;
+  }
+  .RestaurantView {
+    background: url("../sloth_writing.jpg") right;
+    background-size: cover;
+  }
+  

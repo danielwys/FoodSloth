@@ -1,0 +1,15 @@
+insert into Riders (riderId, partTime) values (36, false);
+insert into Riders (riderId, partTime) values (37, false);
+insert into Riders (riderId, partTime) values (38, true);
+insert into Riders (riderId, partTime) values (39, true);
+insert into Riders (riderId, partTime) values (40, false);
+insert into Riders (riderId, partTime) values (41, true);
+insert into Riders (riderId, partTime) values (42, false);
+insert into Riders (riderId, partTime) values (43, true);
+insert into Riders (riderId, partTime) values (44, false);
+insert into Riders (riderId, partTime) values (45, false);
+insert into Riders (riderId, partTime) values (46, true);
+insert into Riders (riderId, partTime) values (47, true);
+insert into Riders (riderId, partTime) values (48, false);
+insert into Riders (riderId, partTime) values (49, false);
+insert into Riders (riderId, partTime) values (50, false);
