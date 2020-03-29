@@ -22,6 +22,23 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.render("index", { title: "Home" });
 });
+
+app.get("/signup", (req, res) => {
+  res.render("signup", { title: "SignUp"});
+});
+app.get("/createCus", (req, res) => {
+  res.render("registration/createcus", { title: "Customer"});
+});
+app.get("/createRider", (req, res) => {
+  res.render("registration/createrider", { title: "Rider"});
+});
+app.get("/createRestaurant", (req, res) => {
+  res.render("registration/createrestaurant", { title: "Restaurant"});
+});
+app.get("/createManager", (req, res) => {
+  res.render("registration/createmanager", { title: "Manager", userProfile: { nickname: "Manager0" } });
+});
+
 app.get("/user", (req, res) => {
   res.render("user/user", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
@@ -31,21 +48,21 @@ app.get("/signinUser", (req, res) => {
 app.get("/neworder", (req, res) => {
   res.render("user/newOrder", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
+
 app.get("/signinRider", (req, res) => {
   res.render("rider/riderMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
 app.get("/rider", (req, res) => {
   res.render("rider/rider", { title: "Rider", userProfile: { nickname: "Rider0" } });
 });
+
 app.get("/restaurant", (req, res) => {
   res.render("restaurant", { title: "Restaurant", userProfile: { nickname: "Restaurant0" } });
 });
 app.get("/manager", (req, res) => {
   res.render("manager", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
-app.get("/signup", (req, res) => {
-  res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
-});
+
 app.get("/data", (req, res) => {
   // template for get requests, assuming the json is in this form
   // assumes each json item has same key names

@@ -194,12 +194,12 @@ tr:nth-child(even) {
 }
 
 .form-signin {
-  background: whitesmoke;
-  width: 50%;
+  background: white;
+  width: 100%;
   max-width: 330px;
-  padding: 15px;
+  padding: 30px;
   margin: auto;
-  float: center;
+  float: top-left;
   font-family: var(--logo-font);
   align-items: center;
   justify-content: center;

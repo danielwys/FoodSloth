@@ -9,26 +9,21 @@ block layout-content
       input(type="email" name="username" id="inputUserID" class="form-control" placeholder="User ID" required autofocus)
       <br>
       input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
-      style.
-         input[type=text], select {
-         width: 50%;
-         padding: 12px 20px;
-         margin: 8px 0;
-         display: inline-block;
-         border: 1px solid #ccc;
-         border-radius: 4px;
-         box-sizing: border-box;
-         font-size: 16px;
-         font: "Merriweather Sans", sans-serif;
-          }
-      form(action='/Type' method="post")
-          select(name='dropDown', id='')
-                  option='Customer'
-                  option= 'Rider'
-                  option= 'Restaurant'
-                  option= 'Manager'
+      <br>
+      <br>
+      h3 Sign in as:
+      a(href="/createCus")
+        div.NavButton Customer
+      <br>
+      a(href="/createRider")
+        div.NavButton Rider
+      <br>
+      a(href="/createRestaurant")
+        div.NavButton Restaurant
+      <br>
+      a(href="/createManager")
+        div.NavButton Manager
+    <br>
     div.NavButtons
-      a(href="/create")
-        div.NavButton Create
       a(href="/")
         div.NavButton Back
