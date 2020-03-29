@@ -114,9 +114,9 @@ tr:nth-child(even) {
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
 }
-.Data {
+.CenteredMessage {
   background: white;
-  padding: 30px;
+  padding: 20px;
   border-bottom: var(--ui-shawdow-border);
   box-shadow: var(--ui-shawdow);
   position: absolute;
@@ -190,7 +190,17 @@ tr:nth-child(even) {
   background: url("../sloth_writing.jpg") right;
   background-size: cover;
 }
-
+.form-add-menu {
+  width: 50%;
+  max-width: 330px;
+  padding: 15px;
+}
+.form-add-menu .form-menu-item {
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
 .form-signin {
   width: 50%;
   max-width: 330px;

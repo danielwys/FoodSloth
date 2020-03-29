@@ -1,0 +1,17 @@
+extends layout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Welcome!
+    div.CenteredMessage
+      h2(text-align: center) Your Current Menu
+      include utils
+      +create_table(data_list, headers)
+      <br>
+      div.NavButton(text-align: center)
+        a(href="/create-menu")
+          div.NavButton Add New Menu item!
+
+    div.NavButtons
+      a(href="/")
+        div.NavButton Sign Out

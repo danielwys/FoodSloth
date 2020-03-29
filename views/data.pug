@@ -4,5 +4,7 @@ block layout-content
   div.View.RestaurantView
     h1.Banner Here lies your data
     //- include utils is crucial to do call the mixin
-    include utils
-    +create_table(title, data_list, headers)
+    div.CenteredMessage
+      include utils
+      h2(text-align: center) Data
+      +create_table(title, data_list, headers)

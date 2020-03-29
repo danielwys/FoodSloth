@@ -1,13 +1,11 @@
 //- function to create table for displaying data,
 //- note: when assign var must use var= val in mixins
-mixin create_table(title, jsonlist, headers)
-  div.Data
-    h2= title
-    table
+mixin create_table(jsonlist, headers)
+  table
+    tr
+      each header in headers
+          th= header
+    each row in jsonlist
       tr
-        each header in headers
-            th= header
-      each row in jsonlist
-        tr
-          each val, key in row
-            td= val
+        each val, key in row
+          td= val
