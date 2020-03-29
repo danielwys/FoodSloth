@@ -42,31 +42,30 @@ app.get('/', (request, response) => {
 /** 
  * Users
  */
-// app.get('/users', db.getAllUsers)
-app.get('/users/:uid', db.getUserById) // returns name, username and type
+app.get('/users', db.getAllUsers) // done
+app.get('/users/:uid', db.getUserById) // done
 app.put('/users/:uid', db.updateUser)
 
 /**
  * Customers
  */
-app.get('/customer/:uid', db.getCustomerInfo) // returns reward points and credit card number
-app.put('/customer/:id', db.updateCreditCard)
+app.get('/customers/:uid', db.getCustomerInfo) // done
+app.put('/customers/:id', db.updateCreditCard)
 
 /**
  * Restaurants
  */
-app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
+app.get('/restaurants/:uid', db.getRestaurantInfo) // done
 app.put('restaurants/:uid', db.updateRestaurantMinOrder) 
 
 /**
  * Riders
  */
-app.get('/rider/:uid', db.getRiderInfo) // returns rating, salary, type
-
+app.get('/riders/:uid', db.getRiderInfo) // done
 /**
  * Menu
  */
-app.get('/menu/:uid', db.getMenuInfo) // returns foodId, name, price, category & availability
+app.get('/menu/:uid', db.getMenuInfo) // done
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodId', db.updateMenuItem)
 app.delete('/menu/:foodId', db.deleteMenuItem)
@@ -74,15 +73,15 @@ app.delete('/menu/:foodId', db.deleteMenuItem)
 /**
  * Reviews
  */
-app.get('/reviews/:uid', db.getReviews)
-app.post('/reviews/:uid', db.addReview)
+app.get('/reviews/:orderId', db.getReviews) // done
+app.post('/reviews/:orderId', db.addReview)
 
 /**
  * Orders
  */
-app.get('/order/:orderId', db.getOrder)
-app.post('/order', db.createNewOrder) // returns orderId
-app.put('/order/:orderId', db.updateOrderWithRiderInfo)
+app.get('/orders/:orderId', db.getOrder) // done
+app.post('/orders', db.createNewOrder) 
+app.put('/orders/:orderId', db.updateOrderWithRiderInfo)
 
 /**
  * Customer Promos
@@ -101,7 +100,7 @@ app.put('/restPromo/:code', db.updateRestaurantPromo)
 /**
  * Order Timings
  */
-app.get('/orderTimes/:orderId', db.getOrderTimes)
+app.get('/orderTimes/:orderId', db.getOrderTimes) // done
 app.put('/orderTimes/orderPlaced/:orderId', db.updateOrderPlaced)
 app.put('/orderTimes/riderDeparts/:orderId', db.updateRiderDeparts)
 app.put('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
@@ -111,28 +110,28 @@ app.put('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
 /**
  * Hours
  */
-app.get('wwshours/:uid', db.getWWSRiderHours)
-app.post('wwwhours/:uid', db.addWWSRiderHours)
+app.get('/wwshours/:uid', db.getWWSRiderHours) // done
+app.post('/wwshours/:uid', db.addWWSRiderHours)
 
-app.get('mwshours/:uid', db.getMWSRiderHours)
-app.post('mwshours/:uid', db.addMWSRiderHours)
+app.get('/mwshours/:uid', db.getMWSRiderHours) // done
+app.post('/mwshours/:uid', db.addMWSRiderHours)
 
 /**
  * Statistics
  */
-app.get('stats/customer/newCustomers', db.getNewCustomerStatistic)
+app.get('/stats/customer/newCustomers', db.getNewCustomerStatistic)
 
-app.get('stats/order/newOrders', db.getNewOrderStatistic)
-app.get('stats/order/totalCost', db.getTotalOrderCostStatistic)
-app.get('stats/order/ordersPerCustomer', db.getOrdersPerCustomer)
-app.get('stats/order/ordersPerLocation', db.getOrdersPerLocation)
+app.get('/stats/order/newOrders', db.getNewOrderStatistic)
+app.get('/stats/order/totalCost', db.getTotalOrderCostStatistic)
+app.get('/stats/order/ordersPerCustomer', db.getOrdersPerCustomer)
+app.get('/stats/order/ordersPerLocation', db.getOrdersPerLocation)
 
-app.get('rider/riderOrders', db.getRiderOrdersStatistic)
-app.get('rider/hoursWorked', db.getRiderHoursWorked)
-app.get('rider/salary', db.getRiderSalaries)
-app.get('rider/avgDeliveryTime', db.getRiderAvgDeliveryTime)
-app.get('rider/ratings', db.getRiderRatings)
-app.get('rider/summary', db.getRiderSummary)
+app.get('/rider/riderOrders', db.getRiderOrdersStatistic)
+app.get('/rider/hoursWorked', db.getRiderHoursWorked)
+app.get('/rider/salary', db.getRiderSalaries)
+app.get('/rider/avgDeliveryTime', db.getRiderAvgDeliveryTime)
+app.get('/rider/ratings', db.getRiderRatings)
+app.get('/rider/summary', db.getRiderSummary)
 
 app.get('restaurant/orders/:id', db.getRestaurantOrderStatistic)
 

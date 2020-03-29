@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'harshita',
+  user: 'dawo',
   host: 'localhost',
   database: 'project',
-  password: 'sql',
+  password: 'jwcehll81238930',
   port: 5432,
 })
 
@@ -12,7 +12,9 @@ const pool = new Pool({
  */
 
 const login = (request, response) => {
-  pool.query('', (error, results) => {
+  const { username, password } = request.body
+
+  pool.query('SELECT 1 FROM users WHERE username = $1 AND password = $2', [username], [password], (error, results) => {
     if (error) {
       throw error
     }
@@ -48,9 +50,9 @@ const getAllUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const uid = parseInt(request.params.uid)
 
-  pool.query('SELECT * FROM users WHERE uid = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM users WHERE uid = $1', [uid], (error, results) => {
     if (error) {
       throw error
     }
@@ -72,13 +74,13 @@ const updateUser = (request, response) => {
  */
 
 const getCustomerInfo = (request, response) => {
-  const { username, password, type } = request.body
+  const cid = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM customers WHERE cid = $1', [cid], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -98,13 +100,13 @@ const updateCreditCard = (request, response) => {
  */
 
 const getRestaurantInfo = (request, response) => {
-  const { username, password, type } = request.body
+  const restaurantId = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -124,13 +126,13 @@ const updateRestaurantMinOrder = (request, response) => {
  */
 
 const getRiderInfo = (request, response) => {
-  const { username, password, type } = request.body
+  const riderId = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM riders WHERE riderId = $1', [riderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -139,13 +141,13 @@ const getRiderInfo = (request, response) => {
  */
 
 const getMenuInfo = (request, response) => {
-  const { username, password, type } = request.body
+  const foodId = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM menu WHERE foodId = $1', [foodId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -187,13 +189,13 @@ const deleteMenuItem = (request, response) => {
  */
 
 const getReviews = (request, response) => {
-  const { username, password, type } = request.body
+  const orderId = parseInt(request.params.orderId)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM reviews WHERE orderId = $1', [orderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -212,13 +214,13 @@ const addReview = (request, response) => {
  * Orders
  */
 const getOrder = (request, response) => {
-  const { username, password, type } = request.body
+  const orderId = parseInt(request.params.orderId)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM Orders WHERE orderId = $1', [orderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -323,13 +325,13 @@ const updateRestaurantPromo = (request, response) => {
  */
 
 const getOrderTimes = (request, response) => {
-  const { username, password, type } = request.body
+  const orderId = parseInt(request.params.orderId)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM OrderTimes WHERE orderId = $1', [orderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -392,13 +394,13 @@ const updateRiderDelivers = (request, response) => {
  * Hours
  */
 const getWWSRiderHours = (request, response) => {
-  const { username, password, type } = request.body
+  const riderId = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM WWS WHERE riderId = $1', [riderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
@@ -414,13 +416,13 @@ const addWWSRiderHours = (request, response) => {
 }
 
 const getMWSRiderHours = (request, response) => {
-  const { username, password, type } = request.body
+  const riderId = parseInt(request.params.uid)
 
-  pool.query('', (error, results) => {
+  pool.query('SELECT * FROM MWS WHERE riderId = $1', [riderId], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results.rows)
   })
 }
 
