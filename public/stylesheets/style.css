@@ -228,3 +228,30 @@ tr:nth-child(even) {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+.dropdown input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: bold;
+}
+.dropdown input[type=submit] {
+  width: 100%;
+  background: var(--highlight);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+.dropdown input[type=submit]:hover {
+  background: var(--highlight);
+}

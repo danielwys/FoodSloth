@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
@@ -15,7 +16,7 @@ var port = process.env.PORT || "8000";
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 /**
  * Routes Definitions
  */
@@ -46,8 +47,34 @@ app.get("/signinUser", (req, res) => {
   res.render("user/userMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });
 app.get("/neworder", (req, res) => {
-  res.render("user/newOrder", { title: "Profile", userProfile: { nickname: "Auth0" } });
+  res.render("user/newOrder", { title: "Select Restaurant",
+    Restaurants: ["Agnes Dining", "BaoBao", "Charlie and the Chocolate Factory", "Raymond and Associates"]
+  })
 });
+var orderedItems = []
+var Restaurant = ""
+app.post("/neworder2", (req, res) => {
+  if (req.body.dropDown != null) {
+    Restaurant = req.body.dropDown;
+  } else {
+    var Item = req.body.dropDown1;
+    var Quantity = req.body.dropDown2;
+    var newItem = {item: Item, quantity: Quantity};
+    orderedItems.push(newItem);  
+  }
+  res.render("user/newOrder2", { title: "Select Food",
+    Restaurant: Restaurant,
+    orderItems: orderedItems,
+    Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
+    Quantity: ['1', '2', '3', '4', '5']
+  })
+});
+app.post("/newOrder3" , (req, res) => {
+  res.render("newOrder3",{
+      items: orderedItems
+  })
+});
+app.get("")
 
 app.get("/signinRider", (req, res) => {
   res.render("rider/riderMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
