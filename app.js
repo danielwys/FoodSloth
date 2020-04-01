@@ -47,11 +47,7 @@ app.get("/user", (req, res) => {
     if (err) { 
         return console.log(err); 
     }
-    console.log(data)
     let nick = data[0].username
-    // data = JSON.stringify(data)
-    // console.log(data)
-    // console.log(data.username)
     res.render("user/user", { title: "Profile", userProfile: { nickname: nick } });
   });
 });
