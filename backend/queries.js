@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'dawo',
+  user: 'postgres',
   host: 'localhost',
   database: 'project',
-  password: 'jwcehll81238930',
+  password: '19980303',
   port: 5432,
 })
 
@@ -12,13 +12,14 @@ const pool = new Pool({
  */
 
 const login = (request, response) => {
-  const { username, password } = request.body
+  const username = request.body.username
+  const password = request.body.password
 
   pool.query('SELECT 1 FROM users WHERE username = $1 AND password = $2', [username], [password], (error, results) => {
     if (error) {
       throw error
     }
-    // do something with response
+    response.status(200).json(results)
   })
 }
 

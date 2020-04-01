@@ -8,14 +8,15 @@ block layout-content
         h3 We provide the delivery sloths
         h1 You provide the cash
     div.form-signin
-      input(type="email" name="username" id="inputEmail" class="form-control" placeholder="User ID" required autofocus)
-      <br>
-      <br>
-      input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
-      <br>
-      <br>
-      a(href="/signinUser")
-          div.NavButton Sign In
+      form(action='/signinUser' method="POST")
+        input(type="plaintext" name="username" id="inputEmail" class="form-control" placeholder="User ID" required autofocus)
+        <br>
+        <br>
+        input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Sign In")
     div.NavButtons
       a(href="/")
         div.NavButton Back

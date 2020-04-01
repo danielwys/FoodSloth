@@ -40,20 +40,47 @@ app.get("/createRestaurant", (req, res) => {
 app.get("/createManager", (req, res) => {
   res.render("registration/createmanager", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
-
 app.get("/user", (req, res) => {
-  var nick = ""
-  request("http://localhost:8001/users/1", { json: true }, (err, r, data) => {
-    if (err) { 
-        return console.log(err); 
-    }
-    let nick = data[0].username
-    res.render("user/user", { title: "Profile", userProfile: { nickname: nick } });
-  });
+  res.render("user/user", {title: "Profile", userProfile: {nickname: "User"}});
 });
 
-app.get("/signinUser", (req, res) => {
-  res.render("user/userMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
+// app.get("/user", (req, res) => {
+//   var nick = ""
+//   request("http://localhost:8001/users/1", { json: true }, (err, r, data) => {
+//     if (err) { 
+//         return console.log(err); 
+//     }
+//     let nick = data[0].username
+//     res.render("user/user", { title: "Profile", userProfile: { nickname: nick } });
+//   });
+// });
+// app.post("/signinUser", (req, res) => {
+//   res.render("user/userMain", {email: req.body.username});
+// });
+// app.get("/signinUser", (req, res) => {
+//   res.render("user/userMain", { title: "Profile", email: email, userProfile: { nickname: "Auth0" } });
+// });
+app.post("/signinUser", (req, res) => {
+  let email = req.body.username
+  let password = req.body.password
+  console.log(email)
+  console.log(password)
+
+  let options =  {
+    url: 'http://localhost:8001/login',
+    form: {
+      username: email,
+      password: password
+    }
+  };
+  request.post(options, (error, res, body) => {
+    if (error) {
+      console.log(error)
+      return
+    }
+    print(body)
+    res.render("user/userMain", { title: "Profile"});
+  });
 });
 app.get("/neworder", (req, res) => {
   res.render("user/newOrder", { title: "Select Restaurant",
