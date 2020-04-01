@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var request = require('request');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -41,8 +42,20 @@ app.get("/createManager", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-  res.render("user/user", { title: "Profile", userProfile: { nickname: "Auth0" } });
+  var nick = ""
+  request("http://localhost:8001/users/1", { json: true }, (err, r, data) => {
+    if (err) { 
+        return console.log(err); 
+    }
+    console.log(data)
+    let nick = data[0].username
+    // data = JSON.stringify(data)
+    // console.log(data)
+    // console.log(data.username)
+    res.render("user/user", { title: "Profile", userProfile: { nickname: nick } });
+  });
 });
+
 app.get("/signinUser", (req, res) => {
   res.render("user/userMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
 });

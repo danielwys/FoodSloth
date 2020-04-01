@@ -49,8 +49,8 @@ app.put('/users/:uid', db.updateUser)
 /**
  * Customers
  */
-app.get('/customer/:uid', db.getCustomerInfo) // returns reward points and credit card number
-app.put('/customer/:id', db.updateCreditCard)
+app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and credit card number
+app.put('/customers/:id', db.updateCreditCard)
 
 /**
  * Restaurants
