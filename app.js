@@ -79,7 +79,11 @@ app.post("/signinUser", (req, res) => {
       return
     }
     console.log(body)
-    res.render("user/userMain", { title: "Profile"});
+    if (body == "[]") {
+      res.render("error");
+    } else {
+      res.render("user/userMain", { title: "Profile"});
+    }
   });
 });
 app.get("/neworder", (req, res) => {

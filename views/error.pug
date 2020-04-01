@@ -1,6 +1,7 @@
 extends layout
 
-block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+block layout-content
+  h1.Banner There is an error
+    div.NavButtons
+      a(href="/")
+        div.NavButton Main
