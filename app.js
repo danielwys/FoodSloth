@@ -134,15 +134,30 @@ app.get("/manager", (req, res) => {
 app.get("/signup", (req, res) => {
   res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
-// restaurant part
+
+// restaurant dashboard part
 app.get("/restaurant-dashboard", (req, res) => {
-  var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "Im hungry maybe I should rly foodsloth some mcspicy", bada: "boom", Lee: "Hsien Loong" }];
+  var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "doner", bada: "boom", Lee: "Hsien Loong" }];
   var titles = Object.keys(jsonlist[0]);
   res.render("restaurant-dashboard", { title: "Restaurant", data_list: jsonlist, headers: titles })
 });
 app.get("/create-menu", (req, res) => {
   res.render("create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
 });
+var menuItemList = [];
+app.post("/create-menu", (req, res) => {
+  var foodItem = req.body.food;
+  var price = req.body.price;
+  var avail = req.body.avail;
+  var limit = req.body.limit;
+  var category = req.body.cat;
+  var menuItemJson = { food_item: foodItem, food_price: price, food_avail: avail, food_limit: limit, food_cat: category }
+  menuItemList.push(menuItemJson)
+  console.log(menuItemList)
+  res.render("create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
+});
+
+// template
 app.get("/data", (req, res) => {
   // template for get requests, assuming the json is in this form
   // assumes each json item has same key names
