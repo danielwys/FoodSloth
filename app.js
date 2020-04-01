@@ -73,12 +73,12 @@ app.post("/signinUser", (req, res) => {
       password: password
     }
   };
-  request.post(options, (error, res, body) => {
+  request.post(options, (error, r, body) => {
     if (error) {
       console.log(error)
       return
     }
-    print(body)
+    console.log(body)
     res.render("user/userMain", { title: "Profile"});
   });
 });

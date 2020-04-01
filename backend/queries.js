@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'postgres',
+  user: 'dawo',
   host: 'localhost',
   database: 'project',
-  password: '19980303',
+  password: 'jwcehll81238930',
   port: 5432,
 })
 
@@ -15,11 +15,12 @@ const login = (request, response) => {
   const username = request.body.username
   const password = request.body.password
 
-  pool.query('SELECT 1 FROM users WHERE username = $1 AND password = $2', [username], [password], (error, results) => {
+  pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
     if (error) {
-      throw error
+      response.status(500).send('An error occured.')
+      return
     }
-    response.status(200).json(results)
+    response.status(200).json(results.rows)
   })
 }
 
@@ -32,7 +33,7 @@ const register = (request, response) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`User added with ID: ${result.insertId}`)
+    response.status(201).send('User added with ID: ${result.insertId}')
   })
 }
 
