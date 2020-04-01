@@ -22,6 +22,6 @@
 4. \c project
 5. create tables using sql/tables.sql
 6. insert values for each table according to labeled order in sql folder
-7. change password and user values in queries.js according to your own account and password(if any)
+7. change password and user values in `queries.js` according to your own account and password (if any)
 8. `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
 9. run `node index.js`, list of all users in json format available on http://localhost:8001/users
