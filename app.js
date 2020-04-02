@@ -11,6 +11,10 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 var port = process.env.PORT || "8000";
+
+var currentUserID
+var currentUserType
+
 /**
  *  App Configuration
  */
@@ -18,68 +22,47 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
+
 /**
  * Routes Definitions
  */
+
+ /**
+  * Home page
+  */
 app.get("/", (req, res) => {
   res.render("index", { title: "Home" });
 });
 
-app.get("/signup", (req, res) => {
-  res.render("signup", { title: "SignUp"});
-});
-app.get("/createCus", (req, res) => {
-  res.render("registration/createcus", { title: "Customer"});
-});
-app.get("/createRider", (req, res) => {
-  res.render("registration/createrider", { title: "Rider"});
-});
-app.get("/createRestaurant", (req, res) => {
-  res.render("registration/createrestaurant", { title: "Restaurant"});
-});
-app.get("/createManager", (req, res) => {
-  res.render("registration/createmanager", { title: "Manager", userProfile: { nickname: "Manager0" } });
-});
-app.get("/user", (req, res) => {
-  res.render("user/user", {title: "Profile", userProfile: {nickname: "User"}});
-});
+/**
+ * 1. Authentication
+ */
 
-// app.get("/user", (req, res) => {
-//   var nick = ""
-//   request("http://localhost:8001/users/1", { json: true }, (err, r, data) => {
-//     if (err) { 
-//         return console.log(err); 
-//     }
-//     let nick = data[0].username
-//     res.render("user/user", { title: "Profile", userProfile: { nickname: nick } });
-//   });
-// });
-// app.post("/signinUser", (req, res) => {
-//   res.render("user/userMain", {email: req.body.username});
-// });
-// app.get("/signinUser", (req, res) => {
-//   res.render("user/userMain", { title: "Profile", email: email, userProfile: { nickname: "Auth0" } });
-// });
+// Log In
+app.get("/login", (req, res) => {
+  res.render("user/login", {title: "Login", userProfile: {nickname: "Login"}});
+});
 
 app.post("/signinUser", (req, res) => {
-  let email = req.body.username
+  let username = req.body.username
   let password = req.body.password
-  console.log(email)
-  console.log(password)
+  // console.log(email)
+  // console.log(password)
 
-  let options =  {
+  let options = {
     url: 'http://localhost:8001/login',
     form: {
-      username: email,
+      username: username,
       password: password
     }
   };
   request.post(options, (error, r, body) => {
     if (error) {
       console.log(error)
+      res.render("error")
       return
     }
-    console.log(body)
+
     if (body == "[]") {
       res.render("error");
     } else {
@@ -87,6 +70,123 @@ app.post("/signinUser", (req, res) => {
     }
   });
 });
+
+ // Sign Up
+app.get("/signup", (req, res) => {
+  res.render("signup", { title: "SignUp"});
+});
+
+app.get("/signUpCustomer", (req, res) => {
+  res.render("registration/signUpCustomer", { title: "Customer Sign Up"});
+});
+
+app.get("/signUpRider", (req, res) => {
+  res.render("registration/signUpRider", { title: "Rider Sign Up"});
+});
+
+app.get("/signUpRestaurant", (req, res) => {
+  res.render("registration/signUpRestaurant", { title: "Restaurant Sign Up"});
+});
+
+app.post("/createCustomer", (req, res) => {
+  let name = req.body.name
+  let username = req.body.username
+  let password = req.body.password
+  let creditCardNumber = req.body.creditCardNumber
+
+  let createCustomer = (cid) => {
+    let options = {
+      url: 'http://localhost:8001/customers/create',
+      form: {
+        cid: cid,
+        cname: name,
+        creditCardNumber: creditCardNumber
+      }
+    }
+
+    request.post(options, (error, response, body) => {
+      if (error) {
+        console.log(error)
+        res.render("error")
+      }
+      if (body = "success") {
+        res.render("user/login", {title: "Login", userProfile: {nickname: "Login"}});
+      } else {
+        res.render("error")
+      }
+      // can we get a completion page to show that the customer has successfully registered
+      // and ask them to go to log in to login?
+    })
+  }
+
+  createNewUser(username, password, "customer", createCustomer)
+});
+
+app.post("/createRider", (req, res) => {
+  // do something
+});
+
+app.post("/createRestaurant", (req, res) => {
+  let name = req.body.name
+  let username = req.body.username
+  let password = req.body.password
+  let minOrder = req.body.creditCardNumber
+  let deliveryFee = req.body.deliveryFee
+
+  let createRestaurant = (rid) => {
+    let options = {
+      url: 'http://localhost:8001/restaurants/create',
+      form: {
+        restaurantid: rid,
+        restaurantname: name,
+        minorder : minOrder,
+        deliveryfee: deliveryFee
+      }
+    }
+
+    request.post(options, (error, response, body) => {
+      if (error) {
+        console.log(error)
+        res.render("error")
+      }
+      if (body = "success") {
+        res.render("user/login", {title: "Login", userProfile: {nickname: "Login"}});
+      } else {
+        res.render("error")
+      }
+      // can we get a completion page to show that the customer has successfully registered
+      // and ask them to go to log in to login?
+    })
+  }
+
+  createNewUser(username, password, "customer", createRestaurant)
+});
+
+function createNewUser(username, password, type, completion) {
+  let options = {
+    url: 'http://localhost:8001/register',
+    form: {
+      username: username,
+      password: password,
+      type: type
+    }
+  };
+
+  request.post(options, (error, response, body) => {
+    if (error) {
+      console.log(error)
+      res.render("error")
+    }
+    let result = JSON.parse(body)
+
+    completion(result[0].uid)
+  })
+}
+
+/**
+ * Orders
+ */
+
 app.get("/neworder", (req, res) => {
   res.render("user/newOrder", { title: "Select Restaurant",
     Restaurants: ["Agnes Dining", "BaoBao", "Charlie and the Chocolate Factory", "Raymond and Associates"]

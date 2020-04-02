@@ -5,25 +5,20 @@ block layout-content
     div.Banner
       h1 Tell us who you are!
     div.form-signin
-      h3 Please enter 
-      input(type="email" name="username" id="inputUserID" class="form-control" placeholder="User ID" required autofocus)
+
+      h3 Sign up as:
       <br>
-      input(type="email" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
-      <br>
-      <br>
-      h3 Sign in as:
-      a(href="/createCus")
+      a(href="/signUpCustomer")
         div.NavButton Customer
       <br>
-      a(href="/createRider")
+      a(href="/signUpRider")
         div.NavButton Rider
       <br>
-      a(href="/createRestaurant")
+      a(href="/signUpRestaurant")
         div.NavButton Restaurant
-      <br>
-      a(href="/createManager")
-        div.NavButton Manager
+
     <br>
+
     div.NavButtons
       a(href="/")
         div.NavButton Back

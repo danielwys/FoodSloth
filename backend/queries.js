@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'postgres',
+  user: 'dawo',
   host: 'localhost',
   database: 'project',
-  password: '19980303',
+  password: 'jwcehll81238930',
   port: 5432,
 })
 
@@ -25,18 +25,25 @@ const login = (request, response) => {
 }
 
 const register = (request, response) => {
-  const { name, username, password, type } = request.body
+  const { username, password, type } = request.body
 
-  pool.query('INSERT INTO Users (name, username, password, type) VALUES ($1, $2, $3, $4)', 
-  [name, username, password, type], 
+  pool.query('INSERT INTO Users (username, password, type) VALUES ($1, $2, $3)', 
+  [username, password, type], 
   (error, results) => {
     if (error) {
-      throw error
+      response.status(500).send("An error has occured.")
+      return
     }
-    response.status(201).send('User added with ID: ${result.insertId}')
+    
+    pool.query('SELECT uid FROM Users WHERE username = $1', [username], (error, results) => {
+      if (error) {
+        response.status(500).send("An error has occured.")
+        return
+      }
+      response.status(201).json(results.rows)
+    })
   })
 }
-
 
 /**
  * Users
@@ -75,6 +82,20 @@ const updateUser = (request, response) => {
  * Customers
  */
 
+const createCustomer = (request, response) => {
+  const { cid, cname, creditcardnumber } = request.body
+
+  pool.query('INSERT INTO Customers (cid, cname, creditcardnumber) VALUES ($1, $2, $3)',
+  [cid, cname, creditcardnumber], 
+  (error, results) => {
+    if (error) {
+      response.status(500).send("An error has occured.")
+      return
+    }
+    response.status(200).send("success")
+  })
+}
+
 const getCustomerInfo = (request, response) => {
   const cid = parseInt(request.params.uid)
 
@@ -100,6 +121,19 @@ const updateCreditCard = (request, response) => {
 /**
  * Restaurants
  */
+const createRestaurant = (request, response) => {
+  const { restaurantid, restaurantname, minorder, deliveryfee } = request.body
+
+  pool.query('INSERT INTO Restaurants (restaurantid, restaurantname, minorder, deliveryfee) VALUES ($1, $2, $3, $4)',
+  [restaurantid, restaurantname, minorder, deliveryfee], 
+  (error, results) => {
+    if (error) {
+      response.status(500).send("An error has occured.")
+      return
+    }
+    response.status(200).send("success")
+  })
+}
 
 const getRestaurantInfo = (request, response) => {
   const restaurantId = parseInt(request.params.uid)
@@ -560,9 +594,11 @@ module.exports = {
   getUserById,
   updateUser,
 
+  createCustomer,
   getCustomerInfo,
   updateCreditCard,
 
+  createRestaurant,
   getRestaurantInfo,
   updateRestaurantMinOrder,
 

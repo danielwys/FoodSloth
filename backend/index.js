@@ -42,21 +42,23 @@ app.get('/', (request, response) => {
 /** 
  * Users
  */
-// app.get('/users', db.getAllUsers)
+app.get('/users', db.getAllUsers)
 app.get('/users/:uid', db.getUserById) // returns name, username and type
 app.put('/users/:uid', db.updateUser)
 
 /**
  * Customers
  */
+app.post('/customers/create', db.createCustomer)
 app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and credit card number
 app.put('/customers/:id', db.updateCreditCard)
 
 /**
  * Restaurants
  */
+app.post('restaurants/create', db.createRestaurant)
 app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
-app.put('restaurants/:uid', db.updateRestaurantMinOrder) 
+app.put('/restaurants/:uid', db.updateRestaurantMinOrder) 
 
 /**
  * Riders
