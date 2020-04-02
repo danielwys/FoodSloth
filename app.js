@@ -60,6 +60,7 @@ app.get("/user", (req, res) => {
 // app.get("/signinUser", (req, res) => {
 //   res.render("user/userMain", { title: "Profile", email: email, userProfile: { nickname: "Auth0" } });
 // });
+
 app.post("/signinUser", (req, res) => {
   let email = req.body.username
   let password = req.body.password
