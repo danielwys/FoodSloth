@@ -108,13 +108,18 @@ const getCustomerInfo = (request, response) => {
 }
 
 const updateCreditCard = (request, response) => {
-  const { username, password, type } = request.body
+  const cid = parseInt(request.params.uid)
+  const { cardNumber } = request.body
 
-  pool.query('', (error, results) => {
+  pool.query(
+    'UPDATE customers SET creditCardNumber = $1 WHERE cid = $2',
+    [cardNumber, cid], 
+    (error, results) => {
     if (error) {
       throw error
     }
     // do something with response
+    response.status(200).send(`User credit card modified with ID: ${cid}`)
   })
 }
 
@@ -147,13 +152,17 @@ const getRestaurantInfo = (request, response) => {
 }
 
 const updateRestaurantMinOrder = (request, response) => {
-  const { username, password, type } = request.body
+  const restaurantId = parseInt(request.params.uid)
+  const { minOrder } = request.body
 
-  pool.query('', (error, results) => {
+  pool.query('UPDATE restaurants SET minOrder = $1 WHERE restaurantId = $2', 
+  [minOrder, restaurantId], 
+  (error, results) => {
     if (error) {
       throw error
     }
     // do something with response
+    response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${minOrder}`)
   })
 }
 
@@ -198,14 +207,19 @@ const addMenuItem = (request, response) => {
   })
 }
 
+//does not work for some reason
 const updateMenuItem = (request, response) => {
-  const { username, password, type } = request.body
+  const foodId = parseInt(request.params.uid)
+  const { maxAvailable } = request.body
 
-  pool.query('', (error, results) => {
+  pool.query('UPDATE menu SET maxAvailable = $1 WHERE foodId = $2',
+  [maxAvailable, foodId],
+  (error, results) => {
     if (error) {
       throw error
     }
     // do something with response
+    response.status(200).send(`Food with ID: ${foodId} updated maxAvailable to ${maxAvailable}`)
   })
 }
 
