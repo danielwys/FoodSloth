@@ -1,0 +1,27 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+
+    div.Banner
+      h1 Howdy Sloth! 
+      h1 I need to know more...
+
+    div.form-signin
+      form(action='/createCustomer' method="POST")
+        input(type="plaintext" name="name" id="inputName" class="form-control" placeholder="Name" required autofocus)  
+        <br>
+        input(type="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus)  
+        <br>
+        input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
+        <br>
+        input(type="plaintext" name="creditCardNumber" id="inputCreditCardNumber" class="form-control" placeholder="Credit Card Number" required autofocus)
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Submit")
+    <br>
+
+    div.NavButtons
+      a(href="/")
+        div.NavButton Back

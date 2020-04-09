@@ -1,0 +1,27 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Howdy, #{userProfile.nickname}!
+
+    div.Message
+      div.Title
+        h3 We provide the delivery sloths
+        h1 You provide the cash
+
+    div.form-signin
+      h3 Please log in:
+      form(action='/signinUser' method="POST")
+        input(type="plaintext" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus)
+        <br>
+        <br>
+        input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Sign In")
+      <br>
+
+    div.NavButtons
+      a(href="/")
+        div.NavButton Back
