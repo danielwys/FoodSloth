@@ -6,9 +6,6 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var request = require('request');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 var port = process.env.PORT || "8000";
 
@@ -46,8 +43,6 @@ app.get("/login", (req, res) => {
 app.post("/signinUser", (req, res) => {
   let username = req.body.username
   let password = req.body.password
-  // console.log(email)
-  // console.log(password)
 
   let options = {
     url: 'http://localhost:8001/login',
@@ -66,6 +61,9 @@ app.post("/signinUser", (req, res) => {
     if (body == "[]") {
       res.render("error");
     } else {
+      let userInfo = JSON.parse(body)
+      currentUserID = userInfo[0].uid
+      currentUserType = userInfo[0].type
       res.render("user/userMain", { title: "Profile"});
     }
   });
@@ -178,7 +176,6 @@ function createNewUser(username, password, type, completion) {
       res.render("error")
     }
     let result = JSON.parse(body)
-
     completion(result[0].uid)
   })
 }
@@ -188,14 +185,27 @@ function createNewUser(username, password, type, completion) {
  */
 
 app.get("/neworder", (req, res) => {
-  res.render("user/newOrder", { title: "Select Restaurant",
-    Restaurants: ["Agnes Dining", "BaoBao", "Charlie and the Chocolate Factory", "Raymond and Associates"]
+  request('http://localhost:8001/restaurants', (error, resp, body) => {
+    if (error) {
+      console.log(erorr)
+      res.render("error")
+    }
+    let restaurantsjs = JSON.parse(body)
+    let restArray = []
+
+    for (rest in restaurantsjs) {
+      curRest = restaurantsjs[rest]
+      restArray.push(curRest.restaurantname)
+    }
+    res.render("user/newOrder", {title: "Select Restaurant", Restaurants: restArray})
   })
 });
+
 var orderedItems = []
 var Restaurant = ""
 var Address = ["Thomson", "Clementi", "West Coast"]
 var deliveryAddress= ""
+
 app.post("/neworder2", (req, res) => {
   if (req.body.dropDown != null) {
     Restaurant = req.body.dropDown;
@@ -297,6 +307,7 @@ app.get("/data", (req, res) => {
   var titles = Object.keys(jsonlist[0]);
   res.render("data", { title: "Data", data_list: jsonlist, headers: titles })
 })
+
 /**
  * Server Activation
  */

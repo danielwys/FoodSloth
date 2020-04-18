@@ -56,7 +56,8 @@ app.put('/customers/:id', db.updateCreditCard)
 /**
  * Restaurants
  */
-app.post('restaurants/create', db.createRestaurant)
+app.get('/restaurants', db.getRestaurants)
+app.post('/restaurants/create', db.createRestaurant)
 app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
 app.put('/restaurants/:uid', db.updateRestaurantMinOrder) 
 

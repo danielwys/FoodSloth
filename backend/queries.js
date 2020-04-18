@@ -126,6 +126,17 @@ const updateCreditCard = (request, response) => {
 /**
  * Restaurants
  */
+
+const getRestaurants = (request, response) => {
+  pool.query('SELECT * FROM Restaurants', (error, results) => {
+    if (error) {
+      response.status(500).send("An error has occured.")
+      return
+    }
+    response.status(200).send(results.rows)
+  })
+}
+
 const createRestaurant = (request, response) => {
   const { restaurantid, restaurantname, minorder, deliveryfee } = request.body
 
@@ -612,6 +623,7 @@ module.exports = {
   getCustomerInfo,
   updateCreditCard,
 
+  getRestaurants,
   createRestaurant,
   getRestaurantInfo,
   updateRestaurantMinOrder,
