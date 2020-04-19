@@ -181,6 +181,20 @@ const updateRestaurantMinOrder = (request, response) => {
  * Riders
  */
 
+const createRider = (request, response) => {
+    const { riderid, parttime } = request.body
+
+    pool.query('INSERT INTO Riders (riderId, parttime) VALUES ($1, $2)',
+        [riderid, parttime],
+        (error, results) => {
+            if (error) {
+                response.status(500).send("An error has occured.")
+                return
+            }
+            response.status(200).send("success")
+        })
+}
+
 const getRiderInfo = (request, response) => {
     const riderId = parseInt(request.params.uid)
 
@@ -628,6 +642,7 @@ module.exports = {
     getRestaurantInfo,
     updateRestaurantMinOrder,
 
+    createRider,
     getRiderInfo,
 
     getMenuInfo,

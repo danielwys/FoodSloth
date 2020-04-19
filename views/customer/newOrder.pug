@@ -1,0 +1,20 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Hungry?
+    div.Message
+      div.Title
+        h1 Select your restaurant!
+        <br>
+        <br>
+        div.dropdown
+            form(action='/newOrder2' method="POST")
+                label(for='restaurants') Restaurants
+                select(name='dropDown', id='')
+                    each res in Restaurants
+                        option=res
+                    input(type='submit', value='Next')
+    div.NavButtons  
+      a(href="/signinUser")
+        div.NavButton Back

@@ -1,6 +1,9 @@
+var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var logger = require('morgan');
 var request = require('request');
 
 var app = express();
@@ -17,9 +20,6 @@ app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let Constants = require('./functions/constants')
-let auth = require('./functions/auth/auth')
-
 /**
  * Routes Definitions
  */
@@ -28,39 +28,157 @@ let auth = require('./functions/auth/auth')
  * Home page
  */
 app.get("/", (req, res) => {
-    res.render("index", Constants.homeTitle);
+    res.render("index", { title: "Home" });
 });
 
 /**
  * 1. Authentication
  */
 
-// Auth
-app.get("/login", auth.showLogin);
-app.post("/signIn", auth.signIn)
+// Log In
+app.get("/login", (req, res) => {
+    res.render("user/login", { title: "Login", userProfile: { nickname: "Login" } });
+});
+
+app.post("/signinUser", (req, res) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    let options = {
+        url: 'http://localhost:8001/login',
+        form: {
+            username: username,
+            password: password
+        }
+    };
+    request.post(options, (error, r, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error")
+            return
+        }
+
+        if (body == "[]") {
+            res.render("error");
+        } else {
+            let userInfo = JSON.parse(body)
+            currentUserID = userInfo[0].uid
+            currentUserType = userInfo[0].type
+            res.render("user/userMain", { title: "Profile" });
+        }
+    });
+});
 
 // Sign Up
 app.get("/signup", (req, res) => {
-    res.render("signup", Constants.signupTitle);
+    res.render("signup", { title: "SignUp" });
 });
 
 app.get("/signUpCustomer", (req, res) => {
-    res.render("registration/signUpCustomer", Constants.signupTitle);
-});
-
-app.get("/signUpRestaurant", (req, res) => {
-    res.render("registration/signUpRestaurant", Constants.restaurantSignupTitle)
+    res.render("registration/signUpCustomer", { title: "Customer Sign Up" });
 });
 
 app.get("/signUpRider", (req, res) => {
-    res.render("registration/signUpRider", Constants.riderSignupTitle);
+    res.render("registration/signUpRider", { title: "Rider Sign Up" });
 });
 
-app.post("/createCustomer", auth.createCustomer)
+app.get("/signUpRestaurant", (req, res) => {
+    res.render("registration/signUpRestaurant", { title: "Restaurant Sign Up" });
+});
 
-app.post("/createRider", auth.createRider)
+app.post("/createCustomer", (req, res) => {
+    let name = req.body.name
+    let username = req.body.username
+    let password = req.body.password
+    let creditCardNumber = req.body.creditCardNumber
 
-app.post("/createRestaurant", auth.createRestaurant)
+    let createCustomer = (cid) => {
+        let options = {
+            url: 'http://localhost:8001/customers/create',
+            form: {
+                cid: cid,
+                cname: name,
+                creditCardNumber: creditCardNumber
+            }
+        }
+
+        request.post(options, (error, response, body) => {
+            if (error) {
+                console.log(error)
+                res.render("error")
+            }
+            if (body = "success") {
+                res.render("user/login", { title: "Login", userProfile: { nickname: "Login" } });
+            } else {
+                res.render("error")
+            }
+            // can we get a completion page to show that the customer has successfully registered
+            // and ask them to go to log in to login?
+        })
+    }
+
+    createNewUser(username, password, "customer", createCustomer)
+});
+
+app.post("/createRider", (req, res) => {
+    // do something
+});
+
+app.post("/createRestaurant", (req, res) => {
+    let name = req.body.name
+    let username = req.body.username
+    let password = req.body.password
+    let minOrder = req.body.creditCardNumber
+    let deliveryFee = req.body.deliveryFee
+
+    let createRestaurant = (rid) => {
+        let options = {
+            url: 'http://localhost:8001/restaurants/create',
+            form: {
+                restaurantid: rid,
+                restaurantname: name,
+                minorder: minOrder,
+                deliveryfee: deliveryFee
+            }
+        }
+
+        request.post(options, (error, response, body) => {
+            if (error) {
+                console.log(error)
+                res.render("error")
+            }
+            if (body = "success") {
+                res.render("user/login", { title: "Login", userProfile: { nickname: "Login" } });
+            } else {
+                res.render("error")
+            }
+            // can we get a completion page to show that the customer has successfully registered
+            // and ask them to go to log in to login?
+        })
+    }
+
+    createNewUser(username, password, "customer", createRestaurant)
+});
+
+function createNewUser(username, password, type, completion) {
+    let options = {
+        url: 'http://localhost:8001/register',
+        form: {
+            username: username,
+            password: password,
+            type: type
+        }
+    };
+
+    request.post(options, (error, response, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error")
+        }
+        let result = JSON.parse(body)
+        completion(result[0].uid)
+    })
+}
 
 /**
  * Orders

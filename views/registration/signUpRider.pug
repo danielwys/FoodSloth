@@ -13,8 +13,10 @@ block layout-content
         <br>
         input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus)  
         <br>
-        input(type="plaintext" name="creditCardNumber" id="inputCreditCardNumber" class="form-control" placeholder="Credit Card Number" required autofocus)
-        <br>
+        label(for='partTime') Part Time or Full Time?
+        select(name="partTime", id="partTime")
+            each val in ['Full Time', 'Part Time']
+                option=val
         <br>
         div.NavButton
           input(type='submit', value="Submit")

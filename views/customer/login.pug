@@ -2,7 +2,7 @@ extends ../layout
 
 block layout-content
   div.View.UserView
-    h1.Banner Howdy, #{userProfile.nickname}!
+    h1.Banner Howdy!
 
     div.Message
       div.Title
@@ -11,7 +11,7 @@ block layout-content
 
     div.form-signin
       h3 Please log in:
-      form(action='/signinUser' method="POST")
+      form(action='/signIn' method="POST")
         input(type="plaintext" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus)
         <br>
         <br>

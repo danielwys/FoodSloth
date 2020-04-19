@@ -64,6 +64,7 @@ app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
 /**
  * Riders
  */
+app.post('/rider/create', db.createRider)
 app.get('/rider/:uid', db.getRiderInfo) // returns rating, salary, type
 
 /**
