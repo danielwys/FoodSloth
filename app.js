@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let Constants = require('./functions/constants')
 let Shared = require('./functions/shared')
 let auth = require('./functions/auth/auth')
+let Errors = require('./functions/error')
 
 /**
  * Routes Definitions
@@ -70,6 +71,13 @@ app.post("/createRider", auth.createRider)
 
 app.post("/createRestaurant", auth.createRestaurant)
 
+// Logout
+app.get("/logout", (req, res) => {
+    Shared.currentUserID = ""
+    Shared.currentUserType = ""
+    res.redirect(302, "/")
+})
+
 /**
  * Home page
  */
@@ -120,7 +128,7 @@ function notLoggedIn() {
 }
 
 function wrongUserType(expectedType) {
-    return (Shared.currentUserType === expectedType)
+    return !(Shared.currentUserType == expectedType)
 }
 
 /**
