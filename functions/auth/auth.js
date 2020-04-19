@@ -2,6 +2,7 @@ const Request = require('request')
 
 const Constants = require('../constants')
 const Shared = require('../shared')
+const Errors = require('../error.js')
 
 const serverURL = 'http://localhost:8001/'
 
@@ -9,14 +10,98 @@ const serverURL = 'http://localhost:8001/'
  * Login & Signup
  */
 
-const showLogin = (request, response) => {
+const showCustomerLogin = (request, response) => {
     response.render("customer/login")
+}
+
+const showRiderLogin = (request, response) => {
+    response.render("rider/login")
+}
+
+const showRestaurantLogin = (request, response) => {
+    response.render("restaurant/login")
+}
+
+const showManagerLogin = (request, response) => {
+    response.render("manager/login")
 }
 
 const signInCustomer = (request, response) => {
     let username = request.body.username
     let password = request.body.password
 
+    let completion = (uid, type) => {
+        if (type == 'customer') {
+            Shared.currentUserID = uid
+            Shared.currentUserType = type
+
+            response.redirect(302, "/customer/home")
+        } else {
+            response.render("error", Errors.incorrectUserType)
+        }
+    }
+
+    login(username, password, response, completion)
+
+}
+
+const signInRider = (request, response) => {
+    let username = request.body.username
+    let password = request.body.password
+
+    let completion = (uid, type) => {
+        if (type == 'rider') {
+            Shared.currentUserID = uid
+            Shared.currentUserType = type
+
+            response.redirect(302, "/rider/home")
+        } else {
+            response.render("error", Errors.incorrectUserType)
+        }
+    }
+
+    login(username, password, response, completion)
+
+}
+
+const signInRestaurant = (request, response) => {
+    let username = request.body.username
+    let password = request.body.password
+
+    let completion = (uid, type) => {
+        if (type == 'restaurant') {
+            Shared.currentUserID = uid
+            Shared.currentUserType = type
+
+            response.redirect(302, "/restaurant/home")
+        } else {
+            response.render("error", Errors.incorrectUserType)
+        }
+    }
+
+    login(username, password, response, completion)
+
+}
+
+const signInManager = (request, response) => {
+    let username = request.body.username
+    let password = request.body.password
+
+    let completion = (uid, type) => {
+        if (type == 'manager') {
+            Shared.currentUserID = uid
+            Shared.currentUserType = type
+
+            response.redirect(302, "/manager/home")
+        } else {
+            response.render("error", Errors.incorrectUserType)
+        }
+    }
+
+    login(username, password, response, completion)
+}
+
+function login(username, password, response, completion) {
     let options = {
         url: serverURL + 'login',
         form: {
@@ -27,18 +112,19 @@ const signInCustomer = (request, response) => {
 
     Request.post(options, (error, res, body) => {
         if (error) {
-            console.log(error)
-            res.render("error")
+            response.render("error", Errors.backendRequestError)
             return
         }
 
         if (body == "[]") {
-            res.render("error");
+            response.render("error", Errors.noSuchUserError);
         } else {
             let userInfo = JSON.parse(body)
-            Shared.currentUserID = userInfo[0].uid
-            Shared.currentUserType = userInfo[0].type
-            response.redirect(302, "customer/home")
+
+            let uid = userInfo[0].uid
+            let type = userInfo[0].type
+            
+            completion(uid, type)
         }
     });
 }
@@ -155,8 +241,14 @@ function createNewUser(username, password, type, response, completion) {
 }
 
 module.exports = {
-    showLogin,
+    showCustomerLogin,
+    showRiderLogin,
+    showRestaurantLogin,
+    showManagerLogin,
     signInCustomer, 
+    signInRider,
+    signInRestaurant,
+    signInManager,
     createCustomer,
     createRider,
     createRestaurant

@@ -2,6 +2,8 @@ extends layout
 
 block layout-content
   h1.Banner There is an error
+  div.Message
+    h2 #{errorMessage}
     div.NavButtons
       a(href="/")
-        div.NavButton Main
+        div.NavButton Go Home

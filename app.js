@@ -26,34 +26,44 @@ let auth = require('./functions/auth/auth')
  * Home page
  */
 app.get("/", (req, res) => {
-    res.render("index", Constants.homeTitle);
+    res.render("index");
 });
 
 /**
  * 1. Authentication
  */
 
-// Auth
-app.get("/customer/login", auth.showLogin);
-app.post("/signIn", auth.signInCustomer)
+// Log in
+app.get("/customer/login", auth.showCustomerLogin)
+app.post("/signin/customer", auth.signInCustomer)
+
+app.get("/rider/login", auth.showRiderLogin)
+app.post("/signin/rider", auth.signInRider)
+
+app.get("/restaurant/login", auth.showRestaurantLogin)
+app.post("/signin/restaurant", auth.signInRestaurant)
+
+app.get("/manager/login", auth.showManagerLogin)
+app.post("/signin/manager", auth.signInManager)
 
 // Sign Up
 app.get("/signup", (req, res) => {
     res.render("signup", Constants.signupTitle);
-});
+})
 
-app.get("/signUpCustomer", (req, res) => {
-    res.render("registration/signUpCustomer", Constants.signupTitle);
-});
+app.get("/signup/customer", (req, res) => {
+    res.render("customer/signup");
+})
 
-app.get("/signUpRestaurant", (req, res) => {
-    res.render("registration/signUpRestaurant", Constants.restaurantSignupTitle)
-});
+app.get("/signup/rider", (req, res) => {
+    res.render("rider/signup");
+})
 
-app.get("/signUpRider", (req, res) => {
-    res.render("registration/signUpRider", Constants.riderSignupTitle);
-});
+app.get("/signup/restaurant", (req, res) => {
+    res.render("restaurant/signup")
+})
 
+// Sign Up POST requests
 app.post("/createCustomer", auth.createCustomer)
 
 app.post("/createRider", auth.createRider)
@@ -61,18 +71,57 @@ app.post("/createRider", auth.createRider)
 app.post("/createRestaurant", auth.createRestaurant)
 
 /**
- * Customer Home
+ * Home page
  */
 
 app.get("/customer/home", (req, res) => {
-    if (Shared.currentUserID === "" && Shared.currentUserType === "") {
-        res.redirect(302, "login")
+    if (notLoggedIn()) {
+        res.render("error", Errors.notLoggedIn)
+    } else if (wrongUserType("customer")) {
+        res.render("error", Errors.incorrectUserType)
     } else {
-        console.log(Shared.currentUserID)
-        console.log(Shared.currentUserType)
         res.render("customer/home")
     }
 })
+
+app.get("/rider/home", (req, res) => {
+    if (notLoggedIn()) {
+        res.render("error", Errors.notLoggedIn)
+    } else if (wrongUserType("rider")) {
+        res.render("error", Errors.incorrectUserType)
+    } else {
+        res.render("rider/home")
+    }
+})
+
+app.get("/restaurant/home", (req, res) => {
+    if (notLoggedIn()) {
+        res.render("error", Errors.notLoggedIn)
+    } else if (wrongUserType("restaurant")) {
+        res.render("error", Errors.incorrectUserType)
+    } else {
+        res.render("restaurant/home")
+    }
+})
+
+
+app.get("/manager/home", (req, res) => {
+    if (notLoggedIn()) {
+        res.render("error", Errors.notLoggedIn)
+    } else if (wrongUserType('manager')) {
+        res.render("error", Errors.incorrectUserType)
+    } else {
+        res.render("manager/home")
+    }
+})
+
+function notLoggedIn() {
+    return (Shared.currentUserID === "" && Shared.currentUserType === "")
+}
+
+function wrongUserType(expectedType) {
+    return (Shared.currentUserType === expectedType)
+}
 
 /**
  * Orders
@@ -157,23 +206,6 @@ app.post("/editOrder", (req, res) => {
         Restaurant: Restaurant,
         orderItems: orderedItems,
     })
-});
-
-app.get("/signinRider", (req, res) => {
-    res.render("rider/riderMain", { title: "Profile", userProfile: { nickname: "Auth0" } });
-});
-app.get("/rider", (req, res) => {
-    res.render("rider/rider", { title: "Rider", userProfile: { nickname: "Rider0" } });
-});
-
-app.get("/restaurant", (req, res) => {
-    res.render("restaurant", { title: "Restaurant", userProfile: { nickname: "Restaurant0" } });
-});
-app.get("/manager", (req, res) => {
-    res.render("manager", { title: "Manager", userProfile: { nickname: "Manager0" } });
-});
-app.get("/signup", (req, res) => {
-    res.render("signup", { title: "Manager", userProfile: { nickname: "Manager0" } });
 });
 
 // restaurant dashboard part
