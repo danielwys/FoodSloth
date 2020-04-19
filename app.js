@@ -6,9 +6,6 @@ var request = require('request');
 var app = express();
 var port = process.env.PORT || "8000";
 
-var currentUserID
-var currentUserType
-
 /**
  *  App Configuration
  */
@@ -18,6 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let Constants = require('./functions/constants')
+let Shared = require('./functions/shared')
 let auth = require('./functions/auth/auth')
 
 /**
@@ -36,8 +34,8 @@ app.get("/", (req, res) => {
  */
 
 // Auth
-app.get("/login", auth.showLogin);
-app.post("/signIn", auth.signIn)
+app.get("/customer/login", auth.showLogin);
+app.post("/signIn", auth.signInCustomer)
 
 // Sign Up
 app.get("/signup", (req, res) => {
@@ -63,10 +61,24 @@ app.post("/createRider", auth.createRider)
 app.post("/createRestaurant", auth.createRestaurant)
 
 /**
+ * Customer Home
+ */
+
+app.get("/customer/home", (req, res) => {
+    if (Shared.currentUserID === "" && Shared.currentUserType === "") {
+        res.redirect(302, "login")
+    } else {
+        console.log(Shared.currentUserID)
+        console.log(Shared.currentUserType)
+        res.render("customer/home")
+    }
+})
+
+/**
  * Orders
  */
 
-app.get("/neworder", (req, res) => {
+app.get("/customer/neworder", (req, res) => {
     request('http://localhost:8001/restaurants', (error, resp, body) => {
         if (error) {
             console.log(erorr)
@@ -79,7 +91,7 @@ app.get("/neworder", (req, res) => {
             curRest = restaurantsjs[rest]
             restArray.push(curRest.restaurantname)
         }
-        res.render("user/newOrder", { title: "Select Restaurant", Restaurants: restArray })
+        res.render("customer/selectRestaurant", { title: "Select Restaurant", Restaurants: restArray })
     })
 });
 

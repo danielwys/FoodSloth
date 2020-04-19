@@ -10,7 +10,7 @@ block layout-content
         <br>
         div.dropdown
             form(action='/newOrder2' method="POST")
-                label(for='restaurants') Restaurants
+                label(for='restaurants') Restaurants:
                 select(name='dropDown', id='')
                     each res in Restaurants
                         option=res

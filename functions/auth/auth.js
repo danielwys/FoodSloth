@@ -1,6 +1,7 @@
 const Request = require('request')
 
 const Constants = require('../constants')
+const Shared = require('../shared')
 
 const serverURL = 'http://localhost:8001/'
 
@@ -12,7 +13,7 @@ const showLogin = (request, response) => {
     response.render("customer/login")
 }
 
-const signIn = (request, response) => {
+const signInCustomer = (request, response) => {
     let username = request.body.username
     let password = request.body.password
 
@@ -30,15 +31,14 @@ const signIn = (request, response) => {
             res.render("error")
             return
         }
-        console.log(body)
 
         if (body == "[]") {
             res.render("error");
         } else {
             let userInfo = JSON.parse(body)
-            currentUserID = userInfo[0].uid
-            currentUserType = userInfo[0].type
-            response.render("user/userMain");
+            Shared.currentUserID = userInfo[0].uid
+            Shared.currentUserType = userInfo[0].type
+            response.redirect(302, "customer/home")
         }
     });
 }
@@ -156,7 +156,7 @@ function createNewUser(username, password, type, response, completion) {
 
 module.exports = {
     showLogin,
-    signIn, 
+    signInCustomer, 
     createCustomer,
     createRider,
     createRestaurant
