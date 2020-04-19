@@ -20,24 +20,24 @@ const db = require('./queries')
 
 app.use(bodyParser.json())
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
+    bodyParser.urlencoded({
+        extended: true,
+    })
 )
 /**
  * Routes Definitions
  */
 
 app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' })
+    response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
 /**
  * Authentication
  */
 
- app.post('/login', db.login) // returns uid
- app.post('/register', db.register)
+app.post('/login', db.login) // returns uid
+app.post('/register', db.register)
 
 /** 
  * Users
@@ -59,7 +59,7 @@ app.put('/customers/:id', db.updateCreditCard)
 app.get('/restaurants', db.getRestaurants)
 app.post('/restaurants/create', db.createRestaurant)
 app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
-app.put('/restaurants/:uid', db.updateRestaurantMinOrder) 
+app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
 
 /**
  * Riders
@@ -144,6 +144,6 @@ app.get('restaurant/orders/:id', db.getRestaurantOrderStatistic)
  */
 
 app.listen(port, () => {
-  console.log(`Listening to requests on http://localhost:${port}`);
+    console.log(`Listening to requests on http://localhost:${port}`);
 });
 
