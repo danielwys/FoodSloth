@@ -1,10 +1,8 @@
 const Request = require('request')
 
-const Constants = require('../constants')
-const Shared = require('../shared')
-const Errors = require('../error.js')
-
-const serverURL = 'http://localhost:8001/'
+const Constants = require('./constants')
+const Shared = require('./shared')
+const Errors = require('./error.js')
 
 /**
  * Login & Signup
@@ -103,7 +101,7 @@ const signInManager = (request, response) => {
 
 function login(username, password, response, completion) {
     let options = {
-        url: serverURL + 'login',
+        url: Constants.serverURL + 'login',
         form: {
             username: username,
             password: password
@@ -137,7 +135,7 @@ const createCustomer = (request, response) => {
 
     let createCustomerRecord = (cid) => {
         let options = {
-            url: serverURL + 'customers/create',
+            url: Constants.serverURL + 'customers/create',
             form: {
                 cid: cid,
                 cname: name,
@@ -167,7 +165,7 @@ const createRider = (request, response) => {
 
     let createRiderRecord = (riderid) => {
         let options = {
-            url: serverURL + 'rider/create',
+            url: Constants.serverURL + 'rider/create',
             form: {
                 riderid: riderid,
                 parttime: partTime
@@ -197,7 +195,7 @@ const createRestaurant = (request, response) => {
 
     let createRestaurantRecord = (restid) => {
         let options = {
-            url: serverURL + 'restaurants/create', 
+            url: Constants.serverURL + 'restaurants/create', 
             form: {
                 restaurantid: restid, 
                 restaurantname: restName, 
@@ -223,7 +221,7 @@ const createRestaurant = (request, response) => {
 
 function createNewUser(username, password, type, response, completion) {
     let options = {
-        url: serverURL + 'register',
+        url: Constants.serverURL + 'register',
         form: {
             username: username,
             password: password,

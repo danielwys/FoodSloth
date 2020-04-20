@@ -16,8 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 let Constants = require('./functions/constants')
 let Shared = require('./functions/shared')
-let auth = require('./functions/auth/auth')
 let Errors = require('./functions/error')
+
+let auth = require('./functions/auth')
+let orders = require('./functions/orders')
 
 /**
  * Routes Definitions
@@ -135,29 +137,14 @@ function wrongUserType(expectedType) {
  * Orders
  */
 
-app.get("/customer/neworder", (req, res) => {
-    request('http://localhost:8001/restaurants', (error, resp, body) => {
-        if (error) {
-            console.log(erorr)
-            res.render("error")
-        }
-        let restaurantsjs = JSON.parse(body)
-        let restArray = []
-
-        for (rest in restaurantsjs) {
-            curRest = restaurantsjs[rest]
-            restArray.push(curRest.restaurantname)
-        }
-        res.render("customer/selectRestaurant", { title: "Select Restaurant", Restaurants: restArray })
-    })
-});
+app.get("/customer/neworder", orders.selectRestaurant)
 
 var orderedItems = []
 var Restaurant = ""
 var Address = ["Thomson", "Clementi", "West Coast"]
 var deliveryAddress = ""
 
-app.post("/neworder2", (req, res) => {
+app.post("/selectItems", (req, res) => {
     if (req.body.dropDown != null) {
         Restaurant = req.body.dropDown;
     } else {
