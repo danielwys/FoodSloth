@@ -137,7 +137,7 @@ function wrongUserType(expectedType) {
  * Orders
  */
 
-app.get("/customer/neworder", orders.selectRestaurant)
+app.get("/customer/newOrder", orders.selectRestaurant)
 
 var orderedItems = []
 var Restaurant = ""

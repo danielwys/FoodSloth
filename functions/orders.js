@@ -7,7 +7,7 @@ const Errors = require('./error.js')
 let currentRestaurantList = []
 
 let selectRestaurant = (request, response) => {
-    request(Constants.serverURL + 'restaurants', (error, res, body) => {
+    Request(Constants.serverURL + 'restaurants', (error, res, body) => {
         if (error) {
             console.log(error)
             response.render("error", Errors.backendRequestError)
@@ -21,7 +21,7 @@ let selectRestaurant = (request, response) => {
             restaurants.push(currentRestaurant.restaurantname)
         }
 
-        res.render("customer/selectRestaurant", { Restaurants: restaurants })
+        response.render("customer/selectRestaurant", { Restaurants: restaurants })
     })
 }
 

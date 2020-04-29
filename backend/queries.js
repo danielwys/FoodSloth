@@ -1,10 +1,13 @@
 const Pool = require('pg').Pool
+
+let settings = require('./settings')
+
 const pool = new Pool({
-    user: 'dawo',
-    host: 'localhost',
-    database: 'project',
-    password: 'jwcehll81238930',
-    port: 5432,
+    user: settings.user,
+    host: settings.host,
+    database: settings.database,
+    password: settings.password,
+    port: settings.port,
 })
 
 /**
