@@ -1,5 +1,5 @@
-// Write your settings to this file then don't commit it!
-// Remove it from git by using git rm <this_file>
+// Dupliate this file and then name it as settings.js!
+// Don't commit it to the repo (the gitignore is set to automatically ignore it!)
 // That way you can keep your login to the backend without having to change it each time!
 
 const username = ''

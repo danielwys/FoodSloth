@@ -116,3 +116,6 @@ dist
 
 # macOS Trash
 *.DS_Store
+
+# Backend config file
+backend/settings.js
