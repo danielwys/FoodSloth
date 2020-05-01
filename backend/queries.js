@@ -214,10 +214,20 @@ const getRiderInfo = (request, response) => {
  * Menu
  */
 
-const getMenuForRestaurant = (request, response) => {
-    const restaurantId = parseInt(request.params.uid)
+const getMenu = (request, response) => {
+    pool.query('SELECT * FROM Menu', (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
 
-    pool.query('SELECT foodname, price, category, maxavailable FROM menu WHERE restaurantId = $1', [restaurantId], (error, results) => {
+const getMenuForRestaurant = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    pool.query('SELECT * FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1', 
+        [restaurantname], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
@@ -227,11 +237,12 @@ const getMenuForRestaurant = (request, response) => {
 }
 
 const getMenuInfo = (request, response) => {
-    const foodId = parseInt(request.params.uid)
+    const restaurantId = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM menu WHERE foodId = $1', [foodId], (error, results) => {
+    pool.query('SELECT foodname, price, category, maxavailable FROM menu WHERE restaurantId = $1', [restaurantId], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
         response.status(200).json(results.rows)
     })
@@ -661,6 +672,7 @@ module.exports = {
     createRider,
     getRiderInfo,
 
+    getMenu,
     getMenuForRestaurant,
     getMenuInfo,
     addMenuItem,

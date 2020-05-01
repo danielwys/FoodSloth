@@ -157,37 +157,6 @@ app.get("/customer/newOrder", orders.selectRestaurant)
 app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
 
-var orderedItems = []
-var Restaurant = ""
-var Address = ["Thomson", "Clementi", "West Coast"]
-var deliveryAddress = ""
-
-app.post("/selectItems", (req, res) => {
-    if (req.body.dropDown != null) {
-        Restaurant = req.body.dropDown;
-    } else {
-        var Item = req.body.dropDown1;
-        var Quantity = req.body.dropDown2;
-        var newItem = { item: Item, quantity: Quantity };
-        orderedItems.push(newItem);
-    }
-    res.render("user/newOrder2", {
-        title: "Select Food",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
-        Quantity: ['1', '2', '3', '4', '5']
-    })
-});
-app.get("/neworder2", (req, res) => {
-    res.render("user/newOrder2", {
-        title: "Select Food",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
-        Quantity: ['1', '2', '3', '4', '5']
-    })
-});
 app.get("/newOrder3", (req, res) => {
     res.render("user/newOrder3", {
         title: "Select Address",
