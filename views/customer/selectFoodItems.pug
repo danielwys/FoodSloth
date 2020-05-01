@@ -18,7 +18,7 @@ block layout-content
                         td=rec.quantity
                 td=''
                     div.dropdown
-                        form(action='/newOrder2' method="post")
+                        form(action='/selectItems' method="post")
                             select(name='dropDown1', id='')
                                 each fd in Items
                                     option=fd

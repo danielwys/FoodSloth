@@ -148,7 +148,7 @@ const createCustomer = (request, response) => {
                 response.render("error")
             }
             if (body = "success") {
-                response.redirect(302, "login")
+                response.redirect(302, "customer/login")
             } else {
                 response.render("error")
             }

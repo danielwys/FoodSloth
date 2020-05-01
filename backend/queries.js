@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 let settings = require('./settings')
 
 const pool = new Pool({
-    user: settings.user,
+    user: settings.username,
     host: settings.host,
     database: settings.database,
     password: settings.password,
@@ -18,7 +18,7 @@ const login = (request, response) => {
     const username = request.body.username
     const password = request.body.password
 
-    pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
+    pool.query('SELECT * FROM Users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
         if (error) {
             response.status(500).send('An error occured.')
             return
@@ -212,6 +212,18 @@ const getRiderInfo = (request, response) => {
 /**
  * Menu
  */
+
+const getMenuForRestaurant = (request, response) => {
+    const restaurantname = request.body
+
+    pool.quert('SELECT * FROM menu WHERE restaurantname = $1', [restaurantname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
 
 const getMenuInfo = (request, response) => {
     const foodId = parseInt(request.params.uid)
@@ -648,6 +660,7 @@ module.exports = {
     createRider,
     getRiderInfo,
 
+    getMenuForRestaurant,
     getMenuInfo,
     addMenuItem,
     updateMenuItem,

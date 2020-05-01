@@ -138,6 +138,8 @@ function wrongUserType(expectedType) {
  */
 
 app.get("/customer/newOrder", orders.selectRestaurant)
+app.post("/selectItems", orders.selectItems)
+app.get("/customer/selectFoodItems", orders.selectItems)
 
 var orderedItems = []
 var Restaurant = ""
