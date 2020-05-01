@@ -37,12 +37,26 @@ let selectItems = (request, response) => {
         let newItem = {item: item, quantity: quant}
         orderedItems.push(newItem)
     }
-    response.render("customer/selectFoodItems", {
-        title: "Select Food",
-        Restaurant: currentRestaurant,
-        orderItems: orderedItems,
-        Items: items,
-        Quantity: quantity
+    Request(Constants.serverURL + 'menu/' + currentRestaurant, (error, res, body) => {
+        let itemsjson = JSON.parse(body)
+        let items = []
+        let quantity = []
+
+        for (it in itemsjson) {
+            currentItem = itemsjson[it].foodname
+            currentQty = itemsjson[it].maxavailable
+            items.push(currentItem)
+            quantity.push(currentQty)
+        }
+        
+        response.render("customer/selectFoodItems", {
+            title: "Select Food",
+            Restaurant: currentRestaurant,
+            orderItems: orderedItems,
+            //Items: items,
+            Items: itemsjson,
+            Quantity: quantity
+        })
     })
 }
 

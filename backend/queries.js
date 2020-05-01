@@ -213,10 +213,20 @@ const getRiderInfo = (request, response) => {
  * Menu
  */
 
-const getMenuForRestaurant = (request, response) => {
-    const restaurantname = request.body
+const getMenu = (request, response) => {
+    pool.query('SELECT * FROM Menu', (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
 
-    pool.quert('SELECT * FROM menu WHERE restaurantname = $1', [restaurantname], (error, results) => {
+const getMenuForRestaurant = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    pool.query('SELECT * FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1', 
+        [restaurantname], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
@@ -660,6 +670,7 @@ module.exports = {
     createRider,
     getRiderInfo,
 
+    getMenu,
     getMenuForRestaurant,
     getMenuInfo,
     addMenuItem,

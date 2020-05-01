@@ -11,25 +11,22 @@ block layout-content
         table
             tr
                 th= 'Item'
+                th= 'Max qty'
+                th= 'Qty'
             tr
-                each rec in orderItems
+                each it in Items
                     tr
-                        td=rec.item
-                        td=rec.quantity
-                td=''
-                    div.dropdown
-                        form(action='/selectItems' method="post")
-                            select(name='dropDown1', id='')
-                                each fd in Items
-                                    option=fd
-                            <br>
-                            select(name='dropDown2', id='')
-                                each qt in Quantity
-                                    option=qt
-                            input(type='submit', value='Add')
+                        td=it.foodname
+                        td=it.maxavailable
+                        td=''
+                            div.form-signin
+                            form(action='/createCustomer' method="POST")
+                                input(type="plaintext" name="qty" id="inputQty" class="form-control" placeholder="Qty" required autofocus)
+                                <br>
+                                input(type='submit', value="Update Qty")
         <br>
         a(href="/newOrder3")
             div.NavButton Next 
     div.NavButtons  
-      a(href="/newOrder")
+      a(href="/customer/newOrder")
         div.NavButton Back
