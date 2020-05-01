@@ -19,6 +19,7 @@ const login = (request, response) => {
     const password = request.body.password
 
     pool.query('SELECT * FROM Users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
+        console.log(results)
         if (error) {
             response.status(500).send('An error occured.')
             return
@@ -214,14 +215,14 @@ const getRiderInfo = (request, response) => {
  */
 
 const getMenuForRestaurant = (request, response) => {
-    const restaurantname = request.body
+    const restaurantId = parseInt(request.params.uid)
 
-    pool.quert('SELECT * FROM menu WHERE restaurantname = $1', [restaurantname], (error, results) => {
+    pool.query('SELECT foodname, price, category, maxavailable FROM menu WHERE restaurantId = $1', [restaurantId], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
         }
-        response.status(200).send(results.rows)
+        response.status(200).json(results.rows)
     })
 }
 

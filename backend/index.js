@@ -70,7 +70,7 @@ app.get('/rider/:uid', db.getRiderInfo) // returns rating, salary, type
 /**
  * Menu
  */
-app.get('/menu/:uid', db.getMenuInfo) // returns foodId, name, price, category & availability
+app.get('/menu/:uid', db.getMenuForRestaurant) // returns foodname, price, category & maxavailability
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodId', db.updateMenuItem)
 app.delete('/menu/:foodId', db.deleteMenuItem)

@@ -1,12 +1,18 @@
-extends layout
+extends ../MainLayout
 
 block layout-content
   div.View.RestaurantView
     h1.Banner Welcome!
     div.CenteredMessage
       h2(text-align: center) Your Current Menu
-      include utils
-      +create_table(data_list, headers)
+      //include utils
+      //+create_table(data_list, headers)
+      table
+        for item in menu
+          tr.odd(role='row')
+            td #{item.foodname}
+            td #{item.category}
+            td.dt-body-right.sorting_1 #{item.price}
       <br>
       div.NavButton(text-align: center)
         a(href="/create-menu")
