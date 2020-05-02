@@ -20,6 +20,7 @@ let Errors = require('./functions/error')
 
 let auth = require('./functions/auth')
 let orders = require('./functions/orders')
+let restaurants = require('./functions/restaurants')
 
 /**
  * Routes Definitions
@@ -127,10 +128,6 @@ app.get("/restaurant/home", (req, res) => {
     }
 })
 
-
-
-
-
 app.get("/manager/home", (req, res) => {
     if (notLoggedIn()) {
         res.render("error", Errors.notLoggedIn)
@@ -190,9 +187,20 @@ app.post("/editOrder", (req, res) => {
     })
 });
 
+/**
+ * Restaurants
+ */
 
-app.get("/restaurant/create-menu", (req, res) => {
-    res.render("restaurant/create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
+app.get("/restaurant/addMenu", (req, res) => {
+    res.render("restaurant/addMenu")
+})
+
+// Sign Up POST requests
+app.post("/createMenu", restaurants.createMenuItem)
+
+
+/*app.get("/restaurant/addMenu", (req, res) => {
+    res.render("restaurant/addMenu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
 });
 var menuItemList = [];
 app.post("/create-menu", (req, res) => {
@@ -205,7 +213,8 @@ app.post("/create-menu", (req, res) => {
     menuItemList.push(menuItemJson)
     console.log(menuItemList)
     res.render("create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
-});
+});*/
+
 
 // template
 app.get("/data", (req, res) => {
