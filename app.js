@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var request = require('request');
+var Request = require('request');
 
 var app = express();
 var port = process.env.PORT || "8000";
@@ -100,7 +100,7 @@ app.get("/rider/home", (req, res) => {
     } else if (wrongUserType("rider")) {
         res.render("error", Errors.incorrectUserType)
     } else {
-        res.render("rider/home")
+        res.render("rider/riderMain")
     }
 })
 
@@ -110,9 +110,25 @@ app.get("/restaurant/home", (req, res) => {
     } else if (wrongUserType("restaurant")) {
         res.render("error", Errors.incorrectUserType)
     } else {
-        res.render("restaurant/home")
+        //previous implementation that used utils in dashboard
+        //var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "doner", bada: "boom", Lee: "Hsien Loong" }];
+        //var titles = Object.keys(jsonlist[0]);
+        //res.render("restaurant/restaurant-dashboard", { title: "Restaurant", data_list: jsonlist, headers: titles })
+        Request(Constants.serverURL + 'menu/' + Shared.currentUserID, (error, response, body) => {
+            if (error) {
+                console.log(error)
+                res.render("error", Errors.backendRequestError)
+            }
+            var menulist = JSON.parse(body);
+            res.render("restaurant/restaurant-dashboard", {
+                menu: menulist
+              });
+        })
     }
 })
+
+
+
 
 
 app.get("/manager/home", (req, res) => {
@@ -138,38 +154,9 @@ function wrongUserType(expectedType) {
  */
 
 app.get("/customer/newOrder", orders.selectRestaurant)
+app.post("/selectItems", orders.selectItems)
+app.get("/customer/selectFoodItems", orders.selectItems)
 
-var orderedItems = []
-var Restaurant = ""
-var Address = ["Thomson", "Clementi", "West Coast"]
-var deliveryAddress = ""
-
-app.post("/selectItems", (req, res) => {
-    if (req.body.dropDown != null) {
-        Restaurant = req.body.dropDown;
-    } else {
-        var Item = req.body.dropDown1;
-        var Quantity = req.body.dropDown2;
-        var newItem = { item: Item, quantity: Quantity };
-        orderedItems.push(newItem);
-    }
-    res.render("user/newOrder2", {
-        title: "Select Food",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
-        Quantity: ['1', '2', '3', '4', '5']
-    })
-});
-app.get("/neworder2", (req, res) => {
-    res.render("user/newOrder2", {
-        title: "Select Food",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        Items: ['American Hotdog', 'Bagel', 'Cream cheese', 'Dalgona coffee'],
-        Quantity: ['1', '2', '3', '4', '5']
-    })
-});
 app.get("/newOrder3", (req, res) => {
     res.render("user/newOrder3", {
         title: "Select Address",
@@ -203,14 +190,9 @@ app.post("/editOrder", (req, res) => {
     })
 });
 
-// restaurant dashboard part
-app.get("/restaurant-dashboard", (req, res) => {
-    var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "doner", bada: "boom", Lee: "Hsien Loong" }];
-    var titles = Object.keys(jsonlist[0]);
-    res.render("restaurant-dashboard", { title: "Restaurant", data_list: jsonlist, headers: titles })
-});
-app.get("/create-menu", (req, res) => {
-    res.render("create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
+
+app.get("/restaurant/create-menu", (req, res) => {
+    res.render("restaurant/create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
 });
 var menuItemList = [];
 app.post("/create-menu", (req, res) => {
@@ -237,6 +219,10 @@ app.get("/data", (req, res) => {
 /**
  * Server Activation
  */
-app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
+app.listen(port, (error) => {
+    if(error) {
+        console.log('Something went wrong', error)
+    } else {
+        console.log(`Listening to requests on http://localhost:${port}`);
+    }
 });

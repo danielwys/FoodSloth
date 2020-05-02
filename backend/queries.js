@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 let settings = require('./settings')
 
 const pool = new Pool({
-    user: settings.user,
+    user: settings.username,
     host: settings.host,
     database: settings.database,
     password: settings.password,
@@ -18,7 +18,7 @@ const login = (request, response) => {
     const username = request.body.username
     const password = request.body.password
 
-    pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
+    pool.query('SELECT * FROM Users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
         if (error) {
             response.status(500).send('An error occured.')
             return
@@ -213,12 +213,35 @@ const getRiderInfo = (request, response) => {
  * Menu
  */
 
-const getMenuInfo = (request, response) => {
-    const foodId = parseInt(request.params.uid)
-
-    pool.query('SELECT * FROM menu WHERE foodId = $1', [foodId], (error, results) => {
+const getMenu = (request, response) => {
+    pool.query('SELECT * FROM Menu', (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
+
+const getMenuForRestaurant = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    pool.query('SELECT * FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1', 
+        [restaurantname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured with Menu loading.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getMenuInfo = (request, response) => {
+    const restaurantId = parseInt(request.params.uid)
+
+    pool.query('SELECT foodname, price, category, maxavailable FROM menu WHERE restaurantId = $1', [restaurantId], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
         }
         response.status(200).json(results.rows)
     })
@@ -648,6 +671,8 @@ module.exports = {
     createRider,
     getRiderInfo,
 
+    getMenu,
+    getMenuForRestaurant,
     getMenuInfo,
     addMenuItem,
     updateMenuItem,
