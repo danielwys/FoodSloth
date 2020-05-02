@@ -12,7 +12,6 @@ let orderedItems = []
 let selectRestaurant = (request, response) => {
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
         if (error) {
-            console.log(error)
             response.render("error", Errors.backendRequestError)
         }
 
@@ -37,25 +36,14 @@ let selectItems = (request, response) => {
         let newItem = {item: item, quantity: quant}
         orderedItems.push(newItem)
     }
-    Request(Constants.serverURL + 'menu/' + currentRestaurant, (error, res, body) => {
+    Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
         let itemsjson = JSON.parse(body)
-        let items = []
-        let quantity = []
-
-        for (it in itemsjson) {
-            currentItem = itemsjson[it].foodname
-            currentQty = itemsjson[it].maxavailable
-            items.push(currentItem)
-            quantity.push(currentQty)
-        }
         
         response.render("customer/selectFoodItems", {
             title: "Select Food",
             Restaurant: currentRestaurant,
             orderItems: orderedItems,
-            //Items: items,
             Items: itemsjson,
-            Quantity: quantity
         })
     })
 }
