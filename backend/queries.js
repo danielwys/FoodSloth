@@ -19,7 +19,6 @@ const login = (request, response) => {
     const password = request.body.password
 
     pool.query('SELECT * FROM Users WHERE username = $1 AND password = $2', [username, password], (error, results) => {
-        console.log(results)
         if (error) {
             response.status(500).send('An error occured.')
             return
@@ -229,7 +228,7 @@ const getMenuForRestaurant = (request, response) => {
     pool.query('SELECT * FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1', 
         [restaurantname], (error, results) => {
         if (error) {
-            response.status(500).send("An error has occured.")
+            response.status(500).send("An error has occured with Menu loading.")
             return
         }
         response.status(200).json(results.rows)
