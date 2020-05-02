@@ -13,15 +13,13 @@ let selectMenuItem = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
 
-        var menujson = JSON.parse(body)
-        console.log(menujson)
+        let menujson = JSON.parse(body)
         let menu = []
 
         for (item in menujson) {
             currentItem = menujson[item]
             menu.push(currentItem.foodname)
         }
-        console.log(menu)
         response.render("restaurant/editMenu", { Menu: menu });
     })
 }
@@ -56,7 +54,38 @@ const createMenuItem = (request, response) => {
     })
 }
 
+const editMenuItem = (request, response) => {
+    let foodName = request.body.name
+    let price = request.body.price
+    let maxAvailable = request.body.avail
+    let category = request.body.category
+    let restaurantid = Shared.currentUserID
+
+    let options = {
+        url: Constants.serverURL + 'menu/' + Shared.currentUserID, 
+        form: {
+            restaurantid: restaurantid, 
+            foodName: foodName, 
+            price: price, 
+            maxAvailable: maxAvailable,
+            category: category
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if (body = "success") {
+            response.redirect(302, "/restaurant/home")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     createMenuItem,
-    selectMenuItem
+    selectMenuItem,
+    editMenuItem
 }
