@@ -11,20 +11,23 @@ block layout-content
         table
             tr
                 th= 'Item'
-                th= 'Max qty'
                 th= 'Qty'
             tr
-                each it in Items
+                each rec in orderItems
                     tr
-                        td=it.foodname
-                        td=it.maxavailable
-                        td=''
-                            div.form-signin
-                            form(action='/createCustomer' method="POST")
-                                input(type="plaintext" name="qty" id="inputQty" class="form-control" placeholder="Qty" required autofocus)
-                                <br>
-                                input(type='submit', value="Update Qty")
-        <br>
+                        td=rec.item
+                        td=rec.quantity
+                td=''
+                    div.dropdown
+                        form(action='/selectItems' method="post")
+                            select(name='dropDown1', id='')
+                                each it in Items
+                                    option=it.foodname+' (Max: '+it.maxavailable+')'
+                            <br>
+                            select(name='dropDown2', id='')
+                                each qt in Array.from(Array(20).keys())
+                                    option=qt
+                            input(type='submit', value='Add')        
         a(href="/newOrder3")
             div.NavButton Next 
     div.NavButtons  
