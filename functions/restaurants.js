@@ -4,6 +4,28 @@ const Constants = require('./constants')
 const Shared = require('./shared')
 const Errors = require('./error.js')
 
+let currentItem = ""
+
+
+let selectMenuItem = (request, response) => {
+    Request(Constants.serverURL + 'menu/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+
+        var menujson = JSON.parse(body)
+        console.log(menujson)
+        let menu = []
+
+        for (item in menujson) {
+            currentItem = menujson[item]
+            menu.push(currentItem.foodname)
+        }
+        console.log(menu)
+        response.render("restaurant/editMenu", { Menu: menu });
+    })
+}
+
 const createMenuItem = (request, response) => {
     let foodName = request.body.name
     let price = request.body.price
@@ -12,7 +34,7 @@ const createMenuItem = (request, response) => {
     let restaurantid = Shared.currentUserID
 
     let options = {
-        url: Constants.serverURL + 'menu/' + Constants.currentUserID, 
+        url: Constants.serverURL + 'menu/' + Shared.currentUserID, 
         form: {
             restaurantid: restaurantid, 
             foodName: foodName, 
@@ -35,5 +57,6 @@ const createMenuItem = (request, response) => {
 }
 
 module.exports = {
-    createMenuItem
+    createMenuItem,
+    selectMenuItem
 }

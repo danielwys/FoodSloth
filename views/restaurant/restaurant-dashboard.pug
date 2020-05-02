@@ -1,4 +1,4 @@
-extends ../MainLayout
+extends ../layout
 
 block layout-content
   div.View.RestaurantView
@@ -12,16 +12,23 @@ block layout-content
           th= 'Item'
           th= 'Cuisine'
           th= 'Price'
+          th= 'Available Quantity'
         tr
           for item in menu
             tr.odd(role='row')
               td #{item.foodname}
               td #{item.category}
               td.dt-body-right.sorting_1 #{item.price}
+              td #{item.maxavailable}
       <br>
       div.NavButton(text-align: center)
         a(href="/restaurant/addMenu")
           div.NavButton Add New Menu item!
+      <br>
+
+      div.NavButton(text-align: center)
+        a(href="/restaurant/editMenu")
+          div.NavButton Edit Menu Item!
 
     div.NavButtons
       a(href="/")

@@ -195,25 +195,15 @@ app.get("/restaurant/addMenu", (req, res) => {
     res.render("restaurant/addMenu")
 })
 
-// Sign Up POST requests
 app.post("/createMenu", restaurants.createMenuItem)
 
+app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 
-/*app.get("/restaurant/addMenu", (req, res) => {
-    res.render("restaurant/addMenu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
-});
-var menuItemList = [];
-app.post("/create-menu", (req, res) => {
-    var foodItem = req.body.food;
-    var price = req.body.price;
-    var avail = req.body.avail;
-    var limit = req.body.limit;
-    var category = req.body.cat;
-    var menuItemJson = { food_item: foodItem, food_price: price, food_avail: avail, food_limit: limit, food_cat: category }
-    menuItemList.push(menuItemJson)
-    console.log(menuItemList)
-    res.render("create-menu", { title: "Menu", userProfile: { nickname: "Restaurant0" } });
-});*/
+app.post("/restaurant/editItem", (req, res) => {
+    res.render("restaurant/editItem")
+})
+
+
 
 
 // template

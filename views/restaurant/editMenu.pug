@@ -1,0 +1,24 @@
+extends ../layout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Restaurant Menu
+    div.Message
+      div.Title
+        h1 Select menu item to edit!
+        <br>
+        <br>
+        
+        div.dropdown
+            form(action='/editItem' method="POST")
+                label(for='Item Name') Item Name:
+                select(name='dropDown', id='')
+                    each item in Menu
+                        option=item
+                    input(type='submit', value='Next')
+    div.NavButtons  
+      a(href="/restaurant/home")
+        div.NavButton Back
+
+
+      
