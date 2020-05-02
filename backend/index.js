@@ -86,6 +86,7 @@ app.post('/reviews/:uid', db.addReview)
 /**
  * Orders
  */
+app.get('/orders', db.getOrders)
 app.get('/order/:orderId', db.getOrder)
 app.post('/order', db.createNewOrder) // returns orderId
 app.put('/order/:orderId', db.updateOrderWithRiderInfo)
@@ -126,12 +127,12 @@ app.post('mwshours/:uid', db.addMWSRiderHours)
 /**
  * Statistics
  */
-app.get('stats/customer/newCustomers', db.getNewCustomerStatistic)
+app.get('/stats/customer/newCustomers', db.getNewCustomerStatistic)
 
-app.get('stats/order/newOrders', db.getNewOrderStatistic)
-app.get('stats/order/totalCost', db.getTotalOrderCostStatistic)
-app.get('stats/order/ordersPerCustomer', db.getOrdersPerCustomer)
-app.get('stats/order/ordersPerLocation', db.getOrdersPerLocation)
+app.get('/stats/order/newOrders', db.getNewOrderStatistic)
+app.get('/stats/order/totalCost', db.getTotalOrderCostStatistic)
+app.get('/stats/order/ordersPerCustomer/:uid', db.getOrdersPerCustomer)
+app.get('/stats/order/ordersPerLocation', db.getOrdersPerLocation)
 
 app.get('rider/riderOrders', db.getRiderOrdersStatistic)
 app.get('rider/hoursWorked', db.getRiderHoursWorked)

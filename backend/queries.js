@@ -317,6 +317,15 @@ const addReview = (request, response) => {
 /**
  * Orders
  */
+const getOrders = (request, response) => {
+    pool.query('SELECT * FROM Orders', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getOrder = (request, response) => {
     const orderId = parseInt(request.params.orderId)
 
@@ -573,11 +582,14 @@ const getTotalOrderCostStatistic = (request, response) => {
 }
 
 const getOrdersPerCustomer = (request, response) => {
-    pool.query('', (error, results) => {
+    const cid = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM Orders WHERE cid = $1', [cid], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
-        // do something with response
+        response.status(200).json(results.rows)
     })
 }
 
@@ -684,6 +696,7 @@ module.exports = {
     getReviews,
     addReview,
 
+    getOrders,
     getOrder,
     createNewOrder,
     updateOrderWithRiderInfo,
