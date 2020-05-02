@@ -249,14 +249,19 @@ const getMenuInfo = (request, response) => {
 }
 
 const addMenuItem = (request, response) => {
-    const { username, password, type } = request.body
+    const { restaurantid, foodname, price, maxAvailable, category } = request.body
+    console.log(foodname)
 
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
+    pool.query('INSERT INTO Menu (restaurantid, foodname, price, maxAvailable, category) VALUES ($1, $2, $3, $4, $5)',
+        [parseInt(restaurantid), foodname, price, parseInt(maxAvailable), category],
+        (error, results) => {
+            console.log(results, error)
+            if (error) {
+                response.status(500).send("An error has occured.")
+                return
+            }
+            response.status(200).send("success")
+        })
 }
 
 //does not work for some reason

@@ -208,7 +208,7 @@ const createRestaurant = (request, response) => {
             if (error) {
                 response.render("error")
             }
-            if (body = "succes") {
+            if (body = "success") {
                 response.redirect(302, "restaurant/login")
             } else {
                 response.render("error")
