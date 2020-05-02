@@ -3,16 +3,21 @@ extends ../MainLayout
 block layout-content
   div.View.RestaurantView
     h1.Banner Welcome!
-    div.CenteredMessage
+    div.Message
       h2(text-align: center) Your Current Menu
       //include utils
       //+create_table(data_list, headers)
       table
-        for item in menu
-          tr.odd(role='row')
-            td #{item.foodname}
-            td #{item.category}
-            td.dt-body-right.sorting_1 #{item.price}
+        tr
+          th= 'Item'
+          th= 'Cuisine'
+          th= 'Price'
+        tr
+          for item in menu
+            tr.odd(role='row')
+              td #{item.foodname}
+              td #{item.category}
+              td.dt-body-right.sorting_1 #{item.price}
       <br>
       div.NavButton(text-align: center)
         a(href="/restaurant/addMenu")

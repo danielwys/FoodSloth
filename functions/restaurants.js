@@ -10,7 +10,6 @@ const createMenuItem = (request, response) => {
     let maxAvailable = request.body.avail
     let category = request.body.category
     let restaurantid = Shared.currentUserID
-    console.log(foodName, price, maxAvailable, category, restaurantid)
 
     let options = {
         url: Constants.serverURL + 'menu/' + Constants.currentUserID, 
@@ -28,7 +27,6 @@ const createMenuItem = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
         if (body = "success") {
-            console.log(body)
             response.redirect(302, "/restaurant/home")
         } else {
             response.render("error")
