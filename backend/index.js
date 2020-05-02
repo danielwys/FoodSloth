@@ -74,7 +74,7 @@ app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & max
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
 app.post('/menu/:uid', db.addMenuItem)
-app.put('/menu/:foodId', db.updateMenuItem)
+app.put('/menu/:foodName', db.updateMenuItem)
 app.delete('/menu/:foodId', db.deleteMenuItem)
 
 /**

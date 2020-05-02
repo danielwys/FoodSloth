@@ -261,19 +261,18 @@ const addMenuItem = (request, response) => {
         })
 }
 
-//does not work for some reason
 const updateMenuItem = (request, response) => {
-    const foodId = parseInt(request.params.uid)
-    const { maxAvailable } = request.body
+    const foodName = request.params.foodName
+    const { restaurantid,newFoodName, newPrice, newMaxAvailable, newCategory } = request.body
 
-    pool.query('UPDATE menu SET maxAvailable = $1 WHERE foodId = $2',
-        [maxAvailable, foodId],
+    pool.query('UPDATE menu SET foodname = $2, price = $3, maxAvailable = $4, category = $5 WHERE foodname = $6 AND restaurantid = $1',
+        [parseInt(restaurantid), newFoodName, newPrice, parseInt(newMaxAvailable), newCategory, foodName],
         (error, results) => {
             if (error) {
                 throw error
             }
             // do something with response
-            response.status(200).send(`Food with ID: ${foodId} updated maxAvailable to ${maxAvailable}`)
+            response.status(200).send(`success`)
         })
 }
 

@@ -55,24 +55,26 @@ const createMenuItem = (request, response) => {
 }
 
 const editMenuItem = (request, response) => {
-    let foodName = request.body.name
-    let price = request.body.price
-    let maxAvailable = request.body.avail
-    let category = request.body.category
+    console.log(request.body)
+    let itemToEdit = request.body.dropDown //name
+    let newFoodName = request.body.name
+    let newPrice = request.body.price
+    let newMaxAvailable = request.body.avail
+    let newCategory = request.body.category
     let restaurantid = Shared.currentUserID
 
     let options = {
-        url: Constants.serverURL + 'menu/' + Shared.currentUserID, 
+        url: Constants.serverURL + 'menu/' + itemToEdit, 
         form: {
             restaurantid: restaurantid, 
-            foodName: foodName, 
-            price: price, 
-            maxAvailable: maxAvailable,
-            category: category
+            newFoodName: newFoodName, 
+            newPrice: newPrice, 
+            newMaxAvailable: newMaxAvailable,
+            newCategory: newCategory
         }
     }
 
-    Request.post(options, (error, res, body) => {
+    Request.put(options, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
         }

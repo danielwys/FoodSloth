@@ -194,14 +194,10 @@ app.post("/editOrder", (req, res) => {
 app.get("/restaurant/addMenu", (req, res) => {
     res.render("restaurant/addMenu")
 })
-
 app.post("/createMenu", restaurants.createMenuItem)
 
 app.get("/restaurant/editMenu", restaurants.selectMenuItem)
-
-app.post("/restaurant/editItem", (req, res) => {
-    res.render("restaurant/editItem")
-})
+app.post("/editItem", restaurants.editMenuItem)
 
 
 
