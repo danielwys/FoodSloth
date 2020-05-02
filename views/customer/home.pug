@@ -15,6 +15,11 @@ block layout-content
                       a(href="/customer/newOrder")
                         div.NavButton New Order
                 td= ""
+                    table
+                        each ord in Orders
+                            tr
+                              td=ord
+
     div.NavButtons
       a(href="/logout")
         div.NavButton Logout

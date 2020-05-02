@@ -8,6 +8,22 @@ let currentRestaurantList = []
 let currentRestaurant = ""
 let orderedItems = []
 
+let getAllOrders = (request, response) => {
+    Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
+    (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        let ordersjson = JSON.parse(body)
+        orders = []
+
+        var i = 1
+        for (ord in ordersjson) {
+            //decide what info rgd past & present orders
+            //to show on the dashboard
+        }
+    })
+}
 
 let selectRestaurant = (request, response) => {
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
