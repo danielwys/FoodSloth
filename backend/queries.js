@@ -201,7 +201,7 @@ const createRider = (request, response) => {
 const getRiderInfo = (request, response) => {
     const riderId = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM riders WHERE riderId = $1', [riderId], (error, results) => {
+    pool.query('SELECT * FROM RiderDashboardInfo WHERE riderId = $1', [riderId], (error, results) => {
         if (error) {
             throw error
         }

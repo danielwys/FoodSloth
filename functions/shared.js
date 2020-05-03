@@ -1,7 +1,17 @@
-var currentUserID
-var currentUserType
+var currentUserID = "" 
+var currentUserType = ""
+
+function notLoggedIn() {
+    return (this.currentUserID === "" && this.currentUserType === "")
+}
+
+function wrongUserType(expectedType) {
+    return !(this.currentUserType == expectedType)
+}
 
 module.exports = {
     currentUserID,
-    currentUserType
+    currentUserType,
+    notLoggedIn,
+    wrongUserType
 }

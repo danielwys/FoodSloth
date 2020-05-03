@@ -1,0 +1,27 @@
+extends ../mainLayout
+
+block layout-content
+  div.View.RiderView
+    h1.Banner What would you like to do?
+      
+    h2.Message
+      table
+        tr
+            th= "Assigned Orders"
+            th= "Your Information"
+        tr
+            td= ""
+            td= ""
+                body Availability: #{availability}
+                br
+                body Type: #{type}
+                br
+                body Rating: #{rating}
+                br
+                body Base Salary: #{salary}
+                br
+                body Commission: #{commission}
+
+    div.NavButtons
+      a(href="/")
+        div.NavButton Logout

@@ -21,6 +21,7 @@ let Errors = require('./functions/error')
 let auth = require('./functions/auth')
 let orders = require('./functions/orders')
 let restaurants = require('./functions/restaurants')
+let riders = require('./functions/riders')
 
 /**
  * Routes Definitions
@@ -96,13 +97,7 @@ app.get("/customer/home", (req, res) => {
 })
 
 app.get("/rider/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("rider")) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        res.render("rider/riderMain")
-    }
+    riders.showRiderHome(req, res)
 })
 
 app.get("/restaurant/home", (req, res) => {
@@ -119,6 +114,7 @@ app.get("/restaurant/home", (req, res) => {
             if (error) {
                 console.log(error)
                 res.render("error", Errors.backendRequestError)
+                return
             }
             var menulist = JSON.parse(body);
             res.render("restaurant/restaurant-dashboard", {
@@ -131,7 +127,7 @@ app.get("/restaurant/home", (req, res) => {
 app.get("/manager/home", (req, res) => {
     if (notLoggedIn()) {
         res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType('manager')) {
+    } else if (wrongUserType("rider")) {
         res.render("error", Errors.incorrectUserType)
     } else {
         res.render("manager/home")
