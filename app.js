@@ -190,14 +190,20 @@ app.post("/editOrder", (req, res) => {
 /**
  * Restaurants
  */
-
+//adding item
 app.get("/restaurant/addMenu", (req, res) => {
     res.render("restaurant/addMenu")
 })
 app.post("/createMenu", restaurants.createMenuItem)
 
+//editting item
 app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 app.post("/editItem", restaurants.editMenuItem)
+
+//summary
+app.get("/restaurant/summary", (req, res) => {
+    res.render("restaurant/summary")
+})
 
 
 
