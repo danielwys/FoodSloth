@@ -6,6 +6,35 @@ const Errors = require('./error.js')
 
 let currentItem = ""
 
+let showRestaurantHome = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (menulist) => {
+            response.render("restaurant/restaurant-dashboard", {
+                menu: menulist
+            })
+        }
+        getMenuList(response, completion)
+    }
+}
+
+function getMenuList(response, completion) {
+    Request(Constants.serverURL + 'menu/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var menulist = JSON.parse(body);
+        completion(menulist)
+    })
+}
 
 let selectMenuItem = (request, response) => {
     Request(Constants.serverURL + 'menu/' + Shared.currentUserID, (error, res, body) => {
@@ -91,6 +120,7 @@ const editMenuItem = (request, response) => {
 }
 
 module.exports = {
+    showRestaurantHome,
     createMenuItem,
     selectMenuItem,
     editMenuItem
