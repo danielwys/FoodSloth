@@ -20,21 +20,24 @@ let Errors = require('./functions/error')
 
 let auth = require('./functions/auth')
 let orders = require('./functions/orders')
+let customers = require('./functions/customer')
 let restaurants = require('./functions/restaurants')
+let riders = require('./functions/riders')
+let managers = require('./functions/manager')
 
 /**
  * Routes Definitions
  */
 
 /**
- * Home page
+ * Home page: COMPLETE
  */
 app.get("/", (req, res) => {
     res.render("index");
 });
 
 /**
- * 1. Authentication
+ * 1. Authentication: COMPLETE
  */
 
 // Log in
@@ -82,69 +85,16 @@ app.get("/logout", (req, res) => {
 })
 
 /**
- * Home page
+ * Home page: Restaurants & Manager to complete
  */
 
-app.get("/customer/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("customer")) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        res.render("customer/home")
-    }
-})
+app.get("/customer/home", customers.showCustomerHome)
 
-app.get("/rider/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("rider")) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        res.render("rider/riderMain")
-    }
-})
+app.get("/rider/home", riders.showRiderHome)
 
-app.get("/restaurant/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("restaurant")) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        //previous implementation that used utils in dashboard
-        //var jsonlist = [{ Mc: "spicy", bada: "bing", Lee: "Kuan Yew" }, { Mc: "doner", bada: "boom", Lee: "Hsien Loong" }];
-        //var titles = Object.keys(jsonlist[0]);
-        //res.render("restaurant/restaurant-dashboard", { title: "Restaurant", data_list: jsonlist, headers: titles })
-        Request(Constants.serverURL + 'menu/' + Shared.currentUserID, (error, response, body) => {
-            if (error) {
-                console.log(error)
-                res.render("error", Errors.backendRequestError)
-            }
-            var menulist = JSON.parse(body);
-            res.render("restaurant/restaurant-dashboard", {
-                menu: menulist
-              });
-        })
-    }
-})
+app.get("/restaurant/home", restaurants.showRestaurantHome)
 
-app.get("/manager/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType('manager')) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        res.render("manager/home")
-    }
-})
-
-function notLoggedIn() {
-    return (Shared.currentUserID === "" && Shared.currentUserType === "")
-}
-
-function wrongUserType(expectedType) {
-    return !(Shared.currentUserType == expectedType)
-}
+app.get("/manager/home", managers.showManagerHome)
 
 /**
  * Orders
