@@ -20,6 +20,7 @@ let Errors = require('./functions/error')
 
 let auth = require('./functions/auth')
 let orders = require('./functions/orders')
+let customers = require('./functions/customer')
 let restaurants = require('./functions/restaurants')
 let riders = require('./functions/riders')
 
@@ -86,24 +87,14 @@ app.get("/logout", (req, res) => {
  * Home page
  */
 
-app.get("/customer/home", (req, res) => {
-    if (notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("customer")) {
-        res.render("error", Errors.incorrectUserType)
-    } else {
-        res.render("customer/home")
-    }
-})
+app.get("/customer/home", customers.showCustomerHome)
 
-app.get("/rider/home", (req, res) => {
-    riders.showRiderHome(req, res)
-})
+app.get("/rider/home", riders.showRiderHome)
 
 app.get("/restaurant/home", (req, res) => {
-    if (notLoggedIn()) {
+    if (Shared.notLoggedIn()) {
         res.render("error", Errors.notLoggedIn)
-    } else if (wrongUserType("restaurant")) {
+    } else if (Shared.wrongUserType("restaurant")) {
         res.render("error", Errors.incorrectUserType)
     } else {
         //previous implementation that used utils in dashboard
@@ -133,14 +124,6 @@ app.get("/manager/home", (req, res) => {
         res.render("manager/home")
     }
 })
-
-function notLoggedIn() {
-    return (Shared.currentUserID === "" && Shared.currentUserType === "")
-}
-
-function wrongUserType(expectedType) {
-    return !(Shared.currentUserType == expectedType)
-}
 
 /**
  * Orders
