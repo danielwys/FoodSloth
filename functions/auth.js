@@ -147,7 +147,7 @@ const createCustomer = (request, response) => {
             if (error) {
                 response.render("error")
             }
-            if (body = "success") {
+            if (body == "success") {
                 response.redirect(302, "customer/login")
             } else {
                 response.render("error")
@@ -175,7 +175,7 @@ const createRider = (request, response) => {
             if (error) {
                 response.render("error")
             }
-            if (body = "success") {
+            if (body == "success") {
                 response.redirect(302, "rider/login")
             } else {
                 response.render("error")
@@ -208,7 +208,7 @@ const createRestaurant = (request, response) => {
             if (error) {
                 response.render("error")
             }
-            if (body = "success") {
+            if (body == "success") {
                 response.redirect(302, "restaurant/login")
             } else {
                 response.render("error")

@@ -1,0 +1,9 @@
+extends layout
+
+block layout-content
+  h1.Banner Error! Duplicate menu item!
+  div.Message
+    h2 #{errorMessage}
+    div.NavButtons
+      a(href="/restaurant/home")
+        div.NavButton Go Back

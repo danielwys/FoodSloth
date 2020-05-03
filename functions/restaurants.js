@@ -43,10 +43,13 @@ const createMenuItem = (request, response) => {
     }
 
     Request.post(options, (error, res, body) => {
+
         if (error) {
             response.render("error", Errors.backendRequestError)
         }
-        if (body = "success") {
+        if(res.statusCode == 500) {
+            response.render("menuError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
             response.redirect(302, "/restaurant/home")
         } else {
             response.render("error")
@@ -55,7 +58,6 @@ const createMenuItem = (request, response) => {
 }
 
 const editMenuItem = (request, response) => {
-    console.log(request.body)
     let itemToEdit = request.body.dropDown //name
     let newFoodName = request.body.name
     let newPrice = request.body.price
@@ -78,7 +80,9 @@ const editMenuItem = (request, response) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
         }
-        if (body = "success") {
+        if(res.statusCode == 500) {
+            response.render("menuError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
             response.redirect(302, "/restaurant/home")
         } else {
             response.render("error")

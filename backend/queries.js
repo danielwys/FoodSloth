@@ -254,10 +254,11 @@ const addMenuItem = (request, response) => {
         [parseInt(restaurantid), foodName, price, parseInt(maxAvailable), category],
         (error, results) => {
             if (error) {
-                response.status(500).send("An error has occured.")
-                return
+                console.log(error)
+                response.status(500).send(error.message)
+            } else {
+                response.status(200).send("success")
             }
-            response.status(200).send("success")
         })
 }
 
@@ -269,10 +270,10 @@ const updateMenuItem = (request, response) => {
         [parseInt(restaurantid), newFoodName, newPrice, parseInt(newMaxAvailable), newCategory, foodName],
         (error, results) => {
             if (error) {
-                throw error
+                response.status(500).send(error.message)
+            } else {
+                response.status(200).send(`success`)
             }
-            // do something with response
-            response.status(200).send(`success`)
         })
 }
 
