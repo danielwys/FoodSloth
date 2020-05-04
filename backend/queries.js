@@ -693,10 +693,8 @@ const getRestaurantOrderStatistic = (request, response) => {
 }
 
 const getRestaurantOrderTopFive = (request, response) => {
-    console.log(request)
     const month = parseInt(request.params.month)
     const restId = parseInt(request.params.uid)
-    console.log(month, restId)
     
     var query = (SQL
                 `select foodname, count(distinct foodname)
@@ -708,7 +706,7 @@ const getRestaurantOrderTopFive = (request, response) => {
                 limit 5;`
                 )
 
-    pool.query(query,[restId],[month], (error, results) => {    
+    pool.query(query,[restId, month], (error, results) => {    
         if (error) {
             console.log(error)
             response.status(500).send(error.message)

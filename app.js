@@ -153,8 +153,8 @@ app.post("/editItem", restaurants.editMenuItem)
 //summary
 
 app.get("/restaurant/summary", restaurants.showRestaurantSummary)
-app.get("/restaurant/favourites/5", (req, res) => {
-    const month = 5
+app.get("/restaurant/favourites/:month", (req, res) => {
+    const month = parseInt(req.params.month);
     Request(Constants.serverURL + 'restaurant/favourites/' + month + "/" + Shared.currentUserID , (error, response, body) => {
         if (error) {
             console.log(error)
