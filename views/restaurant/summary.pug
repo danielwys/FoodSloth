@@ -17,6 +17,10 @@ block layout-content
               td #{item.month}
               td #{item.totalorders}
               td #{item.totalcost}
+              th
+                div.NavButton(text-align: center)
+                    a(href="/restaurant/favourites/" + item.month)
+                        div.NavButton Show
     <br>
 
         div.NavButton(text-align: center)

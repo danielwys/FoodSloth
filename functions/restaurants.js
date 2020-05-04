@@ -144,7 +144,6 @@ function getSummaryList(response, completion) {
             response.render("error", Errors.backendRequestError)
             return
         }
-        console.log(body)
         var summarylist = JSON.parse(body);
         completion(summarylist)
     })
@@ -155,5 +154,5 @@ module.exports = {
     createMenuItem,
     selectMenuItem,
     editMenuItem,
-    showRestaurantSummary
+    showRestaurantSummary,
 }

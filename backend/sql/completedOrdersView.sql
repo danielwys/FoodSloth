@@ -1,6 +1,6 @@
 DROP VIEW IF EXISTS CompletedOrders;
 
-CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, price) AS (
+CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, price, foodName) AS (
     WITH completedOrderID AS (
         SELECT orderId 
         FROM Orders O
@@ -11,7 +11,7 @@ CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, p
             and OT.timeRiderDelivered IS NOT NULL
         )
     )
-    SELECT O.orderId, O.restaurantId, OT.timeRiderDelivered, M.foodId, M.price 
+    SELECT O.orderId, O.restaurantId, OT.timeRiderDelivered, M.foodId, M.price, M.foodName
     FROM Orders O natural join completedOrderID
         natural join OrderTimes OT
         natural join OrderItems OI

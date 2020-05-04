@@ -1,0 +1,22 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Here's your Top 5 Food Items For the Month!
+    div.Message
+      h2(text-align: center) Items
+      table
+        tr
+          th= 'Times Ordered'
+          th= 'Food name'
+        tr
+          for item in favourites
+            tr.odd(role='row')
+              td #{item.count}
+              td #{item.foodname}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/restaurant/summary")
+                div.NavButton Back

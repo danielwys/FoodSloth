@@ -701,6 +701,32 @@ const getRestaurantOrderStatistic = (request, response) => {
     })
 }
 
+const getRestaurantOrderTopFive = (request, response) => {
+    console.log(request)
+    const month = parseInt(request.params.month)
+    const restId = parseInt(request.params.uid)
+    console.log(month, restId)
+    
+    var query = (SQL
+                `select foodname, count(distinct foodname)
+                from completedOrders
+                where restaurantId = $1
+                and date_part('month', timeRiderDelivered) = $2
+                group by foodname
+                order by count(distinct foodname) DESC
+                limit 5;`
+                )
+
+    pool.query(query,[restId],[month], (error, results) => {    
+        if (error) {
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
+}
+
 
 module.exports = {
     login,
@@ -770,5 +796,7 @@ module.exports = {
     getRiderAvgDeliveryTime,
     getRiderRatings,
     getRiderSummary,
-    getRestaurantOrderStatistic
+
+    getRestaurantOrderStatistic,
+    getRestaurantOrderTopFive
 }

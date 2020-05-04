@@ -17,4 +17,4 @@ insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderD
 insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderDeparted, timeRiderDelivered) values (17, null, null, null, null);
 insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderDeparted, timeRiderDelivered) values (18, null, null, null, null);
 insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderDeparted, timeRiderDelivered) values (19, null, null, null, null);
-insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderDeparted, timeRiderDelivered) values (20, null, null, null, null);
+insert into OrderTimes (orderId, timeRiderAssigned, timeRiderArrives, timeRiderDeparted, timeRiderDelivered) values (21, '2020-05-01 16:19:16.625881+08', '2020-05-01 16:19:16.625881+08', '2020-05-01 16:19:16.625881+08', '2020-05-01 16:19:16.625881+08');
