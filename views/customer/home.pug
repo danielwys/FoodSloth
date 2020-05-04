@@ -15,11 +15,16 @@ block layout-content
                     a(href="/customer/newOrder")
                         div.NavButton New Order
             td= ""
-                table
-                    each ord in Orders
-                        tr
-                            td=ord
-
+              table
+                  tr
+                    th= 'Restaurant'
+                    th= 'Items'
+                    th= 'Total price'
+                  each ord in Orders
+                    tr
+                      td=ord.restaurant
+                      td=''
+                      td='1'
     div.NavButtons
       a(href="/logout")
         div.NavButton Logout

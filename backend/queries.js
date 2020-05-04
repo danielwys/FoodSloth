@@ -210,10 +210,23 @@ const getRiderInfo = (request, response) => {
     })
 }
 
-const getRiderOrders = (request,response) => {
+const getRiderPastOrders = (request,response) => {
     const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
 
-    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status = $2', [riderId, complete], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getRiderCurrentOrders = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
+
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
         if (error) {
             throw error
         }
@@ -474,58 +487,36 @@ const getOrderTimes = (request, response) => {
     })
 }
 
-const updateOrderPlaced = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const updateRiderDeparts = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
 const updateRiderArrives = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderarrives = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
 const updateRiderCollects = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderdeparted = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
 const updateRiderDelivers = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderdelivered = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
@@ -747,7 +738,8 @@ module.exports = {
 
     createRider,
     getRiderInfo,
-    getRiderOrders,
+    getRiderPastOrders,
+    getRiderCurrentOrders,
 
     getMenu,
     getMenuForRestaurant,
@@ -774,8 +766,6 @@ module.exports = {
     updateRestaurantPromo,
 
     getOrderTimes,
-    updateOrderPlaced,
-    updateRiderDeparts,
     updateRiderArrives,
     updateRiderCollects,
     updateRiderDelivers,

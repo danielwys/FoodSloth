@@ -66,7 +66,8 @@ app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
  */
 app.post('/rider/create', db.createRider)
 app.get('/rider/:uid', db.getRiderInfo)
-app.get('/rider/orders/:uid', db.getRiderOrders)
+app.get('/rider/orders/current/:uid', db.getRiderCurrentOrders)
+app.get('/rider/orders/past/:uid', db.getRiderPastOrders)
 
 /**
  * Menu
@@ -111,11 +112,9 @@ app.put('/restPromo/:code', db.updateRestaurantPromo)
  * Order Timings
  */
 app.get('/orderTimes/:orderId', db.getOrderTimes)
-app.put('/orderTimes/orderPlaced/:orderId', db.updateOrderPlaced)
-app.put('/orderTimes/riderDeparts/:orderId', db.updateRiderDeparts)
-app.put('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
-app.put('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
-app.put('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
+app.get('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
+app.get('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
+app.get('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
 
 /**
  * Hours
