@@ -265,11 +265,11 @@ const addMenuItem = (request, response) => {
         [parseInt(restaurantid), foodName, price, parseInt(maxAvailable), category],
         (error, results) => {
             if (error) {
-                console.log(error)
                 response.status(500).send(error.message)
-            } else {
-                response.status(200).send("success")
+                return
             }
+            response.status(200).send("success")
+            
         })
 }
 
@@ -282,9 +282,10 @@ const updateMenuItem = (request, response) => {
         (error, results) => {
             if (error) {
                 response.status(500).send(error.message)
-            } else {
-                response.status(200).send(`success`)
-            }
+                return
+            } 
+            response.status(200).send(`success`)
+            
         })
 }
 

@@ -5,8 +5,6 @@ block layout-content
     h1.Banner Welcome!
     div.Message
       h2(text-align: center) Your Current Menu
-      //include utils
-      //+create_table(data_list, headers)
       table
         tr
           th= 'Item'
@@ -29,6 +27,14 @@ block layout-content
       div.NavButton(text-align: center)
         a(href="/restaurant/editMenu")
           div.NavButton Edit Menu Item!
+
+    <br>
+    div.Message
+      h2(text-align: center) View Monthly Summary!
+      <br>
+      div.NavButtons
+        a(href="/restaurant/summary")
+          div.NavButton Summary
 
     div.NavButtons
       a(href="/")
