@@ -201,7 +201,18 @@ const createRider = (request, response) => {
 const getRiderInfo = (request, response) => {
     const riderId = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM riders WHERE riderId = $1', [riderId], (error, results) => {
+    pool.query('SELECT * FROM RiderDashboardInfo WHERE riderId = $1', [riderId], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getRiderOrders = (request,response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
         if (error) {
             throw error
         }
@@ -267,26 +278,27 @@ const addMenuItem = (request, response) => {
         [parseInt(restaurantid), foodName, price, parseInt(maxAvailable), category],
         (error, results) => {
             if (error) {
-                response.status(500).send("An error has occured.")
+                response.status(500).send(error.message)
                 return
             }
             response.status(200).send("success")
+            
         })
 }
 
-//does not work for some reason
 const updateMenuItem = (request, response) => {
-    const foodId = parseInt(request.params.uid)
-    const { maxAvailable } = request.body
+    const foodName = request.params.foodName
+    const { restaurantid,newFoodName, newPrice, newMaxAvailable, newCategory } = request.body
 
-    pool.query('UPDATE menu SET maxAvailable = $1 WHERE foodId = $2',
-        [maxAvailable, foodId],
+    pool.query('UPDATE menu SET foodname = $2, price = $3, maxAvailable = $4, category = $5 WHERE foodname = $6 AND restaurantid = $1',
+        [parseInt(restaurantid), newFoodName, newPrice, parseInt(newMaxAvailable), newCategory, foodName],
         (error, results) => {
             if (error) {
-                throw error
-            }
-            // do something with response
-            response.status(200).send(`Food with ID: ${foodId} updated maxAvailable to ${maxAvailable}`)
+                response.status(500).send(error.message)
+                return
+            } 
+            response.status(200).send(`success`)
+            
         })
 }
 
@@ -698,6 +710,7 @@ module.exports = {
 
     createRider,
     getRiderInfo,
+    getRiderOrders,
 
     getMenu,
     getMenuForRestaurant,

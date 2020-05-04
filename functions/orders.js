@@ -13,6 +13,7 @@ let getAllOrders = (request, response) => {
     (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
+            return
         }
         let ordersjson = JSON.parse(body)
         orders = []
@@ -29,6 +30,7 @@ let selectRestaurant = (request, response) => {
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
+            return
         }
 
         let restaurantsjson = JSON.parse(body)
@@ -72,6 +74,11 @@ let selectItems = (request, response) => {
         }
     }
     Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        
         let itemsjson = JSON.parse(body)
         
         response.render("customer/selectFoodItems", {

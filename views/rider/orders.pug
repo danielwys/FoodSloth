@@ -1,0 +1,37 @@
+extends ../mainLayout
+
+block layout-content
+  div.View.RiderView
+    h1.Banner What would you like to do?
+      
+    h2.Message
+      table
+        tr
+            th= "Assigned Orders"
+        tr
+            td= ""
+                table
+                    tr
+                        td= "Order ID"
+                        td= "Restaurant Name"
+                        td= "Restaurant Address"
+                        td= "Restaurant Postal Code"
+                        td= "Customer Name"
+                        td= "Customer Address"
+                        td= "Customer Postal"
+                        td= "Delivery Fee"
+
+                    each order in orders
+                        tr
+                            td= order.orderid
+                            td= order.restname
+                            td= order.restaddr
+                            td= order.restpostal
+                            td= order.custname
+                            td= order.custaddr
+                            td= order.custpostal
+                            td= order.deliveryfee
+
+    div.NavButtons
+      a(href="/rider/home")
+        div.NavButton Back

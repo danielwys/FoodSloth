@@ -1,0 +1,25 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Here's your summary!
+    div.Message
+      h2(text-align: center) Summary
+      table
+        tr
+          th= 'Month'
+          th= 'Total Orders'
+          th= 'Total Cost'
+          th= 'Top 5'
+        tr
+          for item in menu
+            tr.odd(role='row')
+              td #{item.foodname}
+              td #{item.category}
+              td.dt-body-right.sorting_1 #{item.price}
+              td #{item.maxavailable}
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/restaurant/home")
+                div.NavButton Back

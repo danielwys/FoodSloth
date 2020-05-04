@@ -10,11 +10,16 @@ block layout-content
             th= "Make a New Order"
             th= "Current Activity"
         tr
-                td= ""
-                    div.NavButtons
-                      a(href="/customer/newOrder")
+            td= ""
+                div.NavButtons
+                    a(href="/customer/newOrder")
                         div.NavButton New Order
-                td= ""
+            td= ""
+                table
+                    each ord in Orders
+                        tr
+                            td=ord
+
     div.NavButtons
       a(href="/logout")
         div.NavButton Logout
