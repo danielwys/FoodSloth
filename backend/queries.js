@@ -209,6 +209,17 @@ const getRiderInfo = (request, response) => {
     })
 }
 
+const getRiderOrders = (request,response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 /**
  * Menu
  */
@@ -685,6 +696,7 @@ module.exports = {
 
     createRider,
     getRiderInfo,
+    getRiderOrders,
 
     getMenu,
     getMenuForRestaurant,

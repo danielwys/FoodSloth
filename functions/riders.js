@@ -64,6 +64,30 @@ function getRiderInfo(response, completion) {
     })
 }
 
+let showRiderOrders = (request, response) => {
+    let completion = (riderOrders) => {
+        response.render("rider/orders", {
+            orders: riderOrders
+        })
+    }
+
+    getRiderOrders(response, completion)
+}
+
+function getRiderOrders(response, completion) {
+    Request(Constants.serverURL + 'rider/orders/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+
+        let riderOrders = JSON.parse(body)
+
+        completion(riderOrders)
+    })
+}
+
 module.exports = {
-    showRiderHome
+    showRiderHome,
+    showRiderOrders
 }

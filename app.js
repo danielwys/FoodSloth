@@ -149,8 +149,10 @@ app.post("/createMenu", restaurants.createMenuItem)
 app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 app.post("/editItem", restaurants.editMenuItem)
 
-
-
+/**
+ * Riders
+ */
+app.get("/rider/orders", riders.showRiderOrders)
 
 // template
 app.get("/data", (req, res) => {
