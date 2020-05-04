@@ -11,21 +11,24 @@ block layout-content
         table
             tr
                 th= 'Item'
+                th= 'Price per pax'
                 th= 'Qty'
             tr
                 each rec in orderItems
                     tr
                         td=rec.item
+                        td=rec.price
                         td=rec.quantity
-                td=''
+            tr
+                td
                     div.dropdown
                         form(action='/selectItems' method="post")
                             select(name='dropDown1', id='')
                                 each it in Items
-                                    option=it.foodname+' (Max: '+it.maxavailable+')'
+                                    option=it.foodname
                             <br>
                             select(name='dropDown2', id='')
-                                each qt in Array.from(Array(20).keys())
+                                each qt in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                                     option=qt
                             input(type='submit', value='Add')        
         a(href="/newOrder3")
