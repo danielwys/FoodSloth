@@ -64,7 +64,7 @@ function getRiderInfo(response, completion) {
     })
 }
 
-let showRiderOrders = (request, response) => {
+let showRiderCurrentOrders = (request, response) => {
     let completion = (riderOrders) => {
         response.render("rider/orders", {
             orders: riderOrders
@@ -74,7 +74,30 @@ let showRiderOrders = (request, response) => {
     getRiderOrders(response, completion)
 }
 
-function getRiderOrders(response, completion) {
+function getRiderCurrentOrders(response, completion) {
+    Request(Constants.serverURL + 'rider/orders/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+
+        let riderOrders = JSON.parse(body)
+
+        completion(riderOrders)
+    })
+}
+
+let showRiderPastOrders = (request, response) => {
+    let completion = (riderOrders) => {
+        response.render("rider/orders", {
+            orders: riderOrders
+        })
+    }
+
+    getRiderPastOrders(response, completion)
+}
+
+function getRiderPastOrders(response, completion) {
     Request(Constants.serverURL + 'rider/orders/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -89,5 +112,5 @@ function getRiderOrders(response, completion) {
 
 module.exports = {
     showRiderHome,
-    showRiderOrders
+    showRiderPastOrders
 }

@@ -158,7 +158,7 @@ app.get("/restaurant/summary", (req, res) => {
 /**
  * Riders
  */
-app.get("/rider/orders", riders.showRiderOrders)
+app.get("/rider/orders/past", riders.showRiderPastOrders)
 
 // template
 app.get("/data", (req, res) => {

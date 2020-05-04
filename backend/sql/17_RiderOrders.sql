@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS RiderDashboardOrders;
+DROP VIEW IF EXISTS RiderOrders;
 
-CREATE VIEW RiderDashboardOrders(riderId, orderId, restName, restAddr, restPostal, custName, custAddr, custPostal, deliveryFee) AS (
+CREATE VIEW RiderOrders(riderId, orderId, restName, restAddr, restPostal, custName, custAddr, custPostal, deliveryFee) AS (
     
     WITH RiderOrderInfo AS (
         SELECT riderId, orderId, restaurantId, cid as customerId, deliveryFee
@@ -25,3 +25,5 @@ CREATE VIEW RiderDashboardOrders(riderId, orderId, restName, restAddr, restPosta
 
     SELECT * from WithCustomerAddress
 );
+
+CREATE VIEW RiderOrderTimes()
