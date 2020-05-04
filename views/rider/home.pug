@@ -7,17 +7,29 @@ block layout-content
     h2.Message
         table 
             tr
-                th= "Current Order"
+                th= "Open Orders"
+                th= "Past Orders"
+            tr
+                td= ""
+                    div.NavButtons
+                        a(href="/rider/orders/current")
+                            div.NavButton Manage Current Orders
 
+                td= ""
+                    div.NavButtons
+                        a(href="/rider/orders/past")
+                            div.NavButton View Past Orders    
+
+    h2.Message
         table
             tr
-                th= "Past Orders"
+                th= "Working Hours"
                 th= "Your Information"
             tr
                 td= ""
                     div.NavButtons
-                        a(href="/rider/orders")
-                            div.NavButton View Past Orders
+                        a(href="/rider/hours")
+                            div.NavButton View/Edit Work Hours
 
                 td= ""
                     body Availability: #{availability}
@@ -29,7 +41,7 @@ block layout-content
                     body Base Salary: #{salary}
                     br
                     body Commission: #{commission}
-
+                    
     div.NavButtons
       a(href="/")
         div.NavButton Logout
