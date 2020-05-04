@@ -33,7 +33,7 @@ const signInCustomer = (request, response) => {
             Shared.currentUserID = uid
             Shared.currentUserType = type
 
-            response.redirect(302, "/customer/home")
+            response.render("customer/home", {Orders: [{"restaurant":"Ted's"}, {"restaurant":"Mosby"}]})
         } else {
             response.render("error", Errors.incorrectUserType)
         }
