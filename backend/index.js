@@ -65,7 +65,8 @@ app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
  * Riders
  */
 app.post('/rider/create', db.createRider)
-app.get('/rider/:uid', db.getRiderInfo) // returns rating, salary, type
+app.get('/rider/:uid', db.getRiderInfo)
+app.get('/rider/orders/:uid', db.getRiderOrders)
 
 /**
  * Menu
@@ -73,6 +74,7 @@ app.get('/rider/:uid', db.getRiderInfo) // returns rating, salary, type
 app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & maxavailability
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
+app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
 app.delete('/menu/:foodId', db.deleteMenuItem)

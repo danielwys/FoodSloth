@@ -146,7 +146,7 @@ app.get("/restaurant/addMenu", (req, res) => {
 })
 app.post("/createMenu", restaurants.createMenuItem)
 
-//editting item
+//editing item
 app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 app.post("/editItem", restaurants.editMenuItem)
 
@@ -154,8 +154,10 @@ app.post("/editItem", restaurants.editMenuItem)
 
 app.get("/restaurant/summary", restaurants.showRestaurantSummary)
 
-
-
+/**
+ * Riders
+ */
+app.get("/rider/orders", riders.showRiderOrders)
 
 // template
 app.get("/data", (req, res) => {

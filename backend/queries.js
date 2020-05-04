@@ -210,6 +210,17 @@ const getRiderInfo = (request, response) => {
     })
 }
 
+const getRiderOrders = (request,response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 /**
  * Menu
  */
@@ -230,6 +241,19 @@ const getMenuForRestaurant = (request, response) => {
         [restaurantname], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured with Menu loading.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getItemInfo = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    const fooditemname = request.params.item
+    pool.query('SELECT price FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1 AND M.foodname = $2', 
+        [restaurantname, fooditemname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
             return
         }
         response.status(200).json(results.rows)
@@ -716,9 +740,11 @@ module.exports = {
 
     createRider,
     getRiderInfo,
+    getRiderOrders,
 
     getMenu,
     getMenuForRestaurant,
+    getItemInfo,
     getMenuInfo,
     addMenuItem,
     updateMenuItem,
