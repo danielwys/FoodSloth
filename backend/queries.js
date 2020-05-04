@@ -1,5 +1,6 @@
 const Pool = require('pg').Pool
 
+let SQL = require('sql-template-strings')
 let settings = require('./settings')
 
 const pool = new Pool({
@@ -658,11 +659,40 @@ const getRiderSummary = (request, response) => {
 }
 
 const getRestaurantOrderStatistic = (request, response) => {
-    pool.query('', (error, results) => {
+    console.log("hereeeee")
+    const id = parseInt(request.params.uid)
+    console.log(id)
+//change to is not null later
+//change extract from timeordered to timeriderdelivered
+    var query = (SQL
+                `DROP VIEW IF EXISTS Summary;
+                create view Summary as (
+                with completedOrders as (
+                    SELECT orderId 
+                    FROM Orders O
+                    WHERE restaurantId = ${id}
+                    AND exists (
+                        select 1
+                        from OrderTimes OT
+                        where OT.orderId = O.orderId
+                        and OT.timeRiderDelivered is NULL
+                    )
+                )
+                SELECT extract(MONTH from TIMESTAMPTZ timeOrdered) as month, count(*) as totalOrders, sum(M.price) as totalCost
+                FROM OrderItems OI natural join Menu M natural join CompletedOrders CO
+                GROUP BY extract(MONTH from TIMESTAMPTZ timeOrdered)
+                );
+                select month, totalOrders, totalCost
+                from Summary;`
+                )
+    pool.query(query, (error, results) => {    
         if (error) {
-            throw error
-        }
-        // do something with response
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        console.log("success!!!!!!!!!!!!!", results)
+        response.status(200).json(results.rows)
     })
 }
 

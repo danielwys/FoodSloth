@@ -8,16 +8,15 @@ block layout-content
       table
         tr
           th= 'Month'
-          th= 'Total Orders'
+          th= 'Total Completed Orders'
           th= 'Total Cost'
           th= 'Top 5'
         tr
-          for item in menu
+          for item in summary
             tr.odd(role='row')
-              td #{item.foodname}
-              td #{item.category}
-              td.dt-body-right.sorting_1 #{item.price}
-              td #{item.maxavailable}
+              td #{item.month}
+              td #{item.totalOrders}
+              td #{item.totalCost}
     <br>
 
         div.NavButton(text-align: center)

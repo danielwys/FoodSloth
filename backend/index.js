@@ -141,7 +141,7 @@ app.get('rider/avgDeliveryTime', db.getRiderAvgDeliveryTime)
 app.get('rider/ratings', db.getRiderRatings)
 app.get('rider/summary', db.getRiderSummary)
 
-app.get('restaurant/orders/:id', db.getRestaurantOrderStatistic)
+app.get('restaurant/orders/:uid', db.getRestaurantOrderStatistic)
 
 /**
  * Server Activation

@@ -119,9 +119,41 @@ const editMenuItem = (request, response) => {
     })
 }
 
+let showRestaurantSummary = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (summarylist) => {
+            response.render("restaurant/summary", {
+                summary: summarylist
+            })
+        }
+        getSummaryList(response, completion)
+    }
+}
+
+function getSummaryList(response, completion) {
+    Request.get(Constants.serverURL + 'restaurant/orders/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        console.log(body)
+        //var summarylist = JSON.parse(body);
+        completion(body)
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
     selectMenuItem,
-    editMenuItem
+    editMenuItem,
+    showRestaurantSummary
 }

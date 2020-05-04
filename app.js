@@ -151,9 +151,8 @@ app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 app.post("/editItem", restaurants.editMenuItem)
 
 //summary
-app.get("/restaurant/summary", (req, res) => {
-    res.render("restaurant/summary")
-})
+
+app.get("/restaurant/summary", restaurants.showRestaurantSummary)
 
 
 
