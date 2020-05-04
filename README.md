@@ -15,9 +15,10 @@
 3. Rename the duplicated file to `settings.js`
 4. Fill in your SQL database login details in `settings.js`
 5. `npm install` to install the relevant node modules
-6. `npm install nodemon` to install nodemon
-7. Start server with `nodemon index.js`
-8. Backend is available at localhost:8001
+6. `npm install sql-template-strings`
+7. `npm install nodemon` to install nodemon
+8. Start server with `nodemon index.js`
+9. Backend is available at localhost:8001
   
 ### Setting up localdatabase using postgresql for given queries.js file
 1. Ensure that PostgreSQL is installed
