@@ -683,31 +683,13 @@ const getRiderSummary = (request, response) => {
 }
 
 const getRestaurantOrderStatistic = (request, response) => {
-    console.log("hereeeee")
     const restId = parseInt(request.params.uid)
-    console.log(restId)
-//change to is not null later
-//change extract from timeordered to timeriderdelivered
     var query = (SQL
-                `DROP VIEW IF EXISTS Summary;
-                create view Summary as (
-                with completedOrders as (
-                    SELECT orderId 
-                    FROM Orders O
-                    WHERE restaurantId = $1
-                    AND exists (
-                        select 1
-                        from OrderTimes OT
-                        where OT.orderId = O.orderId
-                        and OT.timeRiderDelivered is NULL
-                    )
-                )
-                SELECT extract(MONTH from TIMESTAMP 'timeOrdered') as month, count(*) as totalOrders, sum(M.price) as totalCost
-                FROM OrderItems OI natural join Menu M natural join CompletedOrders CO
-                GROUP BY extract(MONTH from TIMESTAMP 'timeOrdered')
-                );
-                select month, totalOrders, totalCost
-                from Summary;`
+                `select date_part('month', timeRiderDelivered) as month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
+                from completedOrders
+                where restaurantId = $1
+                group by month
+                order by month DESC;`
                 )
     pool.query(query,[restId], (error, results) => {    
         if (error) {
@@ -715,7 +697,6 @@ const getRestaurantOrderStatistic = (request, response) => {
             response.status(500).send(error.message)
             return
         } 
-        console.log("success!!!!!!!!!!!!!", results)
         response.status(200).json(results.rows)
     })
 }

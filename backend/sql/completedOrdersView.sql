@@ -8,7 +8,7 @@ CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, p
             select 1
             from OrderTimes OT
             where OT.orderId = O.orderId
-            and OT.timeRiderDelivered IS NULL
+            and OT.timeRiderDelivered IS NOT NULL
         )
     )
     SELECT O.orderId, O.restaurantId, OT.timeRiderDelivered, M.foodId, M.price 

@@ -145,8 +145,8 @@ function getSummaryList(response, completion) {
             return
         }
         console.log(body)
-        //var summarylist = JSON.parse(body);
-        completion(body)
+        var summarylist = JSON.parse(body);
+        completion(summarylist)
     })
 }
 
