@@ -161,6 +161,10 @@ app.get("/restaurant/summary", (req, res) => {
 app.get("/rider/orders/current", riders.showRiderCurrentOrders)
 app.get("/rider/orders/past", riders.showRiderPastOrders)
 
+app.get("/rider/orders/arrived/:orderId", riders.markArrived)
+app.get("/rider/orders/departed/:orderId", riders.markDeparted)
+app.get("/rider/orders/delivered/:orderId", riders.markDelivered)
+
 // template
 app.get("/data", (req, res) => {
     // template for get requests, assuming the json is in this form

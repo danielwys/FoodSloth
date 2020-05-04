@@ -112,11 +112,9 @@ app.put('/restPromo/:code', db.updateRestaurantPromo)
  * Order Timings
  */
 app.get('/orderTimes/:orderId', db.getOrderTimes)
-app.put('/orderTimes/orderPlaced/:orderId', db.updateOrderPlaced)
-app.put('/orderTimes/riderDeparts/:orderId', db.updateRiderDeparts)
-app.put('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
-app.put('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
-app.put('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
+app.get('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
+app.get('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
+app.get('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
 
 /**
  * Hours
