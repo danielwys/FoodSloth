@@ -246,6 +246,19 @@ const getMenuForRestaurant = (request, response) => {
     })
 }
 
+const getItemInfo = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    const fooditemname = request.params.item
+    pool.query('SELECT price FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1 AND M.foodname = $2', 
+        [restaurantname, fooditemname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getMenuInfo = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
 
@@ -701,6 +714,7 @@ module.exports = {
 
     getMenu,
     getMenuForRestaurant,
+    getItemInfo,
     getMenuInfo,
     addMenuItem,
     updateMenuItem,

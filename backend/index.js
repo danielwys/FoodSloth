@@ -74,6 +74,7 @@ app.get('/rider/orders/:uid', db.getRiderOrders)
 app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & maxavailability
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
+app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
 app.delete('/menu/:foodId', db.deleteMenuItem)

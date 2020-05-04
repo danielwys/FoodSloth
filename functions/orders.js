@@ -51,8 +51,27 @@ let selectItems = (request, response) => {
     } else {
         let item = request.body.dropDown1
         let quant = request.body.dropDown2
-        let newItem = {item: item, quantity: quant}
-        orderedItems.push(newItem)
+        
+        var cont = 0
+        for (const val of orderedItems) {
+            if (item.localeCompare(val.item) == 0) {
+                //item already exists in order list
+                val.quantity = parseInt(val.quantity) + parseInt(quant)
+                cont = 1
+                break
+            }
+        }
+
+        if (cont == 0) {
+            Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
+            (error, res, body) => {
+                let price = JSON.parse(body)[0].price
+                if (quant != 0) {
+                    let newItem = {item: item, price: price, quantity: quant}
+                    orderedItems.push(newItem)
+                }
+            })
+        }
     }
     Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
         if (error) {
