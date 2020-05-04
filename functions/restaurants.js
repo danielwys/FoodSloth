@@ -149,10 +149,67 @@ function getSummaryList(response, completion) {
     })
 }
 
+let showProfile = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (reslist) => {
+            response.render("restaurant/profile", {
+                profile: reslist
+            })
+        }
+        getProfile(response, completion)
+    }
+}
+
+function getProfile(response, completion) {
+    Request.get(Constants.serverURL + 'restaurants/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var reslist = JSON.parse(body);
+        completion(reslist)
+    })
+}
+
+const editMinOrder = (request, response) => {
+    let newMinOrder= request.body.minOrder
+
+    let options = {
+        url: Constants.serverURL + 'restaurants/' + Shared.currentUserID, 
+        form: {
+            newMinOrder: newMinOrder
+        }
+    }
+
+    Request.put(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            console.log(body)
+            response.render("error",  Errors.backendRequestError)
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/restaurant/profile")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
     selectMenuItem,
     editMenuItem,
     showRestaurantSummary,
+    showProfile,
+    editMinOrder
 }

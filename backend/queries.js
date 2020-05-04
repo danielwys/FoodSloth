@@ -158,9 +158,10 @@ const createRestaurant = (request, response) => {
 const getRestaurantInfo = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
+    pool.query('SELECT restaurantname, minorder FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
         response.status(200).json(results.rows)
     })
@@ -168,16 +169,17 @@ const getRestaurantInfo = (request, response) => {
 
 const updateRestaurantMinOrder = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
-    const { minOrder } = request.body
+    const { newMinOrder } = request.body
 
     pool.query('UPDATE restaurants SET minOrder = $1 WHERE restaurantId = $2',
-        [minOrder, restaurantId],
+        [parseInt(newMinOrder), restaurantId],
         (error, results) => {
             if (error) {
-                throw error
+                response.status(500).send("An error has occured.")
+                return
             }
             // do something with response
-            response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${minOrder}`)
+            response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${newMinOrder}`)
         })
 }
 

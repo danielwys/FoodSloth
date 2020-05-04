@@ -1,4 +1,4 @@
-extends ../layout
+extends ../MainLayout
 
 block layout-content
   div.View.RestaurantView
@@ -34,7 +34,14 @@ block layout-content
       <br>
       div.NavButtons
         a(href="/restaurant/summary")
-          div.NavButton Summary
+          div.NavButton View Summary
+    <br>
+    div.Message
+      h2(text-align: center) View Your Profile!
+      <br>
+      div.NavButtons
+        a(href="/restaurant/profile")
+          div.NavButton View profile
 
     div.NavButtons
       a(href="/")
