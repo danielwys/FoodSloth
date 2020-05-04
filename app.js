@@ -158,6 +158,7 @@ app.get("/restaurant/summary", (req, res) => {
 /**
  * Riders
  */
+app.get("/rider/orders/current", riders.showRiderCurrentOrders)
 app.get("/rider/orders/past", riders.showRiderPastOrders)
 
 // template

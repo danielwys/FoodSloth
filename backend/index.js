@@ -66,7 +66,8 @@ app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
  */
 app.post('/rider/create', db.createRider)
 app.get('/rider/:uid', db.getRiderInfo)
-app.get('/rider/orders/:uid', db.getRiderOrders)
+app.get('/rider/orders/current/:uid', db.getRiderCurrentOrders)
+app.get('/rider/orders/past/:uid', db.getRiderPastOrders)
 
 /**
  * Menu

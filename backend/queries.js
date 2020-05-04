@@ -209,10 +209,21 @@ const getRiderInfo = (request, response) => {
     })
 }
 
-const getRiderOrders = (request,response) => {
+const getRiderPastOrders = (request,response) => {
     const riderId = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status = $2', [riderId, 'completed'], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getRiderCurrentOrders = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, 'completed'], (error, results) => {
         if (error) {
             throw error
         }
@@ -710,7 +721,8 @@ module.exports = {
 
     createRider,
     getRiderInfo,
-    getRiderOrders,
+    getRiderPastOrders,
+    getRiderCurrentOrders,
 
     getMenu,
     getMenuForRestaurant,

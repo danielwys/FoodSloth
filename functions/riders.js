@@ -112,5 +112,6 @@ function getRiderPastOrders(response, completion) {
 
 module.exports = {
     showRiderHome,
+    showRiderCurrentOrders,
     showRiderPastOrders
 }

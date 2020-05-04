@@ -21,9 +21,11 @@ CREATE VIEW RiderOrders(riderId, orderId, restName, restAddr, restPostal, custNa
         SELECT O.riderId, O.orderId, O.restName, O.restAddr, O.restPostal, O.custName, R.addressText as custAddr, R.postalcode as custPostal, O.deliveryFee
         FROM WithCustomerName O LEFT JOIN Addresses R
         ON O.customerId = R.uid
+    ), WithStatus AS (
+        SELECT O.riderId, O.orderId, O.restName, O.restAddr, O.restPostal, O.custName, O.custAddr, O.custPostal, O.deliveryFee, R.status 
+        FROM WithCustomerAddress O LEFT JOIN OrderStatus R
+        ON O.orderId = R.orderId
     )
 
-    SELECT * from WithCustomerAddress
+    SELECT * from WithStatus
 );
-
-CREATE VIEW RiderOrderTimes()
