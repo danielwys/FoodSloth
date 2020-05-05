@@ -208,6 +208,8 @@ app.get("/manager/customerstats/:month", (req, res) => {
     
 })
 
+app.get("/manager/areastats", managers.showAreaStats)
+
 
 // template
 app.get("/data", (req, res) => {

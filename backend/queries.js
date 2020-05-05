@@ -721,11 +721,12 @@ const getCustomerStatistics = (request, response) => {
 }
 
 const getOrdersPerLocation = (request, response) => {
-    pool.query('', (error, results) => {
+    pool.query('select * from areasummary', (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
-        // do something with response
+        response.status(200).json(results.rows)
     })
 }
 
