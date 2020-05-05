@@ -196,6 +196,10 @@ app.get("/rider/mws", riders.editFullTimeHours)
 app.post("/rider/mws/updateStartDay", riders.updateStartDay)
 app.post("/rider/mws/updateShift", riders.updateShift)
 
+/**
+ * Managers
+ */
+
 // template
 app.get("/data", (req, res) => {
     // template for get requests, assuming the json is in this form

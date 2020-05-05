@@ -135,7 +135,7 @@ app.post('mwshours/:uid', db.addMWSRiderHours)
 /**
  * Statistics
  */
-app.get('/stats/customer/newCustomers', db.getNewCustomerStatistic)
+app.get('/manager/stats', db.getMonthlySummaryStatistic)
 
 app.get('/stats/order/newOrders', db.getNewOrderStatistic)
 app.get('/stats/order/totalCost', db.getTotalOrderCostStatistic)

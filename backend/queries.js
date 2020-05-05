@@ -647,12 +647,27 @@ const addMWSRiderHours = (request, response) => {
  * Statistics
  */
 
-const getNewCustomerStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
+const getMonthlySummaryStatistic = (request, response) => {
+    var query = (SQL
+        `WITH newCustomersPerMonth AS (
+            select date_part('month', createdAt) as month, count(uid) as newCust
+            from Users
+            where type = 'customer'
+            group by month
+            order by month DESC
+        )
+        select CO.month, count(distinct CO.orderId) as totalOrders, SUM(CO.price) as totalCost, NC.newCust as newCustCount
+        from completedOrders CO inner join newCustomersPerMonth NC using(month)
+        group by CO.month, newCustCount
+        order by CO.month DESC;`
+        )
+    pool.query(query, (error, results) => {    
+    if (error) {
+        console.log(error)
+        response.status(500).send(error.message)
+        return
+    } 
+    response.status(200).json(results.rows)
     })
 }
 
@@ -752,7 +767,7 @@ const getRiderSummary = (request, response) => {
 const getRestaurantOrderStatistic = (request, response) => {
     const restId = parseInt(request.params.uid)
     var query = (SQL
-                `select date_part('month', timeRiderDelivered) as month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
+                `select month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
                 from completedOrders
                 where restaurantId = $1
                 group by month
@@ -854,7 +869,7 @@ module.exports = {
     getMWSRiderHours,
     addMWSRiderHours,
 
-    getNewCustomerStatistic,
+    getMonthlySummaryStatistic,
     getNewOrderStatistic,
     getTotalOrderCostStatistic,
     getOrdersPerCustomer,
