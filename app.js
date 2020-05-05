@@ -190,6 +190,12 @@ app.get("/rider/orders/arrived/:orderId", riders.markArrived)
 app.get("/rider/orders/departed/:orderId", riders.markDeparted)
 app.get("/rider/orders/delivered/:orderId", riders.markDelivered)
 
+/**
+ * Managers
+ */
+
+
+
 // template
 app.get("/data", (req, res) => {
     // template for get requests, assuming the json is in this form

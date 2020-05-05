@@ -1,6 +1,6 @@
 DROP VIEW IF EXISTS CompletedOrders;
 
-CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, price, foodName) AS (
+CREATE VIEW CompletedOrders(month, cname, cid, orderId, restaurantId, timeRiderDelivered, foodId, price, foodName, area) AS (
     WITH completedOrderID AS (
         SELECT orderId 
         FROM Orders O
@@ -11,9 +11,11 @@ CREATE VIEW CompletedOrders(orderId, restaurantId, timeRiderDelivered, foodId, p
             and OT.timeRiderDelivered IS NOT NULL
         )
     )
-    SELECT O.orderId, O.restaurantId, OT.timeRiderDelivered, M.foodId, M.price, M.foodName
+    SELECT date_part('month', timeRiderDelivered) as month, C.cname, C.cid, O.orderId, O.restaurantId, OT.timeRiderDelivered, M.foodId, M.price, M.foodName, A.area
     FROM Orders O natural join completedOrderID
         natural join OrderTimes OT
         natural join OrderItems OI
         natural join Menu M
+        inner join Customers C using (cid)
+        inner join Addresses A using (aid)
 );
