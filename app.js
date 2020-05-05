@@ -70,12 +70,18 @@ app.get("/signup/restaurant", (req, res) => {
     res.render("restaurant/signup")
 })
 
+app.get("/signup/manager", (req, res) => {
+    res.render("manager/signup")
+})
+
 // Sign Up POST requests
 app.post("/createCustomer", auth.createCustomer)
 
 app.post("/createRider", auth.createRider)
 
 app.post("/createRestaurant", auth.createRestaurant)
+
+app.post("/createManager", auth.createManager)
 
 // Logout
 app.get("/logout", (req, res) => {
