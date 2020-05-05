@@ -1,0 +1,71 @@
+extends ../mainlayout
+
+block layout-content
+  div.View.RiderView
+    h1.Banner Set your work schedule
+    br
+
+    h2.Message
+        table
+            tr
+                th= "Current Schedule"
+                th= "Shift"
+            tr
+                if startday == 1
+                    td= "Monday to Friday"
+                else if startday == 2
+                    td= "Tuesday to Saturday"
+                else if startday == 3
+                    td= "Wednesday to Sunday"
+                else if startday == 4
+                    td= "Thursday to Monday"
+                else if startday == 5
+                    td= "Friday to Tuesday"
+                else if startday == 6
+                    td= "Saturday to Wednesday"
+                else if startday == 7
+                    td= "Sunday to Thursday"
+                else
+                    td= "Not set yet"
+                
+                if shiftnum == 1
+                    td= "10am to 2pm and 3pm to 7pm"
+                else if shiftnum == 2
+                    td= "11am to 3pm and 4pm to 8pm"
+                else if shiftnum == 3
+                    td= "12pm to 4pm and 5pm to 9pm"
+                else if shiftnum == 4
+                    td= "1pm to 5pm and 6pm to 10pm"
+                else
+                    td= "Not set yet"
+
+    br
+
+    h2.Message Change Shift Info
+        table   
+            tr
+                th= "Change start day"
+                th= "Change shift"
+        
+            tr
+                td=""
+                    form(action='/rider/mws/updateStartDay' method='POST')
+                        select(name='day', id='day')
+                            each day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                                option= day
+                        div.NavButton
+                            input(type= 'submit', value="Submit")
+
+                td=""
+                    form(action='/rider/mws/updateShift' method='POST')
+                        select(name='shift', id='shift')
+                            each shift in ["10am to 2pm and 3pm to 7pm", "11am to 3pm and 4pm to 8pm", "12pm to 4pm and 5pm to 9pm", "1pm to 5pm and 6pm to 10pm"]
+                                option= shift
+                        div.NavButton
+                            input(type= 'submit', value="Submit")
+
+    br
+
+    div.NavButtons 
+      a(href="/rider/home")
+        div.NavButton Back
