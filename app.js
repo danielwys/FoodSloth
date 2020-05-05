@@ -70,12 +70,18 @@ app.get("/signup/restaurant", (req, res) => {
     res.render("restaurant/signup")
 })
 
+app.get("/signup/manager", (req, res) => {
+    res.render("manager/signup")
+})
+
 // Sign Up POST requests
 app.post("/createCustomer", auth.createCustomer)
 
 app.post("/createRider", auth.createRider)
 
 app.post("/createRestaurant", auth.createRestaurant)
+
+app.post("/createManager", auth.createManager)
 
 // Logout
 app.get("/logout", (req, res) => {
@@ -151,14 +157,38 @@ app.get("/restaurant/editMenu", restaurants.selectMenuItem)
 app.post("/editItem", restaurants.editMenuItem)
 
 //summary
-app.get("/restaurant/summary", (req, res) => {
-    res.render("restaurant/summary")
+
+app.get("/restaurant/summary", restaurants.showRestaurantSummary)
+app.get("/restaurant/favourites/:month", (req, res) => {
+    const month = parseInt(req.params.month);
+    Request(Constants.serverURL + 'restaurant/favourites/' + month + "/" + Shared.currentUserID , (error, response, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error", Errors.backendRequestError)
+            return
+        }
+        var favlist = JSON.parse(body);
+        res.render("restaurant/favourites", {
+            favourites: favlist
+          });
+    })
+    
 })
+
+//profile
+app.get("/restaurant/profile", restaurants.showProfile)
+app.post("/editProfile", restaurants.editProfile)
+
 
 /**
  * Riders
  */
+app.get("/rider/orders/current", riders.showRiderCurrentOrders)
 app.get("/rider/orders/past", riders.showRiderPastOrders)
+
+app.get("/rider/orders/arrived/:orderId", riders.markArrived)
+app.get("/rider/orders/departed/:orderId", riders.markDeparted)
+app.get("/rider/orders/delivered/:orderId", riders.markDelivered)
 
 // template
 app.get("/data", (req, res) => {

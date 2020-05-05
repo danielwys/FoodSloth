@@ -58,15 +58,17 @@ app.put('/customers/:id', db.updateCreditCard)
  */
 app.get('/restaurants', db.getRestaurants)
 app.post('/restaurants/create', db.createRestaurant)
-app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
-app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
+app.get('/restaurants/:uid', db.getRestaurantInfo) //returns name, min order
+app.put('/restaurants/minorder/:uid', db.updateRestaurantMinOrder)
+app.put('/restaurants/deliveryfee/:uid', db.updateRestaurantDeliveryFee)
 
 /**
  * Riders
  */
 app.post('/rider/create', db.createRider)
 app.get('/rider/:uid', db.getRiderInfo)
-app.get('/rider/orders/:uid', db.getRiderOrders)
+app.get('/rider/orders/current/:uid', db.getRiderCurrentOrders)
+app.get('/rider/orders/past/:uid', db.getRiderPastOrders)
 
 /**
  * Menu
@@ -111,11 +113,9 @@ app.put('/restPromo/:code', db.updateRestaurantPromo)
  * Order Timings
  */
 app.get('/orderTimes/:orderId', db.getOrderTimes)
-app.put('/orderTimes/orderPlaced/:orderId', db.updateOrderPlaced)
-app.put('/orderTimes/riderDeparts/:orderId', db.updateRiderDeparts)
-app.put('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
-app.put('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
-app.put('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
+app.get('/orderTimes/riderArrives/:orderId', db.updateRiderArrives)
+app.get('/orderTimes/riderCollects/:orderId', db.updateRiderCollects)
+app.get('/orderTimes/riderDelivers/:orderId', db.updateRiderDelivers)
 
 /**
  * Hours
@@ -143,7 +143,8 @@ app.get('rider/avgDeliveryTime', db.getRiderAvgDeliveryTime)
 app.get('rider/ratings', db.getRiderRatings)
 app.get('rider/summary', db.getRiderSummary)
 
-app.get('restaurant/orders/:id', db.getRestaurantOrderStatistic)
+app.get('/restaurant/orders/:uid', db.getRestaurantOrderStatistic)
+app.get('/restaurant/favourites/:month/:uid', db.getRestaurantOrderTopFive)
 
 /**
  * Server Activation

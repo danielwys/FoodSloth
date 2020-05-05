@@ -1,5 +1,6 @@
 const Pool = require('pg').Pool
 
+let SQL = require('sql-template-strings')
 let settings = require('./settings')
 
 const pool = new Pool({
@@ -159,7 +160,8 @@ const getRestaurantInfo = (request, response) => {
 
     pool.query('SELECT * FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
         response.status(200).json(results.rows)
     })
@@ -167,16 +169,33 @@ const getRestaurantInfo = (request, response) => {
 
 const updateRestaurantMinOrder = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
-    const { minOrder } = request.body
+    const { newMinOrder } = request.body
 
     pool.query('UPDATE restaurants SET minOrder = $1 WHERE restaurantId = $2',
-        [minOrder, restaurantId],
+        [parseInt(newMinOrder), restaurantId],
         (error, results) => {
             if (error) {
-                throw error
+                response.status(500).send("An error has occured.")
+                return
             }
             // do something with response
-            response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${minOrder}`)
+            response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${newMinOrder}`)
+        })
+}
+
+const updateRestaurantDeliveryFee = (request, response) => {
+    const restaurantId = parseInt(request.params.uid)
+    const { newDeliveryFee } = request.body
+
+    pool.query('UPDATE restaurants SET deliveryfee = $1 WHERE restaurantId = $2',
+        [parseInt(newDeliveryFee), restaurantId],
+        (error, results) => {
+            if (error) {
+                response.status(500).send("An error has occured.")
+                return
+            }
+            // do something with response
+            response.status(200).send(`Restaurant with ID: ${restaurantId} updated delivery fee to ${newDeliveryFee}`)
         })
 }
 
@@ -209,10 +228,23 @@ const getRiderInfo = (request, response) => {
     })
 }
 
-const getRiderOrders = (request,response) => {
+const getRiderPastOrders = (request,response) => {
     const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
 
-    pool.query('SELECT * FROM RiderDashboardOrders WHERE riderId = $1', [riderId], (error, results) => {
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status = $2', [riderId, complete], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getRiderCurrentOrders = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
+
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
         if (error) {
             throw error
         }
@@ -473,58 +505,36 @@ const getOrderTimes = (request, response) => {
     })
 }
 
-const updateOrderPlaced = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const updateRiderDeparts = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
 const updateRiderArrives = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderarrives = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
 const updateRiderCollects = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderdeparted = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
 const updateRiderDelivers = (request, response) => {
-    const { username, password, type } = request.body
+    const orderId = parseInt(request.params.orderId)
 
-    pool.query('', (error, results) => {
+    pool.query('UPDATE OrderTimes SET timeriderdelivered = CURRENT_TIMESTAMP WHERE orderid = $1', [orderId], (error, results) => {
         if (error) {
             throw error
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
@@ -682,11 +692,45 @@ const getRiderSummary = (request, response) => {
 }
 
 const getRestaurantOrderStatistic = (request, response) => {
-    pool.query('', (error, results) => {
+    const restId = parseInt(request.params.uid)
+    var query = (SQL
+                `select date_part('month', timeRiderDelivered) as month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
+                from completedOrders
+                where restaurantId = $1
+                group by month
+                order by month DESC;`
+                )
+    pool.query(query,[restId], (error, results) => {    
         if (error) {
-            throw error
-        }
-        // do something with response
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
+}
+
+const getRestaurantOrderTopFive = (request, response) => {
+    const month = parseInt(request.params.month)
+    const restId = parseInt(request.params.uid)
+    
+    var query = (SQL
+                `select foodname, count(distinct foodname)
+                from completedOrders
+                where restaurantId = $1
+                and date_part('month', timeRiderDelivered) = $2
+                group by foodname
+                order by count(distinct foodname) DESC
+                limit 5;`
+                )
+
+    pool.query(query,[restId, month], (error, results) => {    
+        if (error) {
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
     })
 }
 
@@ -707,10 +751,12 @@ module.exports = {
     createRestaurant,
     getRestaurantInfo,
     updateRestaurantMinOrder,
+    updateRestaurantDeliveryFee,
 
     createRider,
     getRiderInfo,
-    getRiderOrders,
+    getRiderPastOrders,
+    getRiderCurrentOrders,
 
     getMenu,
     getMenuForRestaurant,
@@ -737,8 +783,6 @@ module.exports = {
     updateRestaurantPromo,
 
     getOrderTimes,
-    updateOrderPlaced,
-    updateRiderDeparts,
     updateRiderArrives,
     updateRiderCollects,
     updateRiderDelivers,
@@ -759,5 +803,7 @@ module.exports = {
     getRiderAvgDeliveryTime,
     getRiderRatings,
     getRiderSummary,
-    getRestaurantOrderStatistic
+
+    getRestaurantOrderStatistic,
+    getRestaurantOrderTopFive
 }

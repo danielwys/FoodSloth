@@ -1,0 +1,58 @@
+extends ../mainLayout
+
+block layout-content
+  div.View.RiderView
+    h1.Banner What would you like to do?
+      
+    h2.Message
+      table
+        tr
+            th= "Assigned Orders"
+        tr
+            td= ""
+                table
+                    tr
+                        td= "Order ID"
+                        td= "Restaurant Name"
+                        td= "Restaurant Address"
+                        td= "Restaurant Postal Code"
+                        td= "Customer Name"
+                        td= "Customer Address"
+                        td= "Customer Postal"
+                        td= "Delivery Fee"
+                        td= "Status"
+                        td= "Action"
+
+                    each order in orders
+                        tr
+                            td= order.orderid
+                            td= order.restname
+                            td= order.restaddr
+                            td= order.restpostal
+                            td= order.custname
+                            td= order.custaddr
+                            td= order.custpostal
+                            td= order.deliveryfee
+
+                            if order.status == "arrive"
+                              td= "Order Assigned"
+                              td= ""
+                                div.NavButtons 
+                                  a(href="/rider/orders/arrived/" + order.orderid)
+                                    div.NavButton Arrived at Restaurant
+                            else if order.status == "depart"
+                              td= "Arrived at Restaurant"
+                              td= ""
+                                  div.NavButtons 
+                                    a(href="/rider/orders/departed/" + order.orderid)
+                                      div.NavButton On Delivery
+                            else if order.status == "deliver"
+                              td= "On Delivery"
+                              td= ""
+                                div.NavButtons 
+                                  a(href="/rider/orders/delivered/" + order.orderid)
+                                    div.NavButton Delivered
+
+    div.NavButtons
+      a(href="/rider/home")
+        div.NavButton Back

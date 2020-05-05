@@ -66,16 +66,16 @@ function getRiderInfo(response, completion) {
 
 let showRiderCurrentOrders = (request, response) => {
     let completion = (riderOrders) => {
-        response.render("rider/orders", {
+        response.render("rider/currentOrders", {
             orders: riderOrders
         })
     }
 
-    getRiderOrders(response, completion)
+    getRiderCurrentOrders(response, completion)
 }
 
 function getRiderCurrentOrders(response, completion) {
-    Request(Constants.serverURL + 'rider/orders/' + Shared.currentUserID, (error, res, body) => {
+    Request(Constants.serverURL + 'rider/orders/current/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
@@ -89,7 +89,7 @@ function getRiderCurrentOrders(response, completion) {
 
 let showRiderPastOrders = (request, response) => {
     let completion = (riderOrders) => {
-        response.render("rider/orders", {
+        response.render("rider/pastOrders", {
             orders: riderOrders
         })
     }
@@ -98,7 +98,7 @@ let showRiderPastOrders = (request, response) => {
 }
 
 function getRiderPastOrders(response, completion) {
-    Request(Constants.serverURL + 'rider/orders/' + Shared.currentUserID, (error, res, body) => {
+    Request(Constants.serverURL + 'rider/orders/past/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
@@ -110,7 +110,59 @@ function getRiderPastOrders(response, completion) {
     })
 }
 
+let markArrived = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    Request(Constants.serverURL + 'orderTimes/riderArrives/' + orderId, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/orders/current")
+        } else {
+            response.render("error")
+        }
+        
+    })
+}
+
+let markDeparted = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    Request(Constants.serverURL + 'orderTimes/riderCollects/' + orderId, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/orders/current")
+        } else {
+            response.render("error")
+        }
+        
+    })
+}
+
+let markDelivered = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    Request(Constants.serverURL + 'orderTimes/riderDelivers/' + orderId, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/orders/current")
+        } else {
+            response.render("error")
+        }
+        
+    })
+}
+
 module.exports = {
     showRiderHome,
-    showRiderPastOrders
+    showRiderCurrentOrders,
+    showRiderPastOrders,
+    markArrived,
+    markDeparted,
+    markDelivered
 }

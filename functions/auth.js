@@ -222,6 +222,17 @@ const createRestaurant = (request, response) => {
     createNewUser(username, password, "restaurant", response, createRestaurantRecord)
 }
 
+const createManager = (request, response) => {
+    let username = request.body.username
+    let password = request.body.password
+
+    let createManager = (managerid) => {
+        response.redirect(302, "manager/login")
+    }
+
+    createNewUser(username, password, "manager", response, createManager)
+}
+
 function createNewUser(username, password, type, response, completion) {
     let options = {
         url: Constants.serverURL + 'register',
@@ -252,5 +263,6 @@ module.exports = {
     signInManager,
     createCustomer,
     createRider,
-    createRestaurant
+    createRestaurant,
+    createManager
 }

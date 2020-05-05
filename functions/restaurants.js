@@ -119,9 +119,109 @@ const editMenuItem = (request, response) => {
     })
 }
 
+let showRestaurantSummary = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (summarylist) => {
+            response.render("restaurant/summary", {
+                summary: summarylist
+            })
+        }
+        getSummaryList(response, completion)
+    }
+}
+
+function getSummaryList(response, completion) {
+    Request.get(Constants.serverURL + 'restaurant/orders/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var summarylist = JSON.parse(body);
+        completion(summarylist)
+    })
+}
+
+let showProfile = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (reslist) => {
+            response.render("restaurant/profile", {
+                profile: reslist
+            })
+        }
+        getProfile(response, completion)
+    }
+}
+
+function getProfile(response, completion) {
+    Request.get(Constants.serverURL + 'restaurants/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var reslist = JSON.parse(body);
+        completion(reslist)
+    })
+}
+
+const editProfile = (request, response) => {
+    let itemToEdit = request.body.dropDown //mininmum order or delivery fee
+    let newValue= request.body.newValue
+    var options = {};
+    
+    if(itemToEdit == "minimum order") {
+        options = {
+            url: Constants.serverURL + 'restaurants/minorder/' + Shared.currentUserID, 
+            form: {
+                newMinOrder: newValue
+            }
+        }
+    } else if (itemToEdit == "delivery fee") {
+
+        options = {
+            url: Constants.serverURL + 'restaurants/deliveryfee/' + Shared.currentUserID, 
+            form: {
+                newDeliveryFee: newValue
+            }
+        }
+    } 
+
+    Request.put(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            console.log(body)
+            response.render("error",  Errors.backendRequestError)
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/restaurant/profile")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
     selectMenuItem,
-    editMenuItem
+    editMenuItem,
+    showRestaurantSummary,
+    showProfile,
+    editProfile
 }

@@ -1,0 +1,40 @@
+extends ../layout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Profile!
+    div.Message
+      div.Title
+        h2 Your Profile!
+        table
+            tr
+                th= 'Restaurant Name'
+                th= 'Minimum Order'
+                th= 'Delivery Fee'
+            tr
+                for item in profile
+                    tr.odd(role='row')
+                    td #{item.restaurantname}
+                    td #{item.minorder}
+                    td #{item.deliveryfee}
+
+    <br>
+    div.Message
+      div.Title
+        h2 Edit profile?
+        <br>
+        <br>
+        
+        div.dropdown
+            form(action='/editProfile' method="POST")
+                label(for='Profile item to edit') Item to Edit:
+                select(name='dropDown', id='')
+                        option="minimum order"
+                        option="delivery fee"
+                        input(type="number" name="newValue" id="inputMinOrder" class="form-control" placeholder="new value" required autofocus)  
+                        <br>
+                        <br>
+                        input(type='submit', value='Edit Item!')
+    div.NavButtons  
+      a(href="/restaurant/home")
+        div.NavButton Back
