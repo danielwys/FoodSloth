@@ -228,6 +228,18 @@ const getRiderInfo = (request, response) => {
     })
 }
 
+const getRiderCurrentOrders = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
+
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getRiderPastOrders = (request,response) => {
     const riderId = parseInt(request.params.uid)
     const complete = 'complete'
@@ -240,15 +252,61 @@ const getRiderPastOrders = (request,response) => {
     })
 }
 
-const getRiderCurrentOrders = (request, response) => {
+const getFulltimeRiderHours = (request, response) => {
     const riderId = parseInt(request.params.uid)
-    const complete = 'complete'
 
-    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
+    pool.query('SELECT * FROM mws WHERE riderId = $1', [riderId], (error, results) => {
         if (error) {
             throw error
         }
         response.status(200).json(results.rows)
+    })
+}
+
+const getParttimeRiderHours = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM WWS WHERE riderId = $1', [riderId], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const setFulltimeRiderDay = (request, response) => {
+    const { riderid, startday } = request.body
+
+    var query = (SQL
+        `INSERT INTO mws (riderid, startday, shift)
+            VALUES ($1, $2, 1)
+            ON CONFLICT(riderid) DO UPDATE
+                SET startday = $2;`
+        )
+
+    pool.query(query, [riderid, startday], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send("success")
+    })
+}
+
+const setFulltimeRiderShift = (request, response) => {
+    const { riderid, shift } = request.body
+
+    var query = (SQL
+        `INSERT INTO mws (riderid, startday, shift)
+            VALUES ($1, 1, $2)
+            ON CONFLICT(riderid) DO UPDATE
+                SET shift = $2;`
+        )
+
+    pool.query('UPDATE mws SET shift = $1 WHERE riderId = $2', [shift, riderid], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send("success")
     })
 }
 
@@ -770,8 +828,12 @@ module.exports = {
 
     createRider,
     getRiderInfo,
-    getRiderPastOrders,
     getRiderCurrentOrders,
+    getRiderPastOrders,
+    getFulltimeRiderHours,
+    getParttimeRiderHours,
+    setFulltimeRiderDay,
+    setFulltimeRiderShift,
 
     getMenu,
     getMenuForRestaurant,

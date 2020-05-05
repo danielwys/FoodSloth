@@ -158,11 +158,120 @@ let markDelivered = (request, response) => {
     })
 }
 
+let editFullTimeHours = (request, response) => {
+    Request(Constants.serverURL + 'rider/mws/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+
+        let hours = JSON.parse(body)[0]
+        
+        let startday
+        let shiftnum
+
+        if (hours == null) {
+            startday = 0
+            shiftnum = 0
+        } else {
+            startday = hours.startday
+            shiftnum = hours.shift
+        }
+
+        response.render("rider/mws", {
+            startday: startday,
+            shiftnum: shiftnum
+        })
+    })
+}
+
+let editPartTimeHours = (request, response) => {
+    response.render("rider/wws")
+}
+
+let updateStartDay = (request, response) => {
+    let day = request.body.day
+    var startday = 0
+
+    if (day === "Monday") {
+        startday = 1
+    } else if (day === "Tuesday") {
+        startday = 2
+    } else if (day === "Wednesday") {
+        startday = 3
+    } else if (day === "Thursday") {
+        startday = 4
+    } else if (day === "Friday") {
+        startday = 5
+    } else if (day === "Saturday") {
+        startday = 6
+    } else if (day === "Sunday") {
+        startday = 7
+    }
+
+    let options = {
+        url: Constants.serverURL + 'rider/mws/setday',
+        form: {
+            riderid: Shared.currentUserID,
+            startday: startday
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error")
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/mws")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
+let updateShift = (request, response) => {
+    let shift = request.body.shift
+    var shiftno = 0
+
+    if (shift === "10am to 2pm and 3pm to 7pm") {
+        shiftno = 1
+    } else if (shift === "11am to 3pm and 4pm to 8pm") {
+        shiftno = 2
+    } else if (shift === "12pm to 4pm and 5pm to 9pm") {
+        shiftno = 3
+    } else if (shift === "1pm to 5pm and 6pm to 10pm") {
+        shiftno = 4
+    } 
+
+    let options = {
+        url: Constants.serverURL + 'rider/mws/setshift',
+        form: {
+            riderid: Shared.currentUserID,
+            shift: shiftno
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error")
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/mws")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     showRiderHome,
     showRiderCurrentOrders,
     showRiderPastOrders,
     markArrived,
     markDeparted,
-    markDelivered
+    markDelivered,
+    editFullTimeHours,
+    editPartTimeHours,
+    updateStartDay,
+    updateShift
 }
