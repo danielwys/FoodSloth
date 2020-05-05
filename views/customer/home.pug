@@ -23,8 +23,8 @@ block layout-content
                   each ord in Orders
                     tr
                       td=ord.restaurant
-                      td=''
-                      td='1'
+                      td=ord.totalCost
+                      td=ord.timeDelivered
     div.NavButtons
       a(href="/logout")
         div.NavButton Logout

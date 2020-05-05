@@ -51,6 +51,7 @@ app.put('/users/:uid', db.updateUser)
  */
 app.post('/customers/create', db.createCustomer)
 app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and credit card number
+app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.put('/customers/:id', db.updateCreditCard)
 
 /**
@@ -140,10 +141,8 @@ app.post('mwshours/:uid', db.addMWSRiderHours)
  */
 app.get('/manager/stats', db.getMonthlySummaryStatistic)
 
-app.get('/stats/order/newOrders', db.getNewOrderStatistic)
-app.get('/stats/order/totalCost', db.getTotalOrderCostStatistic)
-app.get('/stats/order/ordersPerCustomer/:uid', db.getOrdersPerCustomer)
-app.get('/stats/order/ordersPerLocation', db.getOrdersPerLocation)
+app.get('/manager/customerstats/:month', db.getCustomerStatistics)
+app.get('/manager/areastats', db.getOrdersPerLocation)
 
 app.get('rider/riderOrders', db.getRiderOrdersStatistic)
 app.get('rider/hoursWorked', db.getRiderHoursWorked)

@@ -90,8 +90,13 @@ let selectItems = (request, response) => {
     })
 }
 
+let selectAddress = (request, response) => {
+    
+}
+
 module.exports = { 
     selectRestaurant,
-    selectItems
+    selectItems,
+    selectAddress
 }
 

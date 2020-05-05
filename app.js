@@ -109,15 +109,8 @@ app.get("/manager/home", managers.showManagerHome)
 app.get("/customer/newOrder", orders.selectRestaurant)
 app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
+app.get("/customer/selectAddress", orders.selectAddress)
 
-app.get("/newOrder3", (req, res) => {
-    res.render("user/newOrder3", {
-        title: "Select Address",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        address: Address,
-    })
-});
 app.post("/payment", (req, res) => {
     deliveryAddress = req.body.dropDown3
     res.render("user/payment", {
@@ -202,6 +195,24 @@ app.get("/rider/wws/deleteSlot/:day/:start/:end", riders.deleteSlot)
 /**
  * Managers
  */
+app.get("/manager/customerstats/:month", (req, res) => {
+    const month = parseInt(req.params.month);
+    Request(Constants.serverURL + 'manager/customerstats/' + month, (error, response, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error", Errors.backendRequestError)
+            return
+        }
+        let customerlist = JSON.parse(body);
+        res.render("manager/customerSummary", {
+            summary: customerlist
+          });
+    })
+    
+})
+
+app.get("/manager/areastats", managers.showAreaStats)
+
 
 // template
 app.get("/data", (req, res) => {

@@ -100,6 +100,34 @@ const createCustomer = (request, response) => {
         })
 }
 
+const getCustomerOrders = (request, response) => {
+    const cid = parseInt(request.params.uid)
+
+    // var query = (SQL 
+    //     `select restaurantname, SUM(price) as totalCost, timeRiderDelivered
+    //     from CompletedOrders C, Restaurants R
+    //     where C.cid = $1
+    //     and R.restaurantId = C.restaurantId
+    //     group by C.restaurantId;`
+    // )
+
+    var query = (SQL 
+        `
+        select restaurantname
+        from Orders O, Restaurants R
+        where O.cid = $1
+        and R.restaurantId = O.restaurantId;`
+    )
+    
+    pool.query(query, [cid], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getCustomerInfo = (request, response) => {
     const cid = parseInt(request.params.uid)
 
@@ -697,28 +725,19 @@ const getMonthlySummaryStatistic = (request, response) => {
     })
 }
 
-const getNewOrderStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
+const getCustomerStatistics = (request, response) => {
+    const month = parseInt(request.params.month)
 
-const getTotalOrderCostStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
+    var query = (SQL
+        `
+        select CO.cname, COUNT(distinct CO.orderId) as totalOrders, SUM(CO.price) as totalCost
+        from completedOrders CO
+        where CO.month = $1
+        group by cid,cname
+        order by cid;`
+        )
 
-const getOrdersPerCustomer = (request, response) => {
-    const cid = parseInt(request.params.uid)
-
-    pool.query('SELECT * FROM Orders WHERE cid = $1', [cid], (error, results) => {
+    pool.query(query, [month], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
@@ -728,11 +747,12 @@ const getOrdersPerCustomer = (request, response) => {
 }
 
 const getOrdersPerLocation = (request, response) => {
-    pool.query('', (error, results) => {
+    pool.query('select * from areasummary', (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
-        // do something with response
+        response.status(200).json(results.rows)
     })
 }
 
@@ -844,6 +864,7 @@ module.exports = {
 
     createCustomer,
     getCustomerInfo,
+    getCustomerOrders,
     updateCreditCard,
 
     getRestaurants,
@@ -898,9 +919,7 @@ module.exports = {
     addMWSRiderHours,
 
     getMonthlySummaryStatistic,
-    getNewOrderStatistic,
-    getTotalOrderCostStatistic,
-    getOrdersPerCustomer,
+    getCustomerStatistics,
     getOrdersPerLocation,
     getRiderOrdersStatistic,
     getRiderHoursWorked,
