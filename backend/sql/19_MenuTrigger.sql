@@ -1,5 +1,3 @@
-
--- Forbids any update to bidding if there already exists a service history.
 CREATE OR REPLACE FUNCTION forbid_same_foodname_in_res()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -14,7 +12,6 @@ BEGIN
 END; 
 $$ LANGUAGE PLPGSQL;
 
---- Checks whether the new biddiing is created/updated after a service history already exists.
 DROP TRIGGER IF EXISTS menu_trigger on Menu CASCADE;
 CREATE TRIGGER menu_trigger
 BEFORE INSERT OR UPDATE
