@@ -177,7 +177,7 @@ app.get("/restaurant/favourites/:month", (req, res) => {
 
 //profile
 app.get("/restaurant/profile", restaurants.showProfile)
-app.post("/editProfile", restaurants.editMinOrder)
+app.post("/editProfile", restaurants.editProfile)
 
 
 /**

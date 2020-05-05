@@ -179,15 +179,27 @@ function getProfile(response, completion) {
     })
 }
 
-const editMinOrder = (request, response) => {
-    let newMinOrder= request.body.minOrder
-
-    let options = {
-        url: Constants.serverURL + 'restaurants/' + Shared.currentUserID, 
-        form: {
-            newMinOrder: newMinOrder
+const editProfile = (request, response) => {
+    let itemToEdit = request.body.dropDown //mininmum order or delivery fee
+    let newValue= request.body.newValue
+    var options = {};
+    
+    if(itemToEdit == "minimum order") {
+        options = {
+            url: Constants.serverURL + 'restaurants/minorder/' + Shared.currentUserID, 
+            form: {
+                newMinOrder: newValue
+            }
         }
-    }
+    } else if (itemToEdit == "delivery fee") {
+
+        options = {
+            url: Constants.serverURL + 'restaurants/deliveryfee/' + Shared.currentUserID, 
+            form: {
+                newDeliveryFee: newValue
+            }
+        }
+    } 
 
     Request.put(options, (error, res, body) => {
         if (error) {
@@ -211,5 +223,5 @@ module.exports = {
     editMenuItem,
     showRestaurantSummary,
     showProfile,
-    editMinOrder
+    editProfile
 }

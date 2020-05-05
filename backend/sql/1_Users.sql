@@ -48,3 +48,6 @@ insert into Users (username, password, type, createdAt) values ('mbeardsleyb', '
 insert into Users (username, password, type, createdAt) values ('cmatthewsonc', 'jHXb6rMktLF', 'rider', now());
 insert into Users (username, password, type, createdAt) values ('asurridged', 'VskrND', 'rider', now());
 insert into Users (username, password, type, createdAt) values ('dkorbae', '3FNr2COneRwi', 'rider', now());
+insert into Users (username, password, type, createdAt) values ('manager1', '9L2osh7K', 'manager', now());
+insert into Users (username, password, type, createdAt) values ('manager2', 'AUXDQyqzF1e', 'manager', now());
+insert into Users (username, password, type, createdAt) values ('manager3', 'JHJhjkhSKJDj', 'manager', now());

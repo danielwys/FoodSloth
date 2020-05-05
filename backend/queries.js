@@ -158,7 +158,7 @@ const createRestaurant = (request, response) => {
 const getRestaurantInfo = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
 
-    pool.query('SELECT restaurantname, minorder FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
+    pool.query('SELECT * FROM restaurants WHERE restaurantid = $1', [restaurantId], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
@@ -180,6 +180,22 @@ const updateRestaurantMinOrder = (request, response) => {
             }
             // do something with response
             response.status(200).send(`Restaurant with ID: ${restaurantId} updated min order to ${newMinOrder}`)
+        })
+}
+
+const updateRestaurantDeliveryFee = (request, response) => {
+    const restaurantId = parseInt(request.params.uid)
+    const { newDeliveryFee } = request.body
+
+    pool.query('UPDATE restaurants SET deliveryfee = $1 WHERE restaurantId = $2',
+        [parseInt(newDeliveryFee), restaurantId],
+        (error, results) => {
+            if (error) {
+                response.status(500).send("An error has occured.")
+                return
+            }
+            // do something with response
+            response.status(200).send(`Restaurant with ID: ${restaurantId} updated delivery fee to ${newDeliveryFee}`)
         })
 }
 
@@ -735,6 +751,7 @@ module.exports = {
     createRestaurant,
     getRestaurantInfo,
     updateRestaurantMinOrder,
+    updateRestaurantDeliveryFee,
 
     createRider,
     getRiderInfo,
