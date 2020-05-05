@@ -1,0 +1,38 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Satisfy your craving!
+    div.Message
+      div.Title
+        h1 Make your order from 
+        h2 #{Restaurant}
+        <br>
+        table
+            tr
+                th= 'Item'
+                th= 'Price per pax'
+                th= 'Qty'
+            tr
+                each rec in orderItems
+                    tr
+                        td=rec.item
+                        td=rec.price
+                        td=rec.quantity
+            tr
+                td
+                    div.dropdown
+                        form(action='/selectItems' method="post")
+                            select(name='dropDown1', id='')
+                                each it in Items
+                                    option=it.foodname
+                            <br>
+                            select(name='dropDown2', id='')
+                                each qt in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                                    option=qt
+                            input(type='submit', value='Add')        
+        a(href="/newOrder3")
+            div.NavButton Next 
+    div.NavButtons  
+      a(href="/customer/newOrder")
+        div.NavButton Back

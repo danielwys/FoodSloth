@@ -302,7 +302,7 @@ const setFulltimeRiderShift = (request, response) => {
                 SET shift = $2;`
         )
 
-    pool.query('UPDATE mws SET shift = $1 WHERE riderId = $2', [shift, riderid], (error, results) => {
+    pool.query(query, [shift, riderid], (error, results) => {
         if (error) {
             throw error
         }
