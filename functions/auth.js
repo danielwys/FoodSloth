@@ -40,7 +40,6 @@ const signInCustomer = (request, response) => {
 
                 for (const ord in ordersjson) {
                     let restaurant = ordersjson[ord].restaurantname
-                    console.log(restaurant)
                     let totalCost = '$10'
                     let timeDelivered = '5 May 2020'
                     let orderNow = {restaurant: restaurant, totalCost: totalCost, timeDelivered: timeDelivered}

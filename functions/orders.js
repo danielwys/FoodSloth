@@ -73,6 +73,7 @@ let selectItems = (request, response) => {
             })
         }
     }
+
     Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -90,13 +91,40 @@ let selectItems = (request, response) => {
     })
 }
 
+function confirmOrder(orderedItems) {
+    let options =  {
+        url: Constants.serverURL + 'menu/show/' + currentRestaurant + '/check',
+        form: {
+            items: orderedItems
+        }
+    }
+    Request.post(options, (error, res, body) => {
+        console.log('reached here')
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        
+        console.log(JSON.parse(body))
+    })
+}
+
 let selectAddress = (request, response) => {
-    
+    //confirmOrder(orderedItems)
+    Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        let address = JSON.parse(body)
+        response.render("customer/selectAddress", {orderedItems: orderedItems, Address: address})    
+    })
 }
 
 module.exports = { 
     selectRestaurant,
     selectItems,
+    confirmOrder,
     selectAddress
 }
 

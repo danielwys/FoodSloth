@@ -51,6 +51,7 @@ app.put('/users/:uid', db.updateUser)
  */
 app.post('/customers/create', db.createCustomer)
 app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and credit card number
+app.get('/customers/address/:uid', db.getCustomerAddress)
 app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.put('/customers/:id', db.updateCreditCard)
 
@@ -83,6 +84,7 @@ app.post('/rider/mws/setshift', db.setFulltimeRiderShift)
 app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & maxavailability
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
+app.post('/menu/show/:restaurantname/check', db.checkItemAvail)
 app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
