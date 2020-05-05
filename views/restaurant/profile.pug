@@ -10,11 +10,13 @@ block layout-content
             tr
                 th= 'Restaurant Name'
                 th= 'Minimum Order'
+                th= 'Delivery Fee'
             tr
                 for item in profile
                     tr.odd(role='row')
                     td #{item.restaurantname}
                     td #{item.minorder}
+                    td #{item.deliveryfee}
 
     <br>
     div.Message
@@ -28,7 +30,8 @@ block layout-content
                 label(for='Profile item to edit') Item to Edit:
                 select(name='dropDown', id='')
                         option="minimum order"
-                        input(type="number" name="minOrder" id="inputMinOrder" class="form-control" placeholder="new minimum order" required autofocus)  
+                        option="delivery fee"
+                        input(type="number" name="newValue" id="inputMinOrder" class="form-control" placeholder="new value" required autofocus)  
                         <br>
                         <br>
                         input(type='submit', value='Edit Item!')

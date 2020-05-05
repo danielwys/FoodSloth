@@ -58,8 +58,9 @@ app.put('/customers/:id', db.updateCreditCard)
  */
 app.get('/restaurants', db.getRestaurants)
 app.post('/restaurants/create', db.createRestaurant)
-app.get('/restaurants/:uid', db.getRestaurantInfo) // returns minimum order
-app.put('/restaurants/:uid', db.updateRestaurantMinOrder)
+app.get('/restaurants/:uid', db.getRestaurantInfo) //returns name, min order
+app.put('/restaurants/minorder/:uid', db.updateRestaurantMinOrder)
+app.put('/restaurants/deliveryfee/:uid', db.updateRestaurantDeliveryFee)
 
 /**
  * Riders
