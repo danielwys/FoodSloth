@@ -109,15 +109,8 @@ app.get("/manager/home", managers.showManagerHome)
 app.get("/customer/newOrder", orders.selectRestaurant)
 app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
+app.get("/customer/selectAddress", orders.selectAddress)
 
-app.get("/newOrder3", (req, res) => {
-    res.render("user/newOrder3", {
-        title: "Select Address",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        address: Address,
-    })
-});
 app.post("/payment", (req, res) => {
     deliveryAddress = req.body.dropDown3
     res.render("user/payment", {
