@@ -241,6 +241,18 @@ const getRiderInfo = (request, response) => {
     })
 }
 
+const getRiderCurrentOrders = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+    const complete = 'complete'
+
+    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getRiderPastOrders = (request,response) => {
     const riderId = parseInt(request.params.uid)
     const complete = 'complete'
@@ -253,15 +265,61 @@ const getRiderPastOrders = (request,response) => {
     })
 }
 
-const getRiderCurrentOrders = (request, response) => {
+const getFulltimeRiderHours = (request, response) => {
     const riderId = parseInt(request.params.uid)
-    const complete = 'complete'
 
-    pool.query('SELECT * FROM RiderOrders WHERE riderId = $1 AND status <> $2', [riderId, complete], (error, results) => {
+    pool.query('SELECT * FROM mws WHERE riderId = $1', [riderId], (error, results) => {
         if (error) {
             throw error
         }
         response.status(200).json(results.rows)
+    })
+}
+
+const getParttimeRiderHours = (request, response) => {
+    const riderId = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM WWS WHERE riderId = $1', [riderId], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const setFulltimeRiderDay = (request, response) => {
+    const { riderid, startday } = request.body
+
+    var query = (SQL
+        `INSERT INTO mws (riderid, startday, shift)
+            VALUES ($1, $2, 1)
+            ON CONFLICT(riderid) DO UPDATE
+                SET startday = $2;`
+        )
+
+    pool.query(query, [riderid, startday], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send("success")
+    })
+}
+
+const setFulltimeRiderShift = (request, response) => {
+    const { riderid, shift } = request.body
+
+    var query = (SQL
+        `INSERT INTO mws (riderid, startday, shift)
+            VALUES ($1, 1, $2)
+            ON CONFLICT(riderid) DO UPDATE
+                SET shift = $2;`
+        )
+
+    pool.query(query, [shift, riderid], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send("success")
     })
 }
 
@@ -602,12 +660,27 @@ const addMWSRiderHours = (request, response) => {
  * Statistics
  */
 
-const getNewCustomerStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
+const getMonthlySummaryStatistic = (request, response) => {
+    var query = (SQL
+        `WITH newCustomersPerMonth AS (
+            select date_part('month', createdAt) as month, count(uid) as newCust
+            from Users
+            where type = 'customer'
+            group by month
+            order by month DESC
+        )
+        select CO.month, count(distinct CO.orderId) as totalOrders, SUM(CO.price) as totalCost, NC.newCust as newCustCount
+        from completedOrders CO inner join newCustomersPerMonth NC using(month)
+        group by CO.month, newCustCount
+        order by CO.month DESC;`
+        )
+    pool.query(query, (error, results) => {    
+    if (error) {
+        console.log(error)
+        response.status(500).send(error.message)
+        return
+    } 
+    response.status(200).json(results.rows)
     })
 }
 
@@ -707,7 +780,7 @@ const getRiderSummary = (request, response) => {
 const getRestaurantOrderStatistic = (request, response) => {
     const restId = parseInt(request.params.uid)
     var query = (SQL
-                `select date_part('month', timeRiderDelivered) as month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
+                `select month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
                 from completedOrders
                 where restaurantId = $1
                 group by month
@@ -769,8 +842,12 @@ module.exports = {
 
     createRider,
     getRiderInfo,
-    getRiderPastOrders,
     getRiderCurrentOrders,
+    getRiderPastOrders,
+    getFulltimeRiderHours,
+    getParttimeRiderHours,
+    setFulltimeRiderDay,
+    setFulltimeRiderShift,
 
     getMenu,
     getMenuForRestaurant,
@@ -806,7 +883,7 @@ module.exports = {
     getMWSRiderHours,
     addMWSRiderHours,
 
-    getNewCustomerStatistic,
+    getMonthlySummaryStatistic,
     getNewOrderStatistic,
     getTotalOrderCostStatistic,
     getOrdersPerCustomer,

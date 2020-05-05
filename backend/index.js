@@ -70,6 +70,12 @@ app.get('/rider/:uid', db.getRiderInfo)
 app.get('/rider/orders/current/:uid', db.getRiderCurrentOrders)
 app.get('/rider/orders/past/:uid', db.getRiderPastOrders)
 
+app.get('/rider/mws/:uid', db.getFulltimeRiderHours)
+app.get('/rider/wws/:uid', db.getParttimeRiderHours)
+
+app.post('/rider/mws/setday', db.setFulltimeRiderDay)
+app.post('/rider/mws/setshift', db.setFulltimeRiderShift)
+
 /**
  * Menu
  */
@@ -129,7 +135,7 @@ app.post('mwshours/:uid', db.addMWSRiderHours)
 /**
  * Statistics
  */
-app.get('/stats/customer/newCustomers', db.getNewCustomerStatistic)
+app.get('/manager/stats', db.getMonthlySummaryStatistic)
 
 app.get('/stats/order/newOrders', db.getNewOrderStatistic)
 app.get('/stats/order/totalCost', db.getTotalOrderCostStatistic)

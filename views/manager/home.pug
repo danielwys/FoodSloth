@@ -1,20 +1,36 @@
-extends ../mainLayout
+extends ../MainLayout
 
 block layout-content
-  div.View.UserView
-    h1.Banner What do you need today?
-      
-    h2.Message
-      table
-        tr
-            th= "Make a New Order"
-            th= "Current Activity"
-        tr
-                td= ""
-                    div.NavButtons
-                      a(href="/customer/newOrder")
-                        div.NavButton New Order
-                td= ""
+  div.View.ManagerView
+    h1.Banner Howdy Manager!
+    div.Message
+      div.Title
+        h3 Here's a summary of the FDS System!
+        h1 Sleuth Away.....
+    div.Message
+      div.Title
+        h1 Monthly Summary
+        table
+          tr
+            th= 'Month'
+            th= 'New Customers'
+            th= 'Total Orders'
+            th= 'Total Cost'
+          tr
+            for item in summary
+              tr.odd(role='row')
+                td #{item.month}
+                td #{item.newcustcount}
+                td #{item.totalorders}
+                td #{item.totalcost}
+    div.NavButtons
+      a(href="/manager/customerStats")
+          div.NavButton Customer Summary
+      a(href="/manager/areaStats")
+          div.NavButton Area Summary
+      a(href="/manager/riderStats")
+          div.NavButton Rider Summary
+    <br>
     div.NavButtons
       a(href="/")
-        div.NavButton Logout
+          div.NavButton Logout
