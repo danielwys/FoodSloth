@@ -69,3 +69,30 @@ CREATE TRIGGER check_maximum_hours_trigger
 	ON WWS
 	FOR EACH ROW
 	EXECUTE FUNCTION check_maximum_hours();
+
+CREATE OR REPLACE FUNCTION check_overlap_hours()
+RETURNS TRIGGER AS $$
+DECLARE
+	day 	integer;
+BEGIN
+	SELECT W.day INTO day
+		FROM WWS W
+		WHERE W.riderid = NEW.riderid
+		AND W.day = NEW.day
+		AND (NEW.hourstart > W.hourstart AND W.hourend > NEW.hourstart)
+		OR (W.hourstart > NEW.hourstart AND NEW.hourend > W.hourstart)
+		OR (W.hourstart < NEW.hourstart AND W.hourend > NEw.hourend);
+	IF day IS NOT NULL THEN
+		RAISE EXCEPTION 'There cannot be overlapping times.';
+		RETURN NULL;
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+DROP TRIGGER IF EXISTS check_overlap_hours_trigger on WWS CASCADE;
+CREATE TRIGGER check_overlap_hours_trigger
+	BEFORE INSERT OR UPDATE
+	ON WWS
+	FOR EACH ROW
+	EXECUTE FUNCTION check_overlap_hours();
