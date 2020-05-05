@@ -28,7 +28,6 @@ create table Restaurants (
 
 create table Riders (
     riderId             integer primary key,
-    availability        boolean not null default FALSE,
     salary              money not null default 500,
     partTime            boolean not null,
     rating              integer,

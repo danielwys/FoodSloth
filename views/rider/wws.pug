@@ -1,38 +1,67 @@
 extends ../layout
 
 block layout-content
-  div.View.UserView
-    h1.Banner Satisfy your craving!
-    div.Message
-      div.Title
-        h1 Make your order from 
-        h2 #{Restaurant}
-        <br>
+  div.View.RiderView
+    h1.Banner Set your work schedule
+    br
+
+    h2.Message
         table
             tr
-                th= 'Item'
-                th= 'Price per pax'
-                th= 'Qty'
+                th= "Current Schedule"
             tr
-                each rec in orderItems
-                    tr
-                        td=rec.item
-                        td=rec.price
-                        td=rec.quantity
-            tr
-                td
-                    div.dropdown
-                        form(action='/selectItems' method="post")
-                            select(name='dropDown1', id='')
-                                each it in Items
-                                    option=it.foodname
-                            <br>
-                            select(name='dropDown2', id='')
-                                each qt in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                                    option=qt
-                            input(type='submit', value='Add')        
-        a(href="/newOrder3")
-            div.NavButton Next 
-    div.NavButtons  
-      a(href="/customer/newOrder")
+                td= ""
+                    table
+                        tr
+                            td= "Day"
+                            td= "Start hour"
+                            td= "End Hour"
+                            td= "Action"
+                        
+                        each slot in slots
+                            tr
+                                if slot.day == 1
+                                    td= "Monday"
+                                else if slot.day == 2
+                                    td= "Tuesday"
+                                else if slot.day == 3
+                                    td= "Wednesday"
+                                else if slot.day == 4
+                                    td= "Thursday"
+                                else if slot.day == 5
+                                    td= "Friday"
+                                else if slot.day == 6
+                                    td= "Saturday"
+                                else if slot.day == 7
+                                    td= "Sunday"
+                                td= slot.hourstart
+                                td= slot.hourend
+                                td= ""
+                                    div.NavButtons 
+                                    a(href="/rider/wws/deleteSlot/" + slot.day + "/" + slot.hourstart + "/" + slot.hourend)
+                                        div.NavButton Delete
+
+    br
+
+    h2.Message Add new period
+        form(action='/rider/wws/addSlot' method='POST')
+            h5.Message Day <br>
+                select(name='day', id='day')
+                    each day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                        option= day            
+            h5.Message Hour <br>
+                select(name='starthour', id='starthour')
+                    each hour in [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+                        option= hour            
+            h5.Message End Hour <br>
+                select(name='endhour', id='endhour')
+                    each hour in [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+                        option= hour    
+            div.NavButton
+                input(type= 'submit', value="Submit")
+
+    br
+
+    div.NavButtons 
+      a(href="/rider/home")
         div.NavButton Back

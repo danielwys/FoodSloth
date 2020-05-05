@@ -196,6 +196,9 @@ app.get("/rider/mws", riders.editFullTimeHours)
 app.post("/rider/mws/updateStartDay", riders.updateStartDay)
 app.post("/rider/mws/updateShift", riders.updateShift)
 
+app.post("/rider/wws/addSlot", riders.addSlot)
+app.get("/rider/wws/deleteSlot/:day/:start/:end", riders.deleteSlot)
+
 /**
  * Managers
  */

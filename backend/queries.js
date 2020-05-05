@@ -302,9 +302,35 @@ const setFulltimeRiderShift = (request, response) => {
                 SET shift = $2;`
         )
 
-    pool.query(query, [shift, riderid], (error, results) => {
+    pool.query(query, [riderid, shift], (error, results) => {
         if (error) {
             throw error
+        }
+        response.status(200).send("success")
+    })
+}
+
+const addParttimeSlot = (request, response) => {
+    const { riderid, day, hourstart, hourend } = request.body
+
+    pool.query('INSERT INTO wws VALUES($1, $2, $3, $4)', [riderid, day, hourstart, hourend], (error, result) => {
+        if (error) {
+            response.status(500).send(error.message)
+            console.log(error.message)
+            return
+        }
+        response.status(200).send("success")
+    })
+}
+
+const deleteParttimeSlot = (request, response) => {
+    const { riderid, day, hourstart, hourend } = request.body
+
+    pool.query('DELETE FROM wws WHERE riderid = $1 AND day = $2 AND hourstart = $3 AND hourend = $4', [riderid, day, hourstart, hourend], (error, result) => {
+        if (error) {
+            response.status(500).send(error.message)
+            console.log(error.message)
+            return
         }
         response.status(200).send("success")
     })
@@ -834,6 +860,8 @@ module.exports = {
     getParttimeRiderHours,
     setFulltimeRiderDay,
     setFulltimeRiderShift,
+    addParttimeSlot,
+    deleteParttimeSlot,
 
     getMenu,
     getMenuForRestaurant,

@@ -15,7 +15,7 @@ let showRiderHome = (request, response) => {
     } else {
         let completion = (riderInfo) => {
             var availability = riderInfo.availability
-            var type = riderInfo.type
+            var type = riderInfo.parttime
             var rating = riderInfo.rating
             var salary = riderInfo.salary
             var commission = riderInfo.commission
@@ -23,8 +23,8 @@ let showRiderHome = (request, response) => {
             if (availability === "y") {
                 availability = "True"
             }
-
-            if (type === "y") {
+            
+            if (type) {
                 type = "Part Time"
             } else {
                 type = "Full Time"
@@ -185,10 +185,6 @@ let editFullTimeHours = (request, response) => {
     })
 }
 
-let editPartTimeHours = (request, response) => {
-    response.render("rider/wws")
-}
-
 let updateStartDay = (request, response) => {
     let day = request.body.day
     var startday = 0
@@ -263,6 +259,97 @@ let updateShift = (request, response) => {
     })
 }
 
+let editPartTimeHours = (request, response) => {
+    Request(Constants.serverURL + 'rider/wws/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+
+        let slots = JSON.parse(body)
+
+        response.render("rider/wws", {
+            slots: slots
+        })
+
+    })
+}
+
+let addSlot = (request, response) => {
+    const { day, starthour, endhour } = request.body
+
+    let dayno = ""
+
+    if (day === "Monday") {
+        dayno = 1
+    } else if (day === "Tuesday") {
+        dayno = 2
+    } else if (day === "Wednesday") {
+        dayno = 3
+    } else if (day === "Thursday") {
+        dayno = 4
+    } else if (day === "Friday") {
+        dayno = 5
+    } else if (day === "Saturday") {
+        dayno = 6
+    } else if (day === "Sunday") {
+        dayno = 7
+    }
+
+    let options = {
+        url: Constants.serverURL + 'rider/wws/add',
+        form: {
+            riderid: Shared.currentUserID,
+            day: dayno,
+            hourstart: starthour,
+            hourend: endhour
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error")
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/wws")
+        } else {
+            response.render("error", {
+                errorMessage: body
+            })
+        }
+    })
+}
+
+let deleteSlot = (request, response) => {
+    const day = parseInt(request.params.day)
+    const hourstart = parseInt(request.params.start)
+    const hourend = parseInt(request.params.end)
+
+    let options = {
+        url: Constants.serverURL + 'rider/wws/delete',
+        form: {
+            riderid: Shared.currentUserID,
+            day: day,
+            hourstart: hourstart,
+            hourend: hourend
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error")
+        }
+        if (body == "success") {
+            response.redirect(302, "/rider/wws")
+        } else {
+            response.render("error", {
+                errorMessage: body
+            })
+        }
+    })
+
+}
+
 module.exports = {
     showRiderHome,
     showRiderCurrentOrders,
@@ -273,5 +360,7 @@ module.exports = {
     editFullTimeHours,
     editPartTimeHours,
     updateStartDay,
-    updateShift
+    updateShift,
+    addSlot,
+    deleteSlot
 }

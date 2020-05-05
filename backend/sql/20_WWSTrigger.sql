@@ -4,13 +4,11 @@ DECLARE
 	starth	integer;
 	endh	integer;
 BEGIN
-	SELECT NEW.hourstart, NEW.hourend INTO starth, endh
-		FROM NEW;
-	IF starth > endh THEN
+	IF NEW.hourstart > NEW.hourend THEN
 		RAISE EXCEPTION 'The start time must be later than the end time,';
 		RETURN NULL;
 	END IF;
-	IF endh - starth >= 5 THEN
+	IF NEW.hourend - NEW.hourstart >= 5 THEN
 		RAISE EXCEPTION 'The max shift interval is 4 hours.';
 		RETURN NULL;
 	END IF;
@@ -33,20 +31,41 @@ DECLARE
 BEGIN
 	SELECT SUM(W.hourend - W.hourstart) INTO total
 		FROM WWS W
-		WHERE WWS.riderid = NEW.riderid;
-	IF total < 10 THEN
+		WHERE W.riderid = OLD.riderid;
+	IF total < 10 + (OLD.hourend - OLD.hourstart) THEN
 		RAISE EXCEPTION 'The minimum work hours is 10 hours';
+		RETURN NULL;
 	END IF;
-	IF total > 48 THEN
-		RAISE EXCEPTION 'The maximum work hours is 48 hours';
-	END IF;
-	RETURN NULL;
+	RETURN OLD;
 END;
 $$ LANGUAGE PLPGSQL;
 
 DROP TRIGGER IF EXISTS check_minimum_hours_trigger on WWS CASCADE;
 CREATE TRIGGER check_minimum_hours_trigger
-	AFTER INSERT OR UPDATE
+	BEFORE UPDATE OR DELETE
 	ON WWS
-	FOR EACH STATEMENT
+	FOR EACH ROW
 	EXECUTE FUNCTION check_minimum_hours();
+
+CREATE OR REPLACE FUNCTION check_maximum_hours()
+RETURNS TRIGGER AS $$
+DECLARE
+	total	integer;
+BEGIN
+	SELECT SUM(W.hourend - W.hourstart) INTO total
+		FROM WWS W
+		WHERE W.riderid = NEW.riderid;
+	IF total > 48 THEN
+		RAISE EXCEPTION 'The maximum work hours is 48 hours';
+		RETURN NULL;
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+DROP TRIGGER IF EXISTS check_maximum_hours_trigger on WWS CASCADE;
+CREATE TRIGGER check_maximum_hours_trigger
+	BEFORE INSERT OR UPDATE
+	ON WWS
+	FOR EACH ROW
+	EXECUTE FUNCTION check_maximum_hours();

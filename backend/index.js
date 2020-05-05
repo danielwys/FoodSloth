@@ -71,10 +71,13 @@ app.get('/rider/orders/current/:uid', db.getRiderCurrentOrders)
 app.get('/rider/orders/past/:uid', db.getRiderPastOrders)
 
 app.get('/rider/mws/:uid', db.getFulltimeRiderHours)
-app.get('/rider/wws/:uid', db.getParttimeRiderHours)
-
 app.post('/rider/mws/setday', db.setFulltimeRiderDay)
 app.post('/rider/mws/setshift', db.setFulltimeRiderShift)
+
+app.get('/rider/wws/:uid', db.getParttimeRiderHours)
+app.post('/rider/wws/add', db.addParttimeSlot)
+app.post('/rider/wws/delete', db.deleteParttimeSlot)
+
 
 /**
  * Menu
