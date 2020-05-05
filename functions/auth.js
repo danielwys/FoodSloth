@@ -35,17 +35,17 @@ const signInCustomer = (request, response) => {
 
             //get order details
             Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + uid, (error, res, body) => {
-                let ordersjson = JSON.parse(body)[0]
+                let ordersjson = JSON.parse(body)
                 let orders = []
 
-                for (ord in ordersjson) {
-                    let restaurant = ordersjson.restaurantid
-                    let items = ordersjson.creditCardNumber
-                    let totalPrice = ordersjson.deliveryfee
+                for (let i = 0; i < Object.keys(ordersjson).length; i++) {
+                    let ord = ordersjson[i]
+                    let restaurant = ord.restaurantid
+                    let items = ord.creditCardNumber
+                    let totalPrice = ord.deliveryfee
                     let orderNow = {restaurant: restaurant, items: items, price: totalPrice}
                     orders.push(orderNow)
                 }
-                console.log(orders)
                 response.render("customer/home", {Orders: orders})
             })
 
