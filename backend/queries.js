@@ -103,8 +103,23 @@ const createCustomer = (request, response) => {
 const getCustomerOrders = (request, response) => {
     const cid = parseInt(request.params.uid)
 
-    pool.query('SELECT * FROM Orders WHERE cid = $1', 
-        [cid], (error, results) => {
+    // var query = (SQL 
+    //     `select restaurantname, SUM(price) as totalCost, timeRiderDelivered
+    //     from CompletedOrders C, Restaurants R
+    //     where C.cid = $1
+    //     and R.restaurantId = C.restaurantId
+    //     group by C.restaurantId;`
+    // )
+
+    var query = (SQL 
+        `
+        select restaurantname
+        from Orders O, Restaurants R
+        where O.cid = $1
+        and R.restaurantId = O.restaurantId;`
+    )
+    
+    pool.query(query, [cid], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return

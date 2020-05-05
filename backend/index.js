@@ -51,6 +51,7 @@ app.put('/users/:uid', db.updateUser)
  */
 app.post('/customers/create', db.createCustomer)
 app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and credit card number
+app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.put('/customers/:id', db.updateCreditCard)
 
 /**

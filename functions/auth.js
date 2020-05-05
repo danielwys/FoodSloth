@@ -34,16 +34,16 @@ const signInCustomer = (request, response) => {
             Shared.currentUserType = type
 
             //get order details
-            Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + uid, (error, res, body) => {
+            Request(Constants.serverURL + 'customers/orders/' + uid, (error, res, body) => {
                 let ordersjson = JSON.parse(body)
                 let orders = []
 
-                for (let i = 0; i < Object.keys(ordersjson).length; i++) {
-                    let ord = ordersjson[i]
-                    let restaurant = ord.restaurantid
-                    let items = ord.creditCardNumber
-                    let totalPrice = ord.deliveryfee
-                    let orderNow = {restaurant: restaurant, items: items, price: totalPrice}
+                for (const ord in ordersjson) {
+                    let restaurant = ordersjson[ord].restaurantname
+                    console.log(restaurant)
+                    let totalCost = '$10'
+                    let timeDelivered = '5 May 2020'
+                    let orderNow = {restaurant: restaurant, totalCost: totalCost, timeDelivered: timeDelivered}
                     orders.push(orderNow)
                 }
                 response.render("customer/home", {Orders: orders})
