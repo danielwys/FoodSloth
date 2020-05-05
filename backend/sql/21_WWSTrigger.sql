@@ -47,6 +47,7 @@ CREATE TRIGGER check_minimum_hours_trigger
 	FOR EACH ROW
 	EXECUTE FUNCTION check_minimum_hours();
 
+
 CREATE OR REPLACE FUNCTION check_maximum_hours()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -69,6 +70,7 @@ CREATE TRIGGER check_maximum_hours_trigger
 	ON WWS
 	FOR EACH ROW
 	EXECUTE FUNCTION check_maximum_hours();
+
 
 CREATE OR REPLACE FUNCTION check_overlap_hours()
 RETURNS TRIGGER AS $$
@@ -96,3 +98,30 @@ CREATE TRIGGER check_overlap_hours_trigger
 	ON WWS
 	FOR EACH ROW
 	EXECUTE FUNCTION check_overlap_hours();
+
+
+CREATE OR REPLACE FUNCTION check_hour_spacing()
+RETURNS TRIGGER AS $$
+DECLARE
+	day 	integer;
+BEGIN
+	SELECT W.day INTO day
+		FROM WWS W
+		WHERE W.riderid = NEW.riderid
+		AND W.day = NEW.day
+		AND NEW.hourstart - W.hourend < 1
+		OR W.hourstart - NEW.hourend < 1;
+	IF day IS NOT NULL THEN
+		RAISE EXCEPTION 'There must be a 1 hour break between slots.';
+		RETURN NULL;
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+DROP TRIGGER IF EXISTS check_hour_spacing_trigger on WWS CASCADE;
+CREATE TRIGGER check_hour_spacing_trigger
+	BEFORE INSERT OR UPDATE
+	ON WWS
+	FOR EACH ROW
+	EXECUTE FUNCTION check_hour_spacing();
