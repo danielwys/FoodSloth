@@ -33,6 +33,9 @@ const signInCustomer = (request, response) => {
             Shared.currentUserID = uid
             Shared.currentUserType = type
 
+            //get order details
+            //Request(Constants.serverURL + )
+
             response.render("customer/home", {Orders: [{"restaurant":"Ted's"}, {"restaurant":"Mosby"}]})
         } else {
             response.render("error", Errors.incorrectUserType)
