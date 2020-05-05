@@ -16,6 +16,7 @@ block layout-content
             th= 'New Customers'
             th= 'Total Orders'
             th= 'Total Cost'
+            th= 'Customer Summary'
           tr
             for item in summary
               tr.odd(role='row')
@@ -23,12 +24,15 @@ block layout-content
                 td #{item.newcustcount}
                 td #{item.totalorders}
                 td #{item.totalcost}
+                th
+                  div.NavButton(text-align: center)
+                    a(href="/manager/customerstats/" + item.month)
+                        div.NavButton Show
+
     div.NavButtons
-      a(href="/manager/customerStats")
-          div.NavButton Customer Summary
-      a(href="/manager/areaStats")
+      a(href="/manager/areastats")
           div.NavButton Area Summary
-      a(href="/manager/riderStats")
+      a(href="/manager/riderstats")
           div.NavButton Rider Summary
     <br>
     div.NavButtons

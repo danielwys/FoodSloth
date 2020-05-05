@@ -1,0 +1,24 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Here's the Customer Details for the Month!
+    div.Message
+      h2(text-align: center) Customer Summary
+      table
+        tr
+          th= 'Customer'
+          th= 'Total Orders'
+          th= 'Total Cost'
+        tr
+          for item in summary
+            tr.odd(role='row')
+              td #{item.cname}
+              td #{item.totalorders}
+              td #{item.totalcost}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/manager/home")
+                div.NavButton Back

@@ -192,6 +192,22 @@ app.post("/rider/mws/updateShift", riders.updateShift)
 /**
  * Managers
  */
+app.get("/manager/customerstats/:month", (req, res) => {
+    const month = parseInt(req.params.month);
+    Request(Constants.serverURL + 'manager/customerstats/' + month, (error, response, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error", Errors.backendRequestError)
+            return
+        }
+        let customerlist = JSON.parse(body);
+        res.render("manager/customerSummary", {
+            summary: customerlist
+          });
+    })
+    
+})
+
 
 // template
 app.get("/data", (req, res) => {
