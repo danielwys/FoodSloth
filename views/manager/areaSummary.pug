@@ -1,0 +1,30 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.ManagerView
+    h1.Banner Here's the overall Area Summary!
+    div.Message
+      h2(text-align: center) Area Summary
+      table
+        tr
+          th= 'Hour'
+          th= 'North'
+          th= 'South'
+          th= 'East'
+          th= 'West'
+          th= 'Central'
+        tr
+          for item in summary
+            tr.odd(role='row')
+              td #{item.hour}
+              td #{item.northcount}
+              td #{item.southcount}
+              td #{item.eastcount}
+              td #{item.westcount}
+              td #{item.centralcount}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/manager/home")
+                div.NavButton Back
