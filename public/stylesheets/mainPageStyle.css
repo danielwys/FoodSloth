@@ -177,7 +177,7 @@ tr:nth-child(even) {
 }
 .UserView {
     background: url("../sloth_user.jpg") right bottom;
-    background-size: 1200px;
+    background-size: cover;
   }
   .RiderView {
     background: url("../sloth_cycling.jpg") right;
