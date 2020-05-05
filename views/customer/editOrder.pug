@@ -14,8 +14,8 @@ block layout-content
               label(for='order') Your order
               select(name='edits', id='')
                   each rec in orderItems
-                    option=JSON.stringify(rec)
+                    option=rec.item+' ($'+rec.price+') ['+rec.quantity+']'
                   input(type='submit', value='Delete')
     div.NavButtons  
-      a(href="/newOrder3")
+      a(href="customer/selectAddress")
         div.NavButton Confirm

@@ -121,10 +121,29 @@ let selectAddress = (request, response) => {
     })
 }
 
+let editOrder = (request, response) => {
+    response.render("customer/editOrder", {
+        Restaurant: currentRestaurant,
+        orderItems: orderedItems,
+    })
+}
+
+let deleteItem = (request, response) => {
+    var item = request.body.edits
+    orderedItems.pop(item)
+    
+    response.render("customer/editOrder", {
+        Restaurant: currentRestaurant,
+        orderItems: orderedItems,
+    })
+}
+
 module.exports = { 
     selectRestaurant,
     selectItems,
     confirmOrder,
-    selectAddress
+    selectAddress,
+    editOrder,
+    deleteItem
 }
 
