@@ -34,9 +34,21 @@ const signInCustomer = (request, response) => {
             Shared.currentUserType = type
 
             //get order details
-            //Request(Constants.serverURL + )
+            Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + uid, (error, res, body) => {
+                let ordersjson = JSON.parse(body)[0]
+                let orders = []
 
-            response.render("customer/home", {Orders: [{"restaurant":"Ted's"}, {"restaurant":"Mosby"}]})
+                for (ord in ordersjson) {
+                    let restaurant = ordersjson.restaurantid
+                    let items = ordersjson.creditCardNumber
+                    let totalPrice = ordersjson.deliveryfee
+                    let orderNow = {restaurant: restaurant, items: items, price: totalPrice}
+                    orders.push(orderNow)
+                }
+                console.log(orders)
+                response.render("customer/home", {Orders: orders})
+            })
+
         } else {
             response.render("error", Errors.incorrectUserType)
         }

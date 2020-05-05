@@ -100,6 +100,19 @@ const createCustomer = (request, response) => {
         })
 }
 
+const getCustomerOrders = (request, response) => {
+    const cid = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM Orders WHERE cid = $1', 
+        [cid], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getCustomerInfo = (request, response) => {
     const cid = parseInt(request.params.uid)
 
@@ -745,6 +758,7 @@ module.exports = {
 
     createCustomer,
     getCustomerInfo,
+    getCustomerOrders,
     updateCreditCard,
 
     getRestaurants,
