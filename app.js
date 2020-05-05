@@ -190,6 +190,12 @@ app.get("/rider/orders/arrived/:orderId", riders.markArrived)
 app.get("/rider/orders/departed/:orderId", riders.markDeparted)
 app.get("/rider/orders/delivered/:orderId", riders.markDelivered)
 
+app.get("/rider/wws", riders.editPartTimeHours)
+app.get("/rider/mws", riders.editFullTimeHours)
+
+app.post("/rider/mws/updateStartDay", riders.updateStartDay)
+app.post("/rider/mws/updateShift", riders.updateShift)
+
 // template
 app.get("/data", (req, res) => {
     // template for get requests, assuming the json is in this form

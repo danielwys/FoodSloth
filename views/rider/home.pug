@@ -26,10 +26,16 @@ block layout-content
                 th= "Working Hours"
                 th= "Your Information"
             tr
-                td= ""
-                    div.NavButtons
-                        a(href="/rider/hours")
-                            div.NavButton View/Edit Work Hours
+                if type == "Part Time"
+                    td= ""
+                        div.NavButtons
+                            a(href="/rider/wws")
+                                div.NavButton View/Edit Work Hours
+                else if type == "Full Time"
+                    td= ""
+                        div.NavButtons
+                            a(href="/rider/mws")
+                                div.NavButton View/Edit Work Hours
 
                 td= ""
                     body Availability: #{availability}
