@@ -144,6 +144,7 @@ app.get("/restaurant/launchPromo", (req, res) => {
     res.render("restaurant/launchPromo")
 })
 app.post("/createPromo", restaurants.createPromo)
+app.get("/restaurant/viewPromos", restaurants.showPromos)
 //summary
 
 app.get("/restaurant/summary", restaurants.showRestaurantSummary)

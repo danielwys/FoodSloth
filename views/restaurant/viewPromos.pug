@@ -1,0 +1,28 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Here are the Ongoing Restuaurant Promotions!
+    div.Message
+      h2(text-align: center) Promo Summary
+      table
+        tr
+          th= 'Promo Code'
+          th= 'Discount Percentage'
+          th= 'Minimum Spend'
+          th= 'Start Date'
+          th= 'End Date'
+        tr
+          for item in summary
+            tr.odd(role='row')
+              td #{item.code}
+              td #{item.amount}
+              td #{item.minspend}
+              td #{item.startdate}
+              td #{item.enddate}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/manager/home")
+                div.NavButton Back

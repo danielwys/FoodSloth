@@ -625,6 +625,25 @@ const checkRestaurantPromoEligibility = (request, response) => {
     })
 }
 
+const getCurrentRestPromos = (request, response) => {
+    const restaurantId = parseInt(request.params.uid)
+    var query = (SQL
+        `SELECT code, amount, minspend, date_trunc('day', startdate)::date as startdate, date_trunc('day',enddate)::date as enddate
+        FROM restpromo 
+        WHERE restaurantid = $1
+        AND date_trunc('day',CURRENT_TIMESTAMP)::date <= endDate
+        AND date_trunc('day',CURRENT_TIMESTAMP)::date >= startDate;`
+        )
+
+    pool.query(query,[restaurantId], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
+}
+
 const addRestaurantPromo = (request, response) => {
     const { restaurantid, code, amount, minSpend, startDate, endDate } = request.body
 
@@ -955,6 +974,7 @@ module.exports = {
     updateCustomerPromo,
 
     checkRestaurantPromoEligibility,
+    getCurrentRestPromos,
     addRestaurantPromo,
     updateRestaurantPromo,
 

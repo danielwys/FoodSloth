@@ -251,6 +251,36 @@ const createPromo = (request, response) => {
     })
 }
 
+let showPromos = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (promolist) => {
+            response.render("restaurant/viewPromos", {
+                summary: promolist
+            })
+        }
+        getPromoList(response, completion)
+    }
+}
+
+function getPromoList(response, completion) {
+    Request.get(Constants.serverURL + 'restaurant/currentpromos/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var promolist = JSON.parse(body);
+        completion(promolist)
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
@@ -259,5 +289,6 @@ module.exports = {
     showRestaurantSummary,
     showProfile,
     editProfile,
-    createPromo
+    createPromo,
+    showPromos
 }
