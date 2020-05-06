@@ -11,6 +11,7 @@ let address = ""
 let aid = -1;
 let deliveryFee = -1;
 let byCash = false;
+let total = 0;
 
 let getAllOrders = (request, response) => {
     Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
@@ -271,25 +272,29 @@ let finaliseOrder = (request, response) => {
         orderedItems: orderedItems, 
         Total: total, 
         Address: address, 
-        Payment: payment
+        Payment: payment,
+        Promo: 0,
+        Final: total
     })
 }
 
 let addPromo = (request, response) => {
     code = request.body.code
 
-    Request(Constants.serverURL + 'custPromo/' + Shared.currentUserID, (error, res, body) => {
+    Request(Constants.serverURL + 'custPromo/' + code, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
         }
-        let custPromo = JSON.parse(body)
-        //console.log(creditcards)
-        response.render("customer/addPromo", {
+        let custPromojson = JSON.parse(body)[0]
+        console.log(custPromojson)
+        response.render("customer/finaliseOrder", {
             orderedItems: orderedItems, 
             Total: total, 
             Address: address, 
-            Payment: payment
+            Payment: payment,
+            Promo: custPromojson.amount,
+            Final: total - custPromojson.amount
         })    
     })
 }
@@ -396,6 +401,7 @@ function resetOrder() {
     aid = -1;
     deliveryFee = -1;
     byCash = false;
+    total = 0
 }
 
 module.exports = { 
