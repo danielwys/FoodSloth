@@ -128,6 +128,11 @@ app.post('/restPromo', db.addRestaurantPromo)
 app.put('/restPromo/:code', db.updateRestaurantPromo)
 
 /**
+ * Order Items
+ */
+app.post('/orderItems/:orderId', db.addOrderItems)
+
+/**
  * Order Timings
  */
 app.get('/orderTimes/:orderId', db.getOrderTimes)

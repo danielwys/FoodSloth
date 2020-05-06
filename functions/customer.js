@@ -27,15 +27,31 @@ let showCustomerHome = (request, response) => {
 }
 
 let getProfile = (request, response) => {
+    let address = new Object()
+    console.log(address)
+    Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        address = JSON.parse(body)
+    })
+    
     Request(Constants.serverURL + 'customers/' + Shared.currentUserID, (error, res, body) => {
         let customerinfo = JSON.parse(body)[0]
         let rewardPoints = customerinfo.rewardpoints
         let creditcardnumber = customerinfo.creditcardnumber
         response.render("customer/profile", {
             rewardPoints: rewardPoints,
-            creditcardnumber: creditcardnumber
+            creditcardnumber: creditcardnumber,
+            address: address
         })
     })
+}
+
+function getAddress() {
+    let address = new Object()
+    
 }
 
 module.exports = {

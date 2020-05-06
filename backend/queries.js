@@ -770,6 +770,28 @@ const updateRestaurantPromo = (request, response) => {
 }
 
 /**
+ * Order Items
+ */
+
+const addOrderItems = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    let foodname = request.body.item
+    let quantity = request.body.quantity
+    let foodid = -1
+
+    pool.query('SELECT foodid FROM Orders O, Menu M WHERE O.restaurantId = M.restaurantId AND M.foodname = $1',
+    [foodname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        console.log(results)
+        foodid = results[0]
+    })
+}
+
+
+/**
  * Order Timings
  */
 
@@ -1082,6 +1104,8 @@ module.exports = {
     getCurrentRestPromos,
     addRestaurantPromo,
     updateRestaurantPromo,
+
+    addOrderItems,
 
     getOrderTimes,
     updateRiderArrives,

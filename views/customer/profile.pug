@@ -13,14 +13,25 @@ block layout-content
             tr
               td= rewardPoints
               td= creditcardnumber
+        table
+          tr
+            th= 'Address'
+          each add in address
+            tr
+              td=add.addresstext+' S'+add.postalcode+' ['+add.area+']'
 
     <br>
     div.Message
       div.Title
         h2 Edit profile?
         <br>
-        a(href="/customer/updateCreditcardnumber")
-          div.NavButton Update Credit Card Number
+        div.NavButtons
+          a(href="/customer/updateCreditcardnumber")
+            div.NavButton Update Credit Card Number
+          <br>
+          <br>
+          a(href="/customer/addAddress")
+            div.NavButton Add Address
 
     div.NavButtons  
       a(href="/customer/home")
