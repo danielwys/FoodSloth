@@ -20,7 +20,9 @@ block layout-content
                         
                         each slot in slots
                             tr
-                                if slot.day == 1
+                                if slot.day == 0
+                                    td= "Sunday"                            
+                                else if slot.day == 1
                                     td= "Monday"
                                 else if slot.day == 2
                                     td= "Tuesday"
@@ -32,8 +34,7 @@ block layout-content
                                     td= "Friday"
                                 else if slot.day == 6
                                     td= "Saturday"
-                                else if slot.day == 7
-                                    td= "Sunday"
+
                                 td= slot.hourstart
                                 td= slot.hourend
                                 td= ""
