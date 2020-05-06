@@ -57,6 +57,7 @@ app.get('/customers/address/:uid', db.getCustomerAddress)
 app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.post('/customers/:uid', db.updateCreditCard)
 app.post('/customers/adress/add/:uid', db.customerAddAddress)
+app.post('/customers/reward/:uid', db.updateCustomerReward)
 
 /**
  * Restaurants
@@ -125,6 +126,11 @@ app.get('/restPromo/:code&:uid', db.checkRestaurantPromoEligibility)
 app.get('/restaurant/currentpromos/:uid', db.getCurrentRestPromos)
 app.post('/restPromo', db.addRestaurantPromo)
 app.put('/restPromo/:code', db.updateRestaurantPromo)
+
+/**
+ * Order Items
+ */
+app.post('/orderItems/:orderId', db.addOrderItems)
 
 /**
  * Order Timings

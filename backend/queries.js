@@ -193,6 +193,21 @@ const updateCreditCard = (request, response) => {
         })
 }
 
+const updateCustomerReward = (request, response) => {
+    const cid = parseInt(request.params.uid)
+    const { rewardpoints } = request.body
+
+    pool.query('UPDATE Customers SET rewardpoints = rewardpoints + $1 WHERE cid = $2 RETURNING rewardpoints',
+    [rewardpoints, cid],
+    (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const customerAddAddress = (request, response) => {
     const { uid, area, addressText, postalCode } = request.body
 
@@ -471,7 +486,6 @@ const checkItemAvail = (request, response) => {
     const restaurantname = request.params.restaurantname
     const orderedItems = request.body.items
 
-    console.log(orderedItems)
     let outOfBounds = []
 
     for (const ord in orderedItems) {
@@ -618,7 +632,6 @@ const getOrder = (request, response) => {
 const createNewOrder = (request, response) => {
     const { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, custPromo, restPromo } 
         = request.body
-    console.log(request.body)
     let cash = false;
     if ((request.body.byCash.toLowerCase() === 'true')) {
         cash = true;
@@ -634,7 +647,6 @@ const createNewOrder = (request, response) => {
     pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
                         creditCardNumber, null, null], 
         (error, results) => {
-        console.log(results)
         if (error) {
             response.status(500).send(error.message)
             return
@@ -756,6 +768,28 @@ const updateRestaurantPromo = (request, response) => {
         // do something with response
     })
 }
+
+/**
+ * Order Items
+ */
+
+const addOrderItems = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    let foodname = request.body.item
+    let quantity = request.body.quantity
+    let foodid = -1
+
+    pool.query('SELECT foodid FROM Orders O, Menu M WHERE O.restaurantId = M.restaurantId AND M.foodname = $1',
+    [foodname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        console.log(results)
+        foodid = results[0]
+    })
+}
+
 
 /**
  * Order Timings
@@ -1050,6 +1084,7 @@ module.exports = {
     getCustomerAddress,
     getCustomerOrders,
     updateCreditCard,
+    updateCustomerReward,
     customerAddAddress,
 
     getRestaurants,
@@ -1095,6 +1130,8 @@ module.exports = {
     getCurrentRestPromos,
     addRestaurantPromo,
     updateRestaurantPromo,
+
+    addOrderItems,
 
     getOrderTimes,
     updateRiderArrives,

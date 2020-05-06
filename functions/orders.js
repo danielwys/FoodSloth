@@ -4,7 +4,6 @@ const Constants = require('./constants')
 const Shared = require('./shared')
 const Errors = require('./error.js')
 
-let currentRestaurantList = []
 let currentRestaurant = ""
 let restaurantId = -1;
 let orderedItems = []
@@ -32,6 +31,7 @@ let getAllOrders = (request, response) => {
 }
 
 let selectRestaurant = (request, response) => {
+    resetOrder()
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -121,7 +121,6 @@ function confirmOrder(orderedItems) {
 }
 
 let selectAddress = (request, response) => {
-    //confirmOrder(orderedItems)
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -161,6 +160,8 @@ let addAddress = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
+        } else if (restaurantId == -1) {
+            response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectAddress")
         } else {
@@ -225,6 +226,8 @@ let updateCreditcardnumber = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
+        } else if (restaurantId == -1) {
+            response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectPayment")
         } else {
@@ -322,16 +325,56 @@ let createOrder = (request, response) => {
             response.render("error", Errors.backendRequestError)
         } else {
             console.log(body)
-            let oid = JSON.parse(body)
-            console.log(oid)
+            let oid = JSON.parse(body)[0]
             //add fooditem
-            //completion(uid, type)
+            addFoodItems(oid.orderid)
+            rewardUser()
+            resetOrder()
             response.redirect(302, "/customer/home")
         }
     })
 
 }
 
+function addFoodItems(oid) {
+    for (ord in orderedItems) {
+        Request.post(Constants.serverURL + 'orderItems/' + oid,
+        { item: orderedItems[ord].item, 
+            quantity: orderedItems[ord].quantity
+        }, 
+        (error, res, body) => {
+            if (error) {
+                response.render("error", Errors.backendRequestError)
+            }
+            console.log(ord+'added')
+        })
+    }
+}
+
+function rewardUser() {
+    let options = {
+        url: Constants.serverURL + 'customers/reward/' + Shared.currentUserID, 
+        form: {
+            rewardpoints: 10
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+    })
+}
+
+function resetOrder() {
+    currentRestaurant = ""
+    restaurantId = -1;
+    orderedItems = []
+    address = ""
+    aid = -1;
+    deliveryFee = -1;
+    byCash = false;
+}
 
 module.exports = { 
     selectRestaurant,
