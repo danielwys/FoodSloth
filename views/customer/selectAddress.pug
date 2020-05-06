@@ -14,7 +14,7 @@ block layout-content
                 td='Item'
                 td='Quantity'
             tr
-                each rec in orderItems
+                each rec in orderedItems
                     tr
                         td=rec.item
                         td=rec.quantity
@@ -28,9 +28,9 @@ block layout-content
           form(action='/payment' method="POST")
             label(for='address') Address
             select(name='dropDown3', id='')
-              each add in address
-                option=add
+              each add in Address
+                option=add.addresstext+' S'+add.postalcode
               input(type='submit', value='Select')
     div.NavButtons  
-      a(href="/newOrder2")
+      a(href="/customer/selectFoodItems")
         div.NavButton Back

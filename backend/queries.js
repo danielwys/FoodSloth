@@ -139,6 +139,19 @@ const getCustomerInfo = (request, response) => {
     })
 }
 
+const getCustomerAddress = (request, response) => {
+    const cid = parseInt(request.params.uid)
+
+    pool.query('SELECT addressText, postalCode FROM addresses A WHERE A.uid = $1', [cid],
+    (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const updateCreditCard = (request, response) => {
     const cid = parseInt(request.params.uid)
     const { cardNumber } = request.body
@@ -388,6 +401,38 @@ const getMenuForRestaurant = (request, response) => {
         }
         response.status(200).json(results.rows)
     })
+}
+
+const checkItemAvail = (request, response) => {
+    const restaurantname = request.params.restaurantname
+    const orderedItems = request.body.items
+
+    console.log(orderedItems)
+    let outOfBounds = []
+
+    for (const ord in orderedItems) {
+        let item = orderedItems[ord].item
+        let quant = orderedItems[ord].quantity
+        var query = (SQL `
+        SELECT item, maxavailable 
+        FROM orderedItems I, menu M, restaurants R
+        WHERE R.restaurantname = ${restaurantname}
+        AND R.restaurantId = M.restaurantId
+        AND ${item} = M.foodname
+        AND ${quant} > M.maxavailable
+        `)
+
+        pool.query(query, (error, results) => {
+            if (error) {
+                response.status(500).send("An error has occured")
+                return
+            }
+            outOfBounds.push(orderedItems[ord])
+        })
+    }
+
+    response.status(200).json(outOfBounds.rows)
+
 }
 
 const getItemInfo = (request, response) => {
@@ -864,6 +909,7 @@ module.exports = {
 
     createCustomer,
     getCustomerInfo,
+    getCustomerAddress,
     getCustomerOrders,
     updateCreditCard,
 
@@ -886,6 +932,7 @@ module.exports = {
 
     getMenu,
     getMenuForRestaurant,
+    checkItemAvail,
     getItemInfo,
     getMenuInfo,
     addMenuItem,

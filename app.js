@@ -109,7 +109,11 @@ app.get("/manager/home", managers.showManagerHome)
 app.get("/customer/newOrder", orders.selectRestaurant)
 app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
+app.post("/selectAddress", orders.confirmOrder)
 app.get("/customer/selectAddress", orders.selectAddress)
+
+app.get("/editOrder", orders.editOrder)
+app.post("/editOrder", orders.deleteItem)
 
 app.post("/payment", (req, res) => {
     deliveryAddress = req.body.dropDown3
@@ -120,21 +124,7 @@ app.post("/payment", (req, res) => {
         deliveryAddress: deliveryAddress,
     })
 });
-app.get("/editOrder", (req, res) => {
-    res.render("user/editOrder", {
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-    })
-});
-app.post("/editOrder", (req, res) => {
-    var order = req.body.edits;
-    orderedItems.pop(order);
-    res.render("user/editOrder", {
-        title: "Edit Order",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-    })
-});
+
 
 /**
  * Restaurants
