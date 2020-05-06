@@ -323,15 +323,29 @@ let createOrder = (request, response) => {
         } else {
             console.log(body)
             let oid = JSON.parse(body)
-            console.log(oid)
             //add fooditem
             //completion(uid, type)
+            rewardUser()
             response.redirect(302, "/customer/home")
         }
     })
 
 }
 
+function rewardUser() {
+    let options = {
+        url: Constants.serverURL + 'customers/reward/' + Shared.currentUserID, 
+        form: {
+            rewardpoints: 10
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+    })
+}
 
 module.exports = { 
     selectRestaurant,

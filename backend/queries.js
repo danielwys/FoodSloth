@@ -193,6 +193,21 @@ const updateCreditCard = (request, response) => {
         })
 }
 
+const updateCustomerReward = (request, response) => {
+    const cid = parseInt(request.params.uid)
+    const { rewardpoints } = request.body
+
+    pool.query('UPDATE Customers SET rewardpoints = rewardpoints + $1 WHERE cid = $2 RETURNING rewardpoints',
+    [rewardpoints, cid],
+    (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const customerAddAddress = (request, response) => {
     const { uid, area, addressText, postalCode } = request.body
 
@@ -459,7 +474,6 @@ const checkItemAvail = (request, response) => {
     const restaurantname = request.params.restaurantname
     const orderedItems = request.body.items
 
-    console.log(orderedItems)
     let outOfBounds = []
 
     for (const ord in orderedItems) {
@@ -606,7 +620,6 @@ const getOrder = (request, response) => {
 const createNewOrder = (request, response) => {
     const { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, custPromo, restPromo } 
         = request.body
-    console.log(request.body)
     let cash = false;
     if ((request.body.byCash.toLowerCase() === 'true')) {
         cash = true;
@@ -622,7 +635,6 @@ const createNewOrder = (request, response) => {
     pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
                         creditCardNumber, null, null], 
         (error, results) => {
-        console.log(results)
         if (error) {
             response.status(500).send(error.message)
             return
@@ -1012,6 +1024,7 @@ module.exports = {
     getCustomerAddress,
     getCustomerOrders,
     updateCreditCard,
+    updateCustomerReward,
     customerAddAddress,
 
     getRestaurants,
