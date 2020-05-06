@@ -113,7 +113,7 @@ create table Orders (
     orderId             serial primary key,
     cid                 integer not null,
     restaurantId        integer not null,
-    riderId             integer not null,
+    riderId             integer,
     aid                 integer not null,
     deliveryFee         money not null,
     byCash              boolean not null,
