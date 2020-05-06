@@ -62,5 +62,5 @@ insert into OrderItems (orderId, foodId, quantity) values (21, 44, 5);
 insert into OrderItems (orderId, foodId, quantity) values (21, 37, 4);
 insert into OrderItems (orderId, foodId, quantity) values (21, 42, 3);
 insert into OrderItems (orderId, foodId, quantity) values (21, 38, 2);
-insert into OrderItems (orderId, foodId, quantity) values (21, 55, 1);
+insert into OrderItems (orderId, foodId, quantity) values (21, 21, 1);
 
