@@ -49,6 +49,7 @@ let selectRestaurant = (request, response) => {
 let selectItems = (request, response) => {
     if (request.body.dropDown != null) {
         currentRestaurant = request.body.dropDown
+    } else if (request.body.dropDown1 == undefined || request.body.dropDown2 == undefined) {
     } else {
         let item = request.body.dropDown1
         let quant = request.body.dropDown2
