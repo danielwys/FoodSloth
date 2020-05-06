@@ -16,3 +16,4 @@ insert into restPromo (code, restaurantId, amount, minSpend, startDate, endDate)
 insert into restPromo (code, restaurantId, amount, minSpend, startDate, endDate) values ('jductl', 26, 25, '$40', '2020-04-10 10:45:17', '2020-05-14 22:31:14');
 insert into restPromo (code, restaurantId, amount, minSpend, startDate, endDate) values ('jtmbgr', 28, 15, '$17', '2020-04-03 18:24:56', '2020-05-30 20:09:02');
 insert into restPromo (code, restaurantId, amount, minSpend, startDate, endDate) values ('hbcspvz', 34, 17, '$46', '2020-04-13 16:55:49', '2020-05-15 13:16:11');
+insert into restPromo (code, restaurantId, amount, minSpend, startDate, endDate) values ('asdfg', 26, 17, '$46', '2020-04-29 16:55:49', '2020-05-1 13:16:11');

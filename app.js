@@ -177,6 +177,7 @@ app.get("/restaurant/favourites/:month", (req, res) => {
     })
     
 })
+app.get("/restaurant/promoSummary", restaurants.showPromoSummary)
 
 //profile
 app.get("/restaurant/profile", restaurants.showProfile)
