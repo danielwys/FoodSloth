@@ -106,18 +106,29 @@ app.get("/manager/home", managers.showManagerHome)
  * Orders
  */
 
+ //select restaurant
 app.get("/customer/newOrder", orders.selectRestaurant)
+
+//select food items
 app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
+
+//select address
 app.post("/selectAddress", orders.confirmOrder)
 app.get("/customer/selectAddress", orders.selectAddress)
+app.get("/customer/addAddress", orders.openAddAddress)
+app.post("/addAddress", orders.addAddress)
 
+//edit order
 app.get("/editOrder", orders.editOrder)
 app.post("/editOrder", orders.deleteItem)
 
 //app.post("/selectPayment", orders.selectPayment)
-app.get("customer/selectPayment", orders.selectPayment)
+app.get("/customer/selectPayment", orders.selectPayment)
 app.post("/selectPayment", orders.selectPayment)
+app.get("/customer/updateCreditcardnumber", orders.openUpdateCreditcardnumber)
+app.post("/updateCreditcardnumber", orders.updateCreditcardnumber)
+
 
 
 app.post("/payment", (req, res) => {

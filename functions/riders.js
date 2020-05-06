@@ -14,15 +14,11 @@ let showRiderHome = (request, response) => {
         
     } else {
         let completion = (riderInfo) => {
-            var availability = riderInfo.availability
             var type = riderInfo.parttime
             var rating = riderInfo.rating
             var salary = riderInfo.salary
             var commission = riderInfo.commission
 
-            if (availability === "y") {
-                availability = "True"
-            }
             
             if (type) {
                 type = "Part Time"
@@ -39,7 +35,6 @@ let showRiderHome = (request, response) => {
             }
 
             response.render("rider/home", {
-                availability: availability,
                 type: type,
                 rating: rating,
                 salary: salary,
@@ -202,7 +197,7 @@ let updateStartDay = (request, response) => {
     } else if (day === "Saturday") {
         startday = 6
     } else if (day === "Sunday") {
-        startday = 7
+        startday = 0
     }
 
     let options = {
@@ -293,7 +288,7 @@ let addSlot = (request, response) => {
     } else if (day === "Saturday") {
         dayno = 6
     } else if (day === "Sunday") {
-        dayno = 7
+        dayno = 0
     }
 
     let options = {

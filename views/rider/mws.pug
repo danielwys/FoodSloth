@@ -11,7 +11,9 @@ block layout-content
                 th= "Current Schedule"
                 th= "Shift"
             tr
-                if startday == 1
+                if startday == 0
+                    td= "Sunday to Thursday"
+                else if startday == 1
                     td= "Monday to Friday"
                 else if startday == 2
                     td= "Tuesday to Saturday"
@@ -23,8 +25,6 @@ block layout-content
                     td= "Friday to Tuesday"
                 else if startday == 6
                     td= "Saturday to Wednesday"
-                else if startday == 7
-                    td= "Sunday to Thursday"
                 else
                     td= "Not set yet"
                 

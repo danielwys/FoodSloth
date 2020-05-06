@@ -28,7 +28,10 @@ block layout-content
             select(name='dropDown4', id='')
               each ccn in creditcardnumber
                 option=ccn.creditcardnumber
+              option='Cash payment'
               input(type='submit', value='Select')
+        a(href="/customer/updateCreditcardnumber")
+          div.NavButton Update Credit Card Number
     div.NavButtons  
       a(href="/customer/selectAddress")
         div.NavButton Back

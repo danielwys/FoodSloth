@@ -49,6 +49,7 @@ let selectRestaurant = (request, response) => {
 let selectItems = (request, response) => {
     if (request.body.dropDown != null) {
         currentRestaurant = request.body.dropDown
+    } else if (request.body.dropDown1 == undefined || request.body.dropDown2 == undefined) {
     } else {
         let item = request.body.dropDown1
         let quant = request.body.dropDown2
@@ -122,6 +123,40 @@ let selectAddress = (request, response) => {
     })
 }
 
+let openAddAddress = (request, response) => {
+    response.render("customer/addAddress")
+}
+
+let addAddress = (request, response) => {
+    let area = request.body.area
+    let addressText = request.body.addressText
+    let postalCode = request.body.postalCode
+
+    let options = {
+        url: Constants.serverURL + 'customers/adress/add/' + Shared.currentUserID, 
+        form: {
+            uid: Shared.currentUserID,
+            area: area, 
+            addressText: addressText, 
+            postalCode: postalCode
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("duplicateError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/selectAddress")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 
 let selectPayment = (request, response) => {
     address = request.body.dropDown3
@@ -134,6 +169,35 @@ let selectPayment = (request, response) => {
         let creditcards = JSON.parse(body)
         //console.log(creditcards)
         response.render("customer/selectPayment", {orderedItems: orderedItems, Address: address, creditcardnumber: creditcards})    
+    })
+}
+
+let openUpdateCreditcardnumber = (request, response) => {
+    response.render("customer/updateCreditcardnumber")
+}
+
+let updateCreditcardnumber = (request, response) => {
+    let cardNumber = request.body.cardNumber
+
+    let options = {
+        url: Constants.serverURL + 'customers/' + Shared.currentUserID, 
+        form: {
+            cardNumber: cardNumber
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("duplicateError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/selectPayment")
+        } else {
+            response.render("error")
+        }
     })
 }
 
@@ -159,7 +223,11 @@ module.exports = {
     selectItems,
     confirmOrder,
     selectAddress,
+    openAddAddress,
+    addAddress,
     selectPayment,
+    openUpdateCreditcardnumber,
+    updateCreditcardnumber,
     editOrder,
     deleteItem
 }

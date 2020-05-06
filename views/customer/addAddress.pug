@@ -1,0 +1,24 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+
+    div.Banner
+      h1 Where do you want to deliver to...
+
+    div.form-signin
+      form(action='/addAddress' method="POST")
+        input(type="plaintext" name="area" id="inputArea" class="form-control" placeholder="Area (north, south, east, west)" required autofocus)  
+        <br>
+        input(type="plaintext" name="addressText" id="inputAddressText" class="form-control" placeholder="Address Text (Eg. 123 Simei Ave)" required autofocus)  
+        <br>
+        input(type="number" name="postalCode" id="inputPostalCode" class="form-control" placeholder="Postal Code (Eg. 987654)" required autofocus)  
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Submit")
+    <br>
+
+    div.NavButtons
+      a(href="/customer/selectAddress")
+        div.NavButton Back
