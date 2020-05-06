@@ -41,7 +41,7 @@ create table MWS (
     riderId             integer primary key,
     startDay            integer,
     shift               integer,
-    constraint day_start check (startDay in (1,2,3,4,5,6,7)),
+    constraint day_start check (startDay in (0,1,2,3,4,5,6)),
     constraint shift_number check (shift in (1,2,3,4)),
     foreign key (riderId) references Riders (riderId)
 );
@@ -53,7 +53,7 @@ create table WWS (
     hourStart           integer,
     hourEnd             integer,
     primary key (riderId, day, hourStart),
-    constraint day_working check (day in (1,2,3,4,5,6,7)),
+    constraint day_working check (day in (0,1,2,3,4,5,6)),
     constraint check_start check (hourStart between 10 and 22),
     constraint check_end check (hourEnd between 10 and 22),
     constraint durationCheck check (hourEnd - hourStart <= 4), 
