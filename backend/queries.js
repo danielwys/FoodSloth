@@ -82,6 +82,31 @@ const updateUser = (request, response) => {
     })
 }
 
+const getAddress = (request, response) => {
+    const uid = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM addresses WHERE uid = $1', [uid], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
+
+const updateAddress = (request, response) => {
+    const { uid, area, addresstext, postalcode } = request.body
+
+    pool.query('UPDATE addresses SET area = $1, addresstext = $2, postalcode = $3 WHERE uid = $4', 
+    [area, addresstext, postalcode, uid], (error, results) => {
+            if (error) {
+                response.status(500).send(error.message)
+                return
+            }
+            response.status(200).send("success")
+        })
+}
+
 /**
  * Customers
  */
@@ -93,7 +118,7 @@ const createCustomer = (request, response) => {
         [cid, cname, creditcardnumber],
         (error, results) => {
             if (error) {
-                response.status(500).send("An error has occured.")
+                response.status(500).send(error.message)
                 return
             }
             response.status(200).send("success")
@@ -828,7 +853,7 @@ const getMonthlySummaryStatistic = (request, response) => {
             group by month
             order by month DESC
         )
-        select CO.month, count(distinct CO.orderId) as totalOrders, SUM(CO.price) as totalCost, NC.newCust as newCustCount
+        select CO.month, count(distinct CO.orderId) as totalOrders, SUM(CO.price * CO.quantity) as totalCost, NC.newCust as newCustCount
         from completedOrders CO inner join newCustomersPerMonth NC using(month)
         group by CO.month, newCustCount
         order by CO.month DESC;`
@@ -847,8 +872,8 @@ const getCustomerStatistics = (request, response) => {
     const month = parseInt(request.params.month)
 
     var query = (SQL
-        `
-        select CO.cname, COUNT(distinct CO.orderId) as totalOrders, SUM(CO.price) as totalCost
+        `  
+        select CO.cname, COUNT(distinct CO.orderId) as totalOrders, SUM(CO.price * CO.quantity) as totalCost
         from completedOrders CO
         where CO.month = $1
         group by cid,cname
@@ -931,7 +956,7 @@ const getRiderSummary = (request, response) => {
 const getRestaurantOrderStatistic = (request, response) => {
     const restId = parseInt(request.params.uid)
     var query = (SQL
-                `select month, count(distinct orderId) as totalOrders, SUM(price) as totalCost
+                `select month, count(distinct orderId) as totalOrders, SUM(price * quantity) as totalCost
                 from completedOrders
                 where restaurantId = $1
                 group by month
@@ -952,12 +977,12 @@ const getRestaurantOrderTopFive = (request, response) => {
     const restId = parseInt(request.params.uid)
     
     var query = (SQL
-                `select foodname, count(distinct foodname)
+                `select foodname, sum(quantity) as count
                 from completedOrders
                 where restaurantId = $1
                 and date_part('month', timeRiderDelivered) = $2
                 group by foodname
-                order by count(distinct foodname) DESC
+                order by sum(quantity) DESC
                 limit 5;`
                 )
 
@@ -979,6 +1004,8 @@ module.exports = {
     getAllUsers,
     getUserById,
     updateUser,
+    getAddress,
+    updateAddress,
 
     createCustomer,
     getCustomerInfo,

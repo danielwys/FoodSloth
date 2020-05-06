@@ -281,6 +281,60 @@ function getPromoList(response, completion) {
     })
 }
 
+let showAddress = (request, response) => {
+    
+    let completion = (address) => {
+        response.render("restaurant/viewAddress", {
+            area: address.area,
+            addresstext: address.addresstext,
+            postalcode: address.postalcode
+        })
+    }
+
+    getAddress(response, completion)
+}
+
+function getAddress(response, completion) {
+    Request.get(Constants.serverURL + 'users/address/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+
+        let address = JSON.parse(body)[0]
+
+        completion(address)
+    })
+}
+
+let editAddress = (request, response) => {
+    let { area, address, postalcode } = request.body
+
+    let options = {
+        url: Constants.serverURL + 'users/address/update', 
+        form: {
+            uid: Shared.currentUserID,
+            area: area, 
+            addresstext: address, 
+            postalcode: postalcode
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if (body == "success") {
+            response.redirect(302, "/restaurant/home")
+        } else {
+            response.render("error", {
+                errorMessage: body
+            })
+        }
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
@@ -290,5 +344,7 @@ module.exports = {
     showProfile,
     editProfile,
     createPromo,
-    showPromos
+    showPromos,
+    showAddress,
+    editAddress
 }

@@ -57,7 +57,7 @@ BEGIN
 		AND W.day = NEW.day
 		AND (NEW.hourstart > W.hourstart AND W.hourend > NEW.hourstart)
 		OR (W.hourstart > NEW.hourstart AND NEW.hourend > W.hourstart)
-		OR (W.hourstart < NEW.hourstart AND W.hourend > NEw.hourend);
+		OR (W.hourstart < NEW.hourstart AND W.hourend > NEW.hourend);
 	IF day IS NOT NULL THEN
 		RAISE EXCEPTION 'There cannot be overlapping times.';
 		RETURN NULL;

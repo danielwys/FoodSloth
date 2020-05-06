@@ -197,7 +197,7 @@ let updateStartDay = (request, response) => {
     } else if (day === "Saturday") {
         startday = 6
     } else if (day === "Sunday") {
-        startday = 7
+        startday = 0
     }
 
     let options = {
@@ -288,7 +288,7 @@ let addSlot = (request, response) => {
     } else if (day === "Saturday") {
         dayno = 6
     } else if (day === "Sunday") {
-        dayno = 7
+        dayno = 0
     }
 
     let options = {
