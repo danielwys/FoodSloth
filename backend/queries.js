@@ -1053,6 +1053,32 @@ const getRestaurantOrderTopFive = (request, response) => {
     })
 }
 
+const getRestaurantPromoSummary = (request, response) => {
+    const restId = parseInt(request.params.uid)
+    
+    var query = (SQL
+                `WITH promoSummary AS (
+                    select P.code, P.endDate - P.startDate as duration, COUNT(distinct C.OrderId) as totalOrders
+                    from completedOrders C 
+                    inner join restPromo P on (C.restPromoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
+                    where C.restaurantId = $1
+                    group by P.code, P.endDate, P.startDate
+                    order by P.endDate
+                )
+                SELECT code, duration, ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))) as averageOrders, totalorders
+                FROM promoSummary;`
+                )
+
+    pool.query(query,[restId], (error, results) => {    
+        if (error) {
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
+}
+
 
 module.exports = {
     login,
@@ -1140,5 +1166,6 @@ module.exports = {
     getRiderSummary,
 
     getRestaurantOrderStatistic,
-    getRestaurantOrderTopFive
+    getRestaurantOrderTopFive,
+    getRestaurantPromoSummary
 }

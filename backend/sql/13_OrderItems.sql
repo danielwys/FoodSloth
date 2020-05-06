@@ -63,4 +63,22 @@ insert into OrderItems (orderId, foodId, quantity) values (21, 37, 4);
 insert into OrderItems (orderId, foodId, quantity) values (21, 42, 3);
 insert into OrderItems (orderId, foodId, quantity) values (21, 38, 2);
 insert into OrderItems (orderId, foodId, quantity) values (21, 21, 1);
+insert into OrderItems (orderId, foodId, quantity) values (22, 44, 5);
+insert into OrderItems (orderId, foodId, quantity) values (22, 37, 4);
+insert into OrderItems (orderId, foodId, quantity) values (22, 42, 3);
+insert into OrderItems (orderId, foodId, quantity) values (22, 38, 2);
+insert into OrderItems (orderId, foodId, quantity) values (22, 21, 1);
+insert into OrderItems (orderId, foodId, quantity) values (24, 44, 5);
+insert into OrderItems (orderId, foodId, quantity) values (24, 37, 7);
+insert into OrderItems (orderId, foodId, quantity) values (24, 42, 6);
+insert into OrderItems (orderId, foodId, quantity) values (24, 38, 2);
+insert into OrderItems (orderId, foodId, quantity) values (24, 21, 3);
+insert into OrderItems (orderId, foodId, quantity) values (24, 8, 1);
+insert into OrderItems (orderId, foodId, quantity) values (25, 44, 5);
+insert into OrderItems (orderId, foodId, quantity) values (25, 37, 7);
+insert into OrderItems (orderId, foodId, quantity) values (25, 42, 6);
+insert into OrderItems (orderId, foodId, quantity) values (25, 38, 2);
+insert into OrderItems (orderId, foodId, quantity) values (25, 21, 3);
+insert into OrderItems (orderId, foodId, quantity) values (25, 8, 1);
+
 

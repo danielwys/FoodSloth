@@ -1,0 +1,26 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Here's your Completed Promotional Campaigns' Summary!
+    div.Message
+      h2(text-align: center) Summary
+      table
+        tr
+          th= 'Promo Code'
+          th= 'Number of Days (Duration)'
+          th= 'Total Orders'
+          th= 'Average Orders per Day'
+        tr
+          for item in summary
+            tr.odd(role='row')
+              td #{item.code}
+              td #{item.duration}
+              td #{item.totalorders}
+              td #{item.averageorders}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/restaurant/summary")
+                div.NavButton Back

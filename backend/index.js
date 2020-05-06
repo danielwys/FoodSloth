@@ -167,6 +167,7 @@ app.get('rider/summary', db.getRiderSummary)
 
 app.get('/restaurant/orders/:uid', db.getRestaurantOrderStatistic)
 app.get('/restaurant/favourites/:month/:uid', db.getRestaurantOrderTopFive)
+app.get('/restaurant/promoSummary/:uid', db.getRestaurantPromoSummary)
 
 /**
  * Server Activation
