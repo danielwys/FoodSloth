@@ -27,9 +27,14 @@ let showCustomerHome = (request, response) => {
 }
 
 let getProfile = (request, response) => {
-    response.render("customer/profile", {
-        rewardPoints: "", 
-        creditCardNo: ""
+    Request(Constants.serverURL + 'customers/' + Shared.currentUserID, (error, res, body) => {
+        let customerinfo = JSON.parse(body)[0]
+        let rewardPoints = customerinfo.rewardpoints
+        let creditcardnumber = customerinfo.creditcardnumber
+        response.render("customer/profile", {
+            rewardPoints: rewardPoints,
+            creditcardnumber: creditcardnumber
+        })
     })
 }
 

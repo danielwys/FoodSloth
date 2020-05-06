@@ -4,7 +4,6 @@ const Constants = require('./constants')
 const Shared = require('./shared')
 const Errors = require('./error.js')
 
-let currentRestaurantList = []
 let currentRestaurant = ""
 let restaurantId = -1;
 let orderedItems = []
@@ -225,6 +224,8 @@ let updateCreditcardnumber = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
+        } else if (restaurantId == -1) {
+            response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectPayment")
         } else {
@@ -326,6 +327,7 @@ let createOrder = (request, response) => {
             //add fooditem
             //completion(uid, type)
             rewardUser()
+            resetOrder()
             response.redirect(302, "/customer/home")
         }
     })
@@ -345,6 +347,16 @@ function rewardUser() {
             response.render("error", Errors.backendRequestError)
         }
     })
+}
+
+function resetOrder() {
+    currentRestaurant = ""
+    restaurantId = -1;
+    orderedItems = []
+    address = ""
+    aid = -1;
+    deliveryFee = -1;
+    byCash = false;
 }
 
 module.exports = { 

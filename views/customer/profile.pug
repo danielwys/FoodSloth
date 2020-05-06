@@ -2,32 +2,25 @@ extends ../layout
 
 block layout-content
   div.View.RestaurantView
-    h1.Banner Profile!
+    h1.Banner Howdy!
     div.Message
       div.Title
-        h2 Your Profile!
+        h2 Your details
         table
             tr
               th= 'Reward Points'
               th= 'Credit Card Number'
             tr
               td= rewardPoints
-              td= creditCardNo
+              td= creditcardnumber
 
     <br>
     div.Message
       div.Title
         h2 Edit profile?
         <br>
-        form(action='/customer/editCreditCardNo' method='POST')
-
-          h3 Enter new card number
-          <br>
-            input(type="plaintext" name="creditcardno" id="creditcardno" class="form-control" placeholder="Credit Card Number" required autofocus)  
-          <br>
-
-          div.NavButton
-            input(type='submit', value="Submit") 
+        a(href="/customer/updateCreditcardnumber")
+          div.NavButton Update Credit Card Number
 
     div.NavButtons  
       a(href="/customer/home")
