@@ -123,6 +123,40 @@ let selectAddress = (request, response) => {
     })
 }
 
+let openAddAddress = (request, response) => {
+    response.render("customer/addAddress")
+}
+
+let addAddress = (request, response) => {
+    let area = request.body.area
+    let addressText = request.body.addressText
+    let postalCode = request.body.postalCode
+
+    let options = {
+        url: Constants.serverURL + 'customers/adress/add/' + Shared.currentUserID, 
+        form: {
+            uid: Shared.currentUserID,
+            area: area, 
+            addressText: addressText, 
+            postalCode: postalCode
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("duplicateError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/selectAddress")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 
 let selectPayment = (request, response) => {
     address = request.body.dropDown3
@@ -160,6 +194,8 @@ module.exports = {
     selectItems,
     confirmOrder,
     selectAddress,
+    openAddAddress,
+    addAddress,
     selectPayment,
     editOrder,
     deleteItem

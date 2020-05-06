@@ -54,6 +54,7 @@ app.get('/customers/:uid', db.getCustomerInfo) // returns reward points and cred
 app.get('/customers/address/:uid', db.getCustomerAddress)
 app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.put('/customers/:id', db.updateCreditCard)
+app.post('/customers/adress/add/:uid', db.customerAddAddress)
 
 /**
  * Restaurants
