@@ -19,6 +19,15 @@ block layout-content
         <br>
         input(type="plaintext" name="deliveryFee" id="inputDeliveryFee" class="form-control" placeholder="Delivery Fee" required autofocus)
         <br>
+        label(for='area') Area?
+        select(name="area", id="area")
+            each val in ['north', 'south', 'east', 'west', 'central']
+                option=val
+        <br>
+        input(type="plaintext" name="addresstext" id="addresstext" class="form-control" placeholder="Address" required autofocus)
+        <br>
+        input(type="plaintext" name="postalcode" id="postalcode" class="form-control" placeholder="Postal Code" required autofocus)
+        <br>
         <br>
         div.NavButton
           input(type='submit', value="Submit")

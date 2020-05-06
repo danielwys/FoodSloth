@@ -5,6 +5,7 @@ create table Users (
     password             varchar(100) not null,
     type                 varchar(50) not null,
     createdAt            timestamptz not null default now(),
+    unique (username),
     constraint user_type check (type in ('customer','restaurant','rider','manager'))
 );
 

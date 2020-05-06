@@ -192,6 +192,9 @@ const createRestaurant = (request, response) => {
     let restName = request.body.name
     let minOrder = request.body.minOrder
     let deliveryFee = request.body.deliveryFee
+    let area = request.body.area
+    let addresstext = request.body.addresstext
+    let postalcode = request.body.postalcode
 
     let createRestaurantRecord = (restid) => {
         let options = {
@@ -200,7 +203,10 @@ const createRestaurant = (request, response) => {
                 restaurantid: restid, 
                 restaurantname: restName, 
                 minorder: minOrder, 
-                deliveryfee: deliveryFee
+                deliveryfee: deliveryFee,
+                area: area,
+                addresstext: addresstext,
+                postalcode: postalcode
             }
         }
 

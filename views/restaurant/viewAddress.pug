@@ -1,0 +1,46 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Your Address
+    div.Message
+      h2(text-align: center) Current Address
+      table
+        tr
+          th= 'Area'
+          th= 'Address'
+          th= 'Postal Code'
+        tr
+          td= area
+          td= addresstext
+          td= postalcode
+
+    div.Message
+      h2(text-align: center) Edit Address
+      br
+      form(action='/restaurant/editAddress' method='POST')
+
+        h3 Select area
+        <br>
+          select(name='area', id='area')
+            each area in ['north', 'south', 'east', 'west', 'central']
+              option= area
+        <br>
+
+        h3 Enter new address
+        <br>
+          input(type="plaintext" name="address" id="address" class="form-control" placeholder="Address" required autofocus)  
+        <br>
+
+        h3 Enter new postal code
+        <br>
+          input(type="plaintext" name="postalcode" id="postalcode" class="form-control" placeholder="Postal Code" required autofocus)  
+        
+        <br>
+        div.NavButton
+          input(type='submit', value="Submit") 
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/restaurant/home")
+                div.NavButton Back
