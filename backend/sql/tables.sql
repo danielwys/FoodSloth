@@ -23,7 +23,9 @@ create table Restaurants (
     restaurantName      text not null,
     minOrder            integer not null default 10,
     deliveryFee         integer not null default 5,
-    foreign key (restaurantId) references Users (uid)
+    foreign key (restaurantId) references Users (uid),
+    constraint minOrderAmt check (minOrder >= 0),
+    constraint deliveryFeeAmt check (deliveryFee >= 0)
 );
 
 create table Riders (
@@ -31,7 +33,8 @@ create table Riders (
     salary              money not null default 500,
     partTime            boolean not null,
     rating              integer,
-    foreign key (riderId) references Users (uid)
+    foreign key (riderId) references Users (uid),
+    constraint salaryAmt check (salary >= '$0')
 );
 
 create table MWS (
@@ -53,6 +56,8 @@ create table WWS (
     constraint day_working check (day in (1,2,3,4,5,6,7)),
     constraint check_start check (hourStart between 10 and 22),
     constraint check_end check (hourEnd between 10 and 22),
+    constraint durationCheck check (hourEnd - hourStart < 4), 
+    constraint startCheck check (hourStart < hourEnd),
     foreign key (riderId) references Riders (riderId)
 );
 
@@ -63,7 +68,9 @@ create table Menu (
     price               money not null,
     maxAvailable        integer not null,
     category            text not null,
-    foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
+    foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade,
+    constraint priceAmt check (price >= '$0'),
+    constraint maxAvailableAmt check (maxAvailable >= 0)
 );
 
 create table custPromo (
@@ -71,7 +78,10 @@ create table custPromo (
     amount          integer,
     maxUses         integer not null default 3,
     startDate       date not null,
-    endDate         date
+    endDate         date,
+    constraint amountAmt check (amount > 0),
+    constraint maxUsesAmt check (maxUses > 0),
+    constraint dateCheck check (startDate < endDate)
 );
 
 --amount: discount in percentage
@@ -82,7 +92,10 @@ create table restPromo (
     minSpend        money,
     startDate       date not null,
     endDate         date,
-    foreign key (restaurantId) references Restaurants (restaurantId)
+    foreign key (restaurantId) references Restaurants (restaurantId),
+    constraint amountAmt check (amount > 0),
+    constraint minSpendAmt check (minSpend > '$0'),
+    constraint dateCheck check (startDate < endDate)
 );
 
 create table Addresses (
@@ -114,7 +127,8 @@ create table Orders (
     foreign key (custPromo) references CustPromo(code),
     foreign key (restPromo) references RestPromo(code),
     constraint cd_lower check ((creditCardNumber) > 999999999999999),
-    constraint cd_upper check ((creditCardNumber) < 10000000000000000)
+    constraint cd_upper check ((creditCardNumber) < 10000000000000000),
+    constraint deliveryFeeAmt check (deliveryFee >= '$0')
 );
 
 create table OrderTimes (
@@ -139,7 +153,8 @@ create table Reviews (
     rating              integer not null,
     review              text,
     createdAt           timestamptz not null default now(),
-    foreign key (orderId) references Orders (orderId)
+    foreign key (orderId) references Orders (orderId),
+    constraint ratingAmt check (rating in (1,2,3,4,5))
 );
 
 
