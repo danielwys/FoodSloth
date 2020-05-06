@@ -114,7 +114,6 @@ app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
 
 //select address
-app.post("/selectAddress", orders.confirmOrder)
 app.get("/customer/selectAddress", orders.selectAddress)
 app.get("/customer/addAddress", orders.openAddAddress)
 app.post("/addAddress", orders.addAddress)
