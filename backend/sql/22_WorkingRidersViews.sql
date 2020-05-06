@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS WorkingRiders;
+DROP VIEW IF EXISTS WorkingParttimeRiders;
 
 CREATE VIEW WorkingParttimeRiders AS (
     SELECT W.riderid FROM wws W

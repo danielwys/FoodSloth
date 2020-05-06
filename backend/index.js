@@ -45,6 +45,8 @@ app.post('/register', db.register)
 app.get('/users', db.getAllUsers)
 app.get('/users/:uid', db.getUserById) // returns name, username and type
 app.put('/users/:uid', db.updateUser)
+app.get('/users/address/:uid', db.getAddress)
+app.post('/users/address/update', db.updateAddress)
 
 /**
  * Customers

@@ -182,8 +182,9 @@ app.get("/restaurant/favourites/:month", (req, res) => {
 
 //profile
 app.get("/restaurant/profile", restaurants.showProfile)
-app.post("/editProfile", restaurants.editProfile)
-
+app.post("/restaurant/editProfile", restaurants.editProfile)
+app.get("/restaurant/address", restaurants.showAddress)
+app.post("/restaurant/editAddress", restaurants.editAddress)
 
 /**
  * Riders

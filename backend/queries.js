@@ -82,6 +82,31 @@ const updateUser = (request, response) => {
     })
 }
 
+const getAddress = (request, response) => {
+    const uid = parseInt(request.params.uid)
+
+    pool.query('SELECT * FROM addresses WHERE uid = $1', [uid], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).send(results.rows)
+    })
+}
+
+const updateAddress = (request, response) => {
+    const { uid, area, addresstext, postalcode } = request.body
+
+    pool.query('UPDATE addresses SET area = $1, addresstext = $2, postalcode = $3 WHERE uid = $4', 
+    [area, addresstext, postalcode, uid], (error, results) => {
+            if (error) {
+                response.status(500).send(error.message)
+                return
+            }
+            response.status(200).send("success")
+        })
+}
+
 /**
  * Customers
  */
@@ -93,7 +118,7 @@ const createCustomer = (request, response) => {
         [cid, cname, creditcardnumber],
         (error, results) => {
             if (error) {
-                response.status(500).send("An error has occured.")
+                response.status(500).send(error.message)
                 return
             }
             response.status(200).send("success")
@@ -943,6 +968,8 @@ module.exports = {
     getAllUsers,
     getUserById,
     updateUser,
+    getAddress,
+    updateAddress,
 
     createCustomer,
     getCustomerInfo,
