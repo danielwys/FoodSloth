@@ -1,0 +1,41 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Here's a Summary of All Completed Orders!
+    div.Message
+      h2(text-align: center) Past Orders
+      table
+        tr
+          th= 'Order Code'
+          th= 'Delivered Date'
+          th= 'Restaurant'
+          th= 'Rider'
+          th= 'Items'
+          th= 'Total Cost'
+          th= 'Review Restaurant?'
+          th= 'Rate Rider?'
+        tr
+          for item in orders
+            tr.odd(role='row')
+              td #{item.orderid}
+              td #{item.date}
+              td #{item.restaurantname}
+              td #{item.rider}
+              th
+                div.NavButton(text-align: center)
+                    a(href="/customer/pastItems/" + item.orderid)
+                        div.NavButton View
+              td #{item.totalcost}
+              th
+                div.NavButton(text-align: center)
+                    a(href="/customer/review/" + item.orderid)
+                        div.NavButton Review
+              th
+                div.NavButton(text-align: center)
+                    a(href="/customer/rate/" + item.orderid)
+                        div.NavButton Rate
+      <br>
+        div.NavButton(text-align: center)
+            a(href="/customer/home")
+                div.NavButton Back

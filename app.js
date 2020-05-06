@@ -139,6 +139,12 @@ app.post("/createOrder", orders.createOrder)
  * Customers
  */
 app.get("/customer/profile", customers.getProfile)
+app.get("/customer/pastorders", customers.getPastOrders)
+app.get("/customer/review/:oid", (req, res) => {
+    const oid = parseInt(req.params.oid);
+    res.render("customer/createReview", { oid: JSON.stringify(oid) })
+})
+app.post("/createReview", customers.createReview)
 
 /**
  * Restaurants

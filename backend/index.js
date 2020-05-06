@@ -58,6 +58,7 @@ app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.post('/customers/:uid', db.updateCreditCard)
 app.post('/customers/adress/add/:uid', db.customerAddAddress)
 app.post('/customers/reward/:uid', db.updateCustomerReward)
+app.get('/customer/pastorders/:uid', db.getPastOrders)
 
 /**
  * Restaurants

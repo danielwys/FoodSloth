@@ -223,6 +223,25 @@ const customerAddAddress = (request, response) => {
         })
 }
 
+const getPastOrders = (request, response) => {
+    const cid = parseInt(request.params.uid)
+
+    var query = (SQL
+        `SELECT C.orderid, date_trunc('day', C.timeRiderDelivered)::date as date, C.rider, SUM(C.price * C.quantity) as totalCost, R.restaurantname
+        FROM CompletedOrders C inner join Restaurants R using (restaurantid)
+        WHERE C.cid = $1
+        GROUP BY C.orderid, date, C.rider, R.restaurantname;`
+        )
+
+    pool.query(query, [cid], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 /**
  * Restaurants
  */
@@ -596,13 +615,14 @@ const getReviews = (request, response) => {
 }
 
 const addReview = (request, response) => {
-    const { username, password, type } = request.body
+    const { orderId, rating, review } = request.body
 
-    pool.query('', (error, results) => {
+    pool.query('INSERT INTO reviews (orderid, rating, review) VALUES ($1, $2, $3)',
+    [orderId, rating, review], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send(error.message)
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
@@ -1086,6 +1106,7 @@ module.exports = {
     updateCreditCard,
     updateCustomerReward,
     customerAddAddress,
+    getPastOrders,
 
     getRestaurants,
     createRestaurant,
