@@ -77,7 +77,7 @@ const createMenuItem = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
         if(res.statusCode == 500) {
-            response.render("menuError",  {errorMessage: body })
+            response.render("duplicateError",  {errorMessage: body })
         } else if (res.statusCode == 200) {
             response.redirect(302, "/restaurant/home")
         } else {
@@ -110,7 +110,7 @@ const editMenuItem = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
         if(res.statusCode == 500) {
-            response.render("menuError",  {errorMessage: body })
+            response.render("duplicateError",  {errorMessage: body })
         } else if (res.statusCode == 200) {
             response.redirect(302, "/restaurant/home")
         } else {
@@ -216,6 +216,41 @@ const editProfile = (request, response) => {
     })
 }
 
+const createPromo = (request, response) => {
+    let code = request.body.code
+    let discount = request.body.discount
+    let minSpend = request.body.minSpend
+    let startDate = request.body.startDate
+    let endDate = request.body.endDate
+    let restaurantid = Shared.currentUserID
+
+    let options = {
+        url: Constants.serverURL + 'restPromo', 
+        form: {
+            restaurantid: restaurantid, 
+            code: code, 
+            amount: discount, 
+            minSpend: minSpend,
+            startDate: startDate,
+            endDate: endDate
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("duplicateError",  {errorMessage: "promo code already exists! Try again?" })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/restaurant/home")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     showRestaurantHome,
     createMenuItem,
@@ -223,5 +258,6 @@ module.exports = {
     editMenuItem,
     showRestaurantSummary,
     showProfile,
-    editProfile
+    editProfile,
+    createPromo
 }

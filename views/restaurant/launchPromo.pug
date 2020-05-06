@@ -1,0 +1,29 @@
+extends ../layout
+
+block layout-content
+  div.View.RestaurantView
+
+    div.Banner
+      h1 Howdy Restaurant Staff! 
+      h1 I need to know more about this promo...
+
+    div.form-signin
+      form(action='/createPromo' method="POST")
+        input(type="plaintext" name="code" id="inputcode" class="form-control" placeholder="Promo Code" required autofocus)  
+        <br>
+        input(type="number" name="discount" id="inputdiscount" class="form-control" placeholder="Discount Percentage" required autofocus)  
+        <br>
+        input(type="number" name="minSpend" id="minspend" class="form-control" placeholder="Minimum Spend" required autofocus)  
+        <br>
+        input(type="date" name="startDate" id="start" class="form-control" placeholder="Availability" required autofocus)  
+        <br>
+        input(type="date" name="endDate" id="end" class="form-control" placeholder="Cuisine" required autofocus)
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Submit")
+    <br>
+
+    div.NavButtons
+      a(href="/restaurant/home")
+        div.NavButton Back

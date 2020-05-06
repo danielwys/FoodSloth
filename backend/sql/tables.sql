@@ -74,10 +74,11 @@ create table custPromo (
     endDate         date
 );
 
+--amount: discount in percentage
 create table restPromo (
     code            varchar(50) primary key,
     restaurantId    integer not null,
-    amount          integer,
+    amount          integer, 
     minSpend        money,
     startDate       date not null,
     endDate         date,
