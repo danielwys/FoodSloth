@@ -141,6 +141,10 @@ app.post("/payment", (req, res) => {
     })
 });
 
+/**
+ * Customers
+ */
+app.get("/customer/profile", customers.getProfile)
 
 /**
  * Restaurants
