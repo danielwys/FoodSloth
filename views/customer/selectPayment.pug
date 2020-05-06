@@ -18,21 +18,20 @@ block layout-content
                     tr
                         td=rec.item
                         td=rec.quantity
-        a(href="/editOrder")
-            div.EditButton Edit
-        <br>
-        h2 Where would you like your food delivered?
+        h4 Deliver to: #{Address}
+        h2 How would you like to pay?
         <br>
         <br>
         div.dropdown
-          form(action='/selectPayment' method="POST")
-            label(for='address') Address
-            select(name='dropDown3', id='')
-              each add in Address
-                option=add.addresstext+' S'+add.postalcode
+          form(action='/confirmOrder' method="POST")
+            label(for='creditcardnumber') Payment method
+            select(name='dropDown4', id='')
+              each ccn in creditcardnumber
+                option=ccn.creditcardnumber
+              option='Cash payment'
               input(type='submit', value='Select')
-        a(href="/customer/addAddress")
-          div.NavButton Add Address
+        a(href="/customer/updateCreditcardnumber")
+          div.NavButton Update Credit Card Number
     div.NavButtons  
-      a(href="/customer/selectFoodItems")
+      a(href="/customer/selectAddress")
         div.NavButton Back

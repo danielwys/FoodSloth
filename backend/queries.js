@@ -153,6 +153,7 @@ const getCustomerAddress = (request, response) => {
 }
 
 const updateCreditCard = (request, response) => {
+    console.log("Reached here")
     const cid = parseInt(request.params.uid)
     const { cardNumber } = request.body
 
@@ -165,6 +166,21 @@ const updateCreditCard = (request, response) => {
             }
             // do something with response
             response.status(200).send(`User credit card modified with ID: ${cid}`)
+        })
+}
+
+const customerAddAddress = (request, response) => {
+    const { uid, area, addressText, postalCode } = request.body
+
+    pool.query('INSERT INTO Addresses(uid, area, addressText, postalCode) VALUES ($1, $2, $3, $4)', 
+        [parseInt(uid), area, addressText, parseInt(postalCode)],
+        (error, results) => {
+            if (error) {
+                response.status(500).send(error.message)
+                return
+            }
+            response.status(200).send("success")
+            
         })
 }
 
@@ -934,6 +950,7 @@ module.exports = {
     getCustomerAddress,
     getCustomerOrders,
     updateCreditCard,
+    customerAddAddress,
 
     getRestaurants,
     createRestaurant,
