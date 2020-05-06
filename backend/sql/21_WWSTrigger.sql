@@ -1,29 +1,3 @@
-CREATE OR REPLACE FUNCTION check_interval()
-RETURNS TRIGGER AS $$
-DECLARE
-	starth	integer;
-	endh	integer;
-BEGIN
-	IF NEW.hourstart > NEW.hourend THEN
-		RAISE EXCEPTION 'The start time must be later than the end time,';
-		RETURN NULL;
-	END IF;
-	IF NEW.hourend - NEW.hourstart >= 5 THEN
-		RAISE EXCEPTION 'The max shift interval is 4 hours.';
-		RETURN NULL;
-	END IF;
-	RETURN NEW;
-END; 
-$$ LANGUAGE PLPGSQL;
-
-DROP TRIGGER IF EXISTS check_interval_trigger on WWS CASCADE;
-CREATE TRIGGER check_interval_trigger
-	BEFORE INSERT OR UPDATE
-	ON WWS
-	FOR EACH ROW
-	EXECUTE FUNCTION check_interval();
-
-
 CREATE OR REPLACE FUNCTION check_minimum_hours()
 RETURNS TRIGGER AS $$
 DECLARE
