@@ -29,7 +29,7 @@ block layout-content
             label(for='address') Address
             select(name='dropDown3', id='')
               each add in Address
-                option=add.addresstext+' S'+add.postalcode
+                option='('+add.aid+') '+add.addresstext+' S'+add.postalcode
               input(type='submit', value='Select')
         a(href="/customer/addAddress")
           div.NavButton Add Address
