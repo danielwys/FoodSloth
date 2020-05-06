@@ -147,7 +147,7 @@ create table OrderItems (
     quantity            integer not null default 1,
     primary key(orderId, foodId),
     foreign key (orderId) references Orders (orderId),
-    constraint quantityAmt check (quantity > '$0')
+    constraint quantityAmt check (quantity > '0')
 );
 
 create table Reviews (

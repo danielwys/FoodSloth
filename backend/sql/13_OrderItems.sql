@@ -58,6 +58,9 @@ insert into OrderItems (orderId, foodId) values (19, 7);
 insert into OrderItems (orderId, foodId) values (20, 8);
 insert into OrderItems (orderId, foodId) values (20, 9);
 insert into OrderItems (orderId, foodId) values (20, 10);
-insert into OrderItems (orderId, foodId) values (21, 44);
-insert into OrderItems (orderId, foodId) values (21, 37);
+insert into OrderItems (orderId, foodId, quantity) values (21, 44, 5);
+insert into OrderItems (orderId, foodId, quantity) values (21, 37, 4);
+insert into OrderItems (orderId, foodId, quantity) values (21, 42, 3);
+insert into OrderItems (orderId, foodId, quantity) values (21, 38, 2);
+insert into OrderItems (orderId, foodId, quantity) values (21, 55, 1);
 
