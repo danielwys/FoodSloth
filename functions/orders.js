@@ -63,26 +63,42 @@ let selectItems = (request, response) => {
         let item = request.body.dropDown1
         let quant = request.body.dropDown2
         
-        var cont = 0
-        for (const val of orderedItems) {
-            if (item.localeCompare(val.item) == 0) {
-                //item already exists in order list
-                val.quantity = parseInt(val.quantity) + parseInt(quant)
-                cont = 1
-                break
-            }
+        Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/check/' + item, 
+        (error, res, body) => {
+        if (error) {
+            res.render("error", Errors.backendRequestError)
+            return
         }
+        let num = JSON.parse(body)[0]
+        let ans = num.maxavailable - quant
 
-        if (cont == 0) {
-            Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
-            (error, res, body) => {
-                let price = JSON.parse(body)[0].price
-                if (quant != 0) {
-                    let newItem = {item: item, price: price, quantity: quant}
-                    orderedItems.push(newItem)
+            var cont = 0
+            for (const val of orderedItems) {
+                if (item.localeCompare(val.item) == 0) {
+                    //item already exists in order list
+                    quant = parseInt(val.quantity) + parseInt(quant)
+                    if (ans < 0) {
+
+                    } else {
+                        val.quantity = quant
+                        cont = 1
+                        break
+                    }
                 }
-            })
-        }
+            }
+
+
+            if (cont == 0 && ans >= 0) {
+                Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
+                (error, res, body) => {
+                    let price = JSON.parse(body)[0].price
+                    if (quant != 0) {
+                        let newItem = {item: item, price: price, quantity: quant}
+                        orderedItems.push(newItem)
+                    }
+                })
+            }
+        })
     }
 
     Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
@@ -102,23 +118,9 @@ let selectItems = (request, response) => {
     })
 }
 
-function confirmOrder(orderedItems) {
-    let options =  {
-        url: Constants.serverURL + 'menu/show/' + currentRestaurant + '/check',
-        form: {
-            items: orderedItems
-        }
-    }
-    Request.post(options, (error, res, body) => {
-        //console.log('reached here')
-        if (error) {
-            response.render("error", Errors.backendRequestError)
-            return
-        }
-        
-        //console.log(JSON.parse(body))
-    })
+function aboveMaxAvailable(item, quant) {
 }
+
 
 let selectAddress = (request, response) => {
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
@@ -387,7 +389,6 @@ function resetOrder() {
 module.exports = { 
     selectRestaurant,
     selectItems,
-    confirmOrder,
     selectAddress,
     openAddAddress,
     addAddress,

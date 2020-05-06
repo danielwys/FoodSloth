@@ -484,32 +484,16 @@ const getMenuForRestaurant = (request, response) => {
 
 const checkItemAvail = (request, response) => {
     const restaurantname = request.params.restaurantname
-    const orderedItems = request.body.items
+    const item = request.params.item
 
-    let outOfBounds = []
-
-    for (const ord in orderedItems) {
-        let item = orderedItems[ord].item
-        let quant = orderedItems[ord].quantity
-        var query = (SQL `
-        SELECT item, maxavailable 
-        FROM orderedItems I, menu M, restaurants R
-        WHERE R.restaurantname = ${restaurantname}
-        AND R.restaurantId = M.restaurantId
-        AND ${item} = M.foodname
-        AND ${quant} > M.maxavailable
-        `)
-
-        pool.query(query, (error, results) => {
-            if (error) {
-                response.status(500).send("An error has occured")
-                return
-            }
-            outOfBounds.push(orderedItems[ord])
-        })
-    }
-
-    response.status(200).json(outOfBounds.rows)
+    pool.query('SELECT maxavailable FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1 AND M.foodname = $2', 
+        [restaurantname, item], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
 
 }
 

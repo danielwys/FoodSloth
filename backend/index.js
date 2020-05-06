@@ -92,7 +92,7 @@ app.post('/rider/wws/delete', db.deleteParttimeSlot)
 app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & maxavailability
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
-app.post('/menu/show/:restaurantname/check', db.checkItemAvail)
+app.get('/menu/show/:restaurantname/check/:item', db.checkItemAvail)
 app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
