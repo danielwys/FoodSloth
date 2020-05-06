@@ -324,10 +324,8 @@ let createOrder = (request, response) => {
         if (body == "[]") {
             response.render("error", Errors.backendRequestError)
         } else {
-            console.log(body)
-            let oid = JSON.parse(body)[0]
-            //add fooditem
-            addFoodItems(oid.orderid)
+            let oid = JSON.parse(body)[0].orderid
+            addFoodItems(oid)
             rewardUser()
             resetOrder()
             response.redirect(302, "/customer/home")
@@ -338,16 +336,26 @@ let createOrder = (request, response) => {
 
 function addFoodItems(oid) {
     for (ord in orderedItems) {
-        Request.post(Constants.serverURL + 'orderItems/' + oid,
-        { item: orderedItems[ord].item, 
-            quantity: orderedItems[ord].quantity
-        }, 
-        (error, res, body) => {
-            if (error) {
-                response.render("error", Errors.backendRequestError)
-            }
-            console.log(ord+'added')
+        let foodname = orderedItems[ord].item
+        let quantity = orderedItems[ord].quantity
+        Request(Constants.serverURL + 'orderItems/' + restaurantId + '/' + foodname, 
+            (error, res, body) => {
+                let foodid = JSON.parse(body)[0].foodid
+            
+                let options = {
+                    url: Constants.serverURL + 'orderItems/' + oid, 
+                    form: {
+                        foodid: foodid, 
+                        quantity: quantity
+                    }
+                }
+                Request.post(options, (error, res, body) => {
+                    if (error) {
+                        response.render("error", Errors.backendRequestError)
+                    }
+                })
         })
+
     }
 }
 

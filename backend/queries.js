@@ -773,20 +773,31 @@ const updateRestaurantPromo = (request, response) => {
  * Order Items
  */
 
-const addOrderItems = (request, response) => {
-    const orderId = parseInt(request.params.orderId)
-    let foodname = request.body.item
-    let quantity = request.body.quantity
-    let foodid = -1
-
-    pool.query('SELECT foodid FROM Orders O, Menu M WHERE O.restaurantId = M.restaurantId AND M.foodname = $1',
-    [foodname], (error, results) => {
+const getOrderItemInfo = (request, response) => {
+    const restaurantId = request.params.restaurantId
+    const fooditemname = request.params.foodname
+    pool.query('SELECT foodId FROM Menu M, Restaurants R WHERE R.restaurantId = M.restaurantId AND R.restaurantId = $1 AND M.foodname = $2', 
+        [restaurantId, fooditemname], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return
         }
-        console.log(results)
-        foodid = results[0]
+        response.status(200).json(results.rows)
+    })
+}
+
+const addOrderItems = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    let foodId = parseInt(request.body.foodid)
+    let quantity = parseInt(request.body.quantity)
+
+    pool.query('INSERT INTO OrderItems (orderId, foodId, quantity) VALUES ($1, $2, $3)',
+        [orderId, foodId, quantity], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(`success`)
     })
 }
 
@@ -1105,6 +1116,7 @@ module.exports = {
     addRestaurantPromo,
     updateRestaurantPromo,
 
+    getOrderItemInfo,
     addOrderItems,
 
     getOrderTimes,
