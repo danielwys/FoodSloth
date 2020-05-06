@@ -153,18 +153,17 @@ const getCustomerAddress = (request, response) => {
 }
 
 const updateCreditCard = (request, response) => {
-    console.log("Reached here")
     const cid = parseInt(request.params.uid)
-    const { cardNumber } = request.body
+    const cardNumber = parseInt(request.body.cardNumber)
 
     pool.query(
-        'UPDATE customers SET creditCardNumber = $1 WHERE cid = $2',
+        'UPDATE Customers SET creditCardNumber = $1 WHERE cid = $2',
         [cardNumber, cid],
         (error, results) => {
             if (error) {
-                throw error
+                response.status(500).send(error.message)
+                return
             }
-            // do something with response
             response.status(200).send(`User credit card modified with ID: ${cid}`)
         })
 }
