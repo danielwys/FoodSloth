@@ -126,6 +126,9 @@ app.post("/editOrder", orders.deleteItem)
 //app.post("/selectPayment", orders.selectPayment)
 app.get("/customer/selectPayment", orders.selectPayment)
 app.post("/selectPayment", orders.selectPayment)
+app.get("/customer/updateCreditcardnumber", orders.openUpdateCreditcardnumber)
+app.post("/updateCreditcardnumber", orders.updateCreditcardnumber)
+
 
 
 app.post("/payment", (req, res) => {

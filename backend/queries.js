@@ -153,6 +153,7 @@ const getCustomerAddress = (request, response) => {
 }
 
 const updateCreditCard = (request, response) => {
+    console.log("Reached here")
     const cid = parseInt(request.params.uid)
     const { cardNumber } = request.body
 

@@ -172,6 +172,35 @@ let selectPayment = (request, response) => {
     })
 }
 
+let openUpdateCreditcardnumber = (request, response) => {
+    response.render("customer/updateCreditcardnumber")
+}
+
+let updateCreditcardnumber = (request, response) => {
+    let cardNumber = request.body.cardNumber
+
+    let options = {
+        url: Constants.serverURL + 'customers/' + Shared.currentUserID, 
+        form: {
+            cardNumber: cardNumber
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("duplicateError",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/selectPayment")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 let editOrder = (request, response) => {
     response.render("customer/editOrder", {
         Restaurant: currentRestaurant,
@@ -197,6 +226,8 @@ module.exports = {
     openAddAddress,
     addAddress,
     selectPayment,
+    openUpdateCreditcardnumber,
+    updateCreditcardnumber,
     editOrder,
     deleteItem
 }
