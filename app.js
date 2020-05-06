@@ -115,6 +115,11 @@ app.get("/customer/selectAddress", orders.selectAddress)
 app.get("/editOrder", orders.editOrder)
 app.post("/editOrder", orders.deleteItem)
 
+//app.post("/selectPayment", orders.selectPayment)
+app.get("customer/selectPayment", orders.selectPayment)
+app.post("/selectPayment", orders.selectPayment)
+
+
 app.post("/payment", (req, res) => {
     deliveryAddress = req.body.dropDown3
     res.render("user/payment", {

@@ -7,6 +7,7 @@ const Errors = require('./error.js')
 let currentRestaurantList = []
 let currentRestaurant = ""
 let orderedItems = []
+let address = ""
 
 let getAllOrders = (request, response) => {
     Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
@@ -99,13 +100,13 @@ function confirmOrder(orderedItems) {
         }
     }
     Request.post(options, (error, res, body) => {
-        console.log('reached here')
+        //console.log('reached here')
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
         }
         
-        console.log(JSON.parse(body))
+        //console.log(JSON.parse(body))
     })
 }
 
@@ -118,6 +119,21 @@ let selectAddress = (request, response) => {
         }
         let address = JSON.parse(body)
         response.render("customer/selectAddress", {orderedItems: orderedItems, Address: address})    
+    })
+}
+
+
+let selectPayment = (request, response) => {
+    address = request.body.dropDown3
+    //console.log(address)
+    Request(Constants.serverURL + 'customers/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        let creditcards = JSON.parse(body)
+        //console.log(creditcards)
+        response.render("customer/selectPayment", {orderedItems: orderedItems, Address: address, creditcardnumber: creditcards})    
     })
 }
 
@@ -143,6 +159,7 @@ module.exports = {
     selectItems,
     confirmOrder,
     selectAddress,
+    selectPayment,
     editOrder,
     deleteItem
 }
