@@ -105,6 +105,7 @@ app.delete('/menu/:foodId', db.deleteMenuItem)
  */
 app.get('/reviews/:uid', db.getReviews)
 app.post('/reviews/:uid', db.addReview)
+app.post('/ratings/:uid', db.addRating)
 
 /**
  * Orders

@@ -12,13 +12,11 @@ block layout-content
         var oid = !{oid};
         
     div.form-signin
-      form(action='/createReview' method="POST")
+      form(action='/createRating' method="POST")
       
         input(type="number" name="orderid" id="inputReview" class="form-control" placeholder= '#{oid}' value='#{oid}' required autofocus)  
         <br>
         input(type="number" name="rating" id="inputReview" class="form-control" placeholder="out of five stars" required autofocus)  
-        <br>
-        input(type="text" name="review" id="inputReview" class="form-control" placeholder="Review" required autofocus)  
         <br>
         <br>
         div.NavButton
