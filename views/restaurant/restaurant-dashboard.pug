@@ -19,15 +19,21 @@ block layout-content
               td.dt-body-right.sorting_1 #{item.price}
               td #{item.maxavailable}
       <br>
-      div.NavButton(text-align: center)
+      div.NavButtons
         a(href="/restaurant/addMenu")
-          div.NavButton Add New Menu item!
-      <br>
-
-      div.NavButton(text-align: center)
+            div.NavButton Add New Menu item!
         a(href="/restaurant/editMenu")
-          div.NavButton Edit Menu Item!
+            div.NavButton Edit Menu Item!
 
+    <br>
+    div.Message
+      h2(text-align: center) Launch a promotional campaign!
+      <br>
+      div.NavButtons
+        a(href="/restaurant/launchPromo")
+          div.NavButton Launch Promo
+        a(href="/restaurant/viewPromos")
+          div.NavButton View Current Promos
     <br>
     div.Message
       h2(text-align: center) View Monthly Summary!

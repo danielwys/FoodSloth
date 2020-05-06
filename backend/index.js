@@ -118,6 +118,7 @@ app.put('/custPromo/:code', db.updateCustomerPromo)
  * Restaurant Promos
  */
 app.get('/restPromo/:code&:uid', db.checkRestaurantPromoEligibility)
+app.get('/restaurant/currentpromos/:uid', db.getCurrentRestPromos)
 app.post('/restPromo', db.addRestaurantPromo)
 app.put('/restPromo/:code', db.updateRestaurantPromo)
 
