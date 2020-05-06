@@ -238,16 +238,28 @@ const getRestaurants = (request, response) => {
 }
 
 const createRestaurant = (request, response) => {
-    const { restaurantid, restaurantname, minorder, deliveryfee } = request.body
+    const { restaurantid, restaurantname, minorder, deliveryfee, area, addresstext, postalcode } = request.body
 
     pool.query('INSERT INTO Restaurants (restaurantid, restaurantname, minorder, deliveryfee) VALUES ($1, $2, $3, $4)',
         [restaurantid, restaurantname, minorder, deliveryfee],
         (error, results) => {
             if (error) {
+                console.log("fail1")
+                console.log(error)
                 response.status(500).send("An error has occured.")
                 return
             }
-            response.status(200).send("success")
+
+            pool.query('INSERT INTO Addresses (uid, area, addresstext, postalcode) VALUES($1, $2, $3, $4)', 
+            [restaurantid, area, addresstext, postalcode], 
+            (error, results) => {
+                if (error) {
+                    console.log("fail2")
+                    console.log(error)
+                    response.status(500).send("An error has occured.")
+                }
+                response.status(200).send("success")
+            })
         })
 }
 

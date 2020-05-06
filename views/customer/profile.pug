@@ -1,0 +1,34 @@
+extends ../layout
+
+block layout-content
+  div.View.RestaurantView
+    h1.Banner Profile!
+    div.Message
+      div.Title
+        h2 Your Profile!
+        table
+            tr
+              th= 'Reward Points'
+              th= 'Credit Card Number'
+            tr
+              td= rewardPoints
+              td= creditCardNo
+
+    <br>
+    div.Message
+      div.Title
+        h2 Edit profile?
+        <br>
+        form(action='/customer/editCreditCardNo' method='POST')
+
+          h3 Enter new card number
+          <br>
+            input(type="plaintext" name="creditcardno" id="creditcardno" class="form-control" placeholder="Credit Card Number" required autofocus)  
+          <br>
+
+          div.NavButton
+            input(type='submit', value="Submit") 
+
+    div.NavButtons  
+      a(href="/customer/home")
+        div.NavButton Back
