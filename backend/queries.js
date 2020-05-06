@@ -548,9 +548,23 @@ const updateMenuItem = (request, response) => {
                 response.status(500).send(error.message)
                 return
             } 
-            response.status(200).send(`success`)
-            
+            response.status(200).send(`success`) 
         })
+}
+
+const updateMenuItemQuant = (request, response) => {
+    const foodid = parseInt(request.params.foodid)
+    let quant = parseInt(request.body.quant)
+    let restaurantId = parseInt(restaurantId)
+    pool.query('UPDATE menu SET maxavailable = maxavailable - $1 WHERE foodid = $2 AND restaurantid = $3 RETURNING maxavailable', 
+        [quant, foodid, restaurantId],
+    (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
 }
 
 const deleteMenuItem = (request, response) => {
@@ -1107,6 +1121,7 @@ module.exports = {
     getMenuInfo,
     addMenuItem,
     updateMenuItem,
+    updateMenuItemQuant,
     deleteMenuItem,
 
     getReviews,

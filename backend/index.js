@@ -96,6 +96,7 @@ app.get('/menu/show/:restaurantname/check/:item', db.checkItemAvail)
 app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
+app.put('/menu/quant/:foodid', db.updateMenuItemQuant)
 app.delete('/menu/:foodId', db.deleteMenuItem)
 
 /**

@@ -118,9 +118,6 @@ let selectItems = (request, response) => {
     })
 }
 
-function aboveMaxAvailable(item, quant) {
-}
-
 
 let selectAddress = (request, response) => {
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
@@ -344,11 +341,26 @@ function addFoodItems(oid) {
             (error, res, body) => {
                 let foodid = JSON.parse(body)[0].foodid
             
+                //add Food Item
                 let options = {
                     url: Constants.serverURL + 'orderItems/' + oid, 
                     form: {
                         foodid: foodid, 
                         quantity: quantity
+                    }
+                }
+                Request.post(options, (error, res, body) => {
+                    if (error) {
+                        response.render("error", Errors.backendRequestError)
+                    }
+                })
+
+                //update Food Item maxavailable
+                options = {
+                    url: Constants.serverURL + 'menu/quant/' + foodid,
+                    form: {
+                        quant: quantity,
+                        restaurantId: restaurantId
                     }
                 }
                 Request.post(options, (error, res, body) => {
