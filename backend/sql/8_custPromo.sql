@@ -5,7 +5,7 @@ insert into custPromo (code, amount, maxUses, startDate, endDate) values ('vgnl'
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('dwu', 22, 5, '2020-03-05 14:26:23', '2020-05-02 10:51:54');
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('gecvlfq', 23, 2, '2020-03-08 20:02:58', '2020-04-09 04:32:50');
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('xrk', 23, 2, '2020-03-18 16:00:58', '2020-04-24 09:06:54');
-insert into custPromo (code, amount, maxUses, startDate, endDate) values ('dtykrsaxvo', 7, 2, '2020-05-03 02:37:05', '2020-03-20 05:06:46');
+insert into custPromo (code, amount, maxUses, startDate, endDate) values ('dtykrsaxvo', 7, 2, '2020-03-20 05:06:46', '2020-05-03 02:37:05');
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('jnzc', 6, 2, '2020-03-01 22:07:23', '2020-05-05 07:02:07');
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('ocnzjfe', 22, 3, '2020-03-01 09:45:05', '2020-03-22 14:00:40');
 insert into custPromo (code, amount, maxUses, startDate, endDate) values ('psmot', 22, 3, '2020-04-08 14:22:45', '2020-05-13 10:46:43');

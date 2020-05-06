@@ -21,7 +21,7 @@ insert into WWS (riderId, day, hourStart, hourEnd) values (43, 5, 18, 20);
 insert into WWS (riderId, day, hourStart, hourEnd) values (46, 5, 18, 22);
 
 insert into WWS (riderId, day, hourStart, hourEnd) values (47, 6, 12, 16);
-insert into WWS (riderId, day, hourStart, hourEnd) values (38, 6, 15, 20);
+insert into WWS (riderId, day, hourStart, hourEnd) values (38, 6, 16, 20);
 insert into WWS (riderId, day, hourStart, hourEnd) values (39, 6, 16, 18);
 insert into WWS (riderId, day, hourStart, hourEnd) values (41, 6, 17, 20);
 insert into WWS (riderId, day, hourStart, hourEnd) values (43, 6, 19, 22);

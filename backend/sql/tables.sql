@@ -56,7 +56,7 @@ create table WWS (
     constraint day_working check (day in (1,2,3,4,5,6,7)),
     constraint check_start check (hourStart between 10 and 22),
     constraint check_end check (hourEnd between 10 and 22),
-    constraint durationCheck check (hourEnd - hourStart < 4), 
+    constraint durationCheck check (hourEnd - hourStart <= 4), 
     constraint startCheck check (hourStart < hourEnd),
     foreign key (riderId) references Riders (riderId)
 );
