@@ -58,6 +58,7 @@ app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.post('/customers/:uid', db.updateCreditCard)
 app.post('/customers/adress/add/:uid', db.customerAddAddress)
 app.post('/customers/reward/:uid', db.updateCustomerReward)
+app.get('/customer/pastorders/:uid', db.getPastOrders)
 
 /**
  * Restaurants
@@ -104,6 +105,7 @@ app.delete('/menu/:foodId', db.deleteMenuItem)
  */
 app.get('/reviews/:uid', db.getReviews)
 app.post('/reviews/:uid', db.addReview)
+app.post('/ratings/:uid', db.addRating)
 
 /**
  * Orders
