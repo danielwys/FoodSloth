@@ -1,0 +1,30 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Satisfy your craving!
+    div.Message
+      div.Title
+        h1 Confirm your order
+        h4 with #{Restaurant}
+        <br>
+        <br>
+        table
+            tr
+                td='Item'
+                td='Quantity'
+            tr
+                each rec in orderedItems
+                    tr
+                        td=rec.item
+                        td=rec.quantity
+        h4 Total amount: #{Total}
+        a(href="/customer/addPromo")
+          div.NavButton Apply promo code    
+        h4 Deliver to: #{Address}
+        h4 Payment by: #{Payment}
+      a(href="/createOrder")
+        div.NavButton Place Order
+    div.NavButtons  
+      a(href="/customer/selectPayment")
+        div.NavButton Back

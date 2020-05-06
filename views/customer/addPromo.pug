@@ -1,0 +1,33 @@
+extends ../layout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Satisfy your craving!
+    div.Message
+      div.Title
+        h1 Confirm your order
+        h2 with #{Restaurant}
+        <br>
+        <br>
+        table
+            tr
+                td='Item'
+                td='Quantity'
+            tr
+                each rec in orderedItems
+                    tr
+                        td=rec.item
+                        td=rec.quantity
+        h4 Deliver to: #{Address}
+        h4 Payment by: #{Payment}
+        <br>
+        <br>
+        div.form-signin
+            form(action='/addCustPromo' method="POST")
+                input(type="plaintext" name="code" id="code" class="form-control" placeholder="Promo code" required autofocus)  
+                div.NavButton
+                    input(type='submit', value="Apply")
+
+    div.NavButtons  
+      a(href="/customer/selectPayment")
+        div.NavButton Back

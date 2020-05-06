@@ -66,6 +66,7 @@ app.post('/restaurants/create', db.createRestaurant)
 app.get('/restaurants/:uid', db.getRestaurantInfo) //returns name, min order
 app.put('/restaurants/minorder/:uid', db.updateRestaurantMinOrder)
 app.put('/restaurants/deliveryfee/:uid', db.updateRestaurantDeliveryFee)
+app.get('/restaurants/find/:restaurantname', db.findRestaurant)
 
 /**
  * Riders
@@ -107,13 +108,13 @@ app.post('/reviews/:uid', db.addReview)
  */
 app.get('/orders', db.getOrders)
 app.get('/order/:orderId', db.getOrder)
-app.post('/order', db.createNewOrder) // returns orderId
+app.post('/order/new/:cid', db.createNewOrder) // returns orderId
 app.put('/order/:orderId', db.updateOrderWithRiderInfo)
 
 /**
  * Customer Promos
  */
-app.get('/custPromo/:code&:uid', db.checkCustomerPromoEligibility)
+app.get('/custPromo/:code', db.checkCustomerPromoEligibility)
 app.post('/custPromo', db.addCustomerPromo)
 app.put('/custPromo/:code', db.updateCustomerPromo)
 

@@ -167,7 +167,7 @@ const getCustomerInfo = (request, response) => {
 const getCustomerAddress = (request, response) => {
     const cid = parseInt(request.params.uid)
 
-    pool.query('SELECT addressText, postalCode FROM addresses A WHERE A.uid = $1', [cid],
+    pool.query('SELECT * FROM addresses A WHERE A.uid = $1', [cid],
     (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
@@ -287,8 +287,20 @@ const updateRestaurantDeliveryFee = (request, response) => {
                 response.status(500).send("An error has occured.")
                 return
             }
-            // do something with response
             response.status(200).send(`Restaurant with ID: ${restaurantId} updated delivery fee to ${newDeliveryFee}`)
+        })
+}
+
+const findRestaurant = (request, response) => {
+    const restaurantname = request.params.restaurantname
+
+    pool.query('SELECT * FROM Restaurants WHERE restaurantname = $1', [restaurantname], 
+        (error, results) => {
+            if (error) {
+                response.status(500).send("An error has occured.")
+                return
+            }
+            response.status(200).json(results.rows)
         })
 }
 
@@ -604,13 +616,30 @@ const getOrder = (request, response) => {
 }
 
 const createNewOrder = (request, response) => {
-    const { username, password, type } = request.body
+    const { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, custPromo, restPromo } 
+        = request.body
+    console.log(request.body)
+    let cash = false;
+    if ((request.body.byCash.toLowerCase() === 'true')) {
+        cash = true;
+    }
 
-    pool.query('', (error, results) => {
+    var query = (SQL 
+    `INSERT INTO Orders (cid, restaurantId, riderId, aid, deliveryFee, byCash, 
+        creditCardNumber, custPromo, restPromo) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING orderId`)
+
+
+    pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
+                        creditCardNumber, null, null], 
+        (error, results) => {
+        console.log(results)
         if (error) {
-            throw error
-        }
-        // do something with response
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
     })
 }
 
@@ -630,13 +659,20 @@ const updateOrderWithRiderInfo = (request, response) => {
  */
 
 const checkCustomerPromoEligibility = (request, response) => {
-    const { username, password, type } = request.body
+    const code = request.params.code
 
-    pool.query('', (error, results) => {
+    pool.query('SELECT code, amount, maxUses FROM custPromo WHERE code = $1 AND maxUses > 1', 
+        [code], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send(error.message)
+            return
         }
-        // do something with response
+        if (results == undefined) {
+            response.status(500).send("Promo invalid")
+            return
+        } else {
+            response.status(200).json(results.rows)
+        }
     })
 }
 
@@ -995,6 +1031,7 @@ module.exports = {
     getRestaurantInfo,
     updateRestaurantMinOrder,
     updateRestaurantDeliveryFee,
+    findRestaurant,
 
     createRider,
     getRiderInfo,

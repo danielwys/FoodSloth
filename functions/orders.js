@@ -6,8 +6,12 @@ const Errors = require('./error.js')
 
 let currentRestaurantList = []
 let currentRestaurant = ""
+let restaurantId = -1;
 let orderedItems = []
 let address = ""
+let aid = -1;
+let deliveryFee = -1;
+let byCash = false;
 
 let getAllOrders = (request, response) => {
     Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
@@ -49,6 +53,11 @@ let selectRestaurant = (request, response) => {
 let selectItems = (request, response) => {
     if (request.body.dropDown != null) {
         currentRestaurant = request.body.dropDown
+        Request(Constants.serverURL + 'restaurants/find/' + currentRestaurant, 
+        (err, res, body) => {
+            restaurantId = (JSON.parse(body)[0]).restaurantid
+            deliveryFee = (JSON.parse(body)[0]).deliveryfee
+        })
     } else if (request.body.dropDown1 == undefined || request.body.dropDown2 == undefined) {
     } else {
         let item = request.body.dropDown1
@@ -119,7 +128,11 @@ let selectAddress = (request, response) => {
             return
         }
         let address = JSON.parse(body)
-        response.render("customer/selectAddress", {orderedItems: orderedItems, Address: address})    
+        response.render("customer/selectAddress", {
+            Restaurant: currentRestaurant,
+            orderedItems: orderedItems, 
+            Address: address
+        })    
     })
 }
 
@@ -143,7 +156,6 @@ let addAddress = (request, response) => {
     }
 
     Request.post(options, (error, res, body) => {
-
         if (error) {
             response.render("error", Errors.backendRequestError)
         }
@@ -159,17 +171,37 @@ let addAddress = (request, response) => {
 
 
 let selectPayment = (request, response) => {
-    address = request.body.dropDown3
-    //console.log(address)
+    if (request.body.dropDown3 != undefined) {
+        address = request.body.dropDown3
+    }
+    if (aid == -1) {
+        updateAid(address)
+    }
+
     Request(Constants.serverURL + 'customers/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
         }
         let creditcards = JSON.parse(body)
-        //console.log(creditcards)
-        response.render("customer/selectPayment", {orderedItems: orderedItems, Address: address, creditcardnumber: creditcards})    
+        response.render("customer/selectPayment", {
+            Restaurant: currentRestaurant,
+            orderedItems: orderedItems, 
+            Address: address, 
+            creditcardnumber: creditcards})    
     })
+}
+
+function updateAid(address) {
+    aid = 0;
+    for (var i = 1; i < address.length; i++) {
+        if (address.charAt(i) == ")") {
+            aid = parseInt(aid)
+            break
+        } else {
+            aid += address.charAt(i)
+        }
+    }
 }
 
 let openUpdateCreditcardnumber = (request, response) => {
@@ -218,6 +250,89 @@ let deleteItem = (request, response) => {
     })
 }
 
+let finaliseOrder = (request, response) => {
+    payment = request.body.dropDown4
+    if (payment == "Cash payment") {
+        byCash = true;
+    }
+
+    let total = 0
+
+    for (ord in orderedItems) {
+        let price = (orderedItems[ord].price).slice(1)
+        total += parseFloat(price) * orderedItems[ord].quantity
+    }
+    total = Math.round(total * 100) / 100
+
+    response.render("customer/finaliseOrder", {
+        Restaurant: currentRestaurant,
+        orderedItems: orderedItems, 
+        Total: total, 
+        Address: address, 
+        Payment: payment
+    })
+}
+
+let addPromo = (request, response) => {
+    code = request.body.code
+
+    Request(Constants.serverURL + 'custPromo/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        let custPromo = JSON.parse(body)
+        //console.log(creditcards)
+        response.render("customer/addPromo", {
+            orderedItems: orderedItems, 
+            Total: total, 
+            Address: address, 
+            Payment: payment
+        })    
+    })
+}
+
+let createOrder = (request, response) => {
+
+    if (!byCash) {
+        creditCardNumber = request.payment
+    }
+
+    let options = {
+        url: Constants.serverURL + 'order/new/' + Shared.currentUserID, 
+        form: {
+            cid: Shared.currentUserID,
+            restaurantId: restaurantId,
+            riderId: null,
+            aid: aid,
+            deliveryFee: deliveryFee,
+            byCash: byCash,
+            creditCardNumber: creditCardNumber,
+            custPromo: null,
+            restPromo: null
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        
+        if (body == "[]") {
+            response.render("error", Errors.backendRequestError)
+        } else {
+            console.log(body)
+            let oid = JSON.parse(body)
+            console.log(oid)
+            //add fooditem
+            //completion(uid, type)
+            response.redirect(302, "/customer/home")
+        }
+    })
+
+}
+
+
 module.exports = { 
     selectRestaurant,
     selectItems,
@@ -229,6 +344,9 @@ module.exports = {
     openUpdateCreditcardnumber,
     updateCreditcardnumber,
     editOrder,
-    deleteItem
+    deleteItem,
+    addPromo,
+    finaliseOrder,
+    createOrder
 }
 

@@ -123,23 +123,17 @@ app.post("/addAddress", orders.addAddress)
 app.get("/editOrder", orders.editOrder)
 app.post("/editOrder", orders.deleteItem)
 
-//app.post("/selectPayment", orders.selectPayment)
 app.get("/customer/selectPayment", orders.selectPayment)
 app.post("/selectPayment", orders.selectPayment)
 app.get("/customer/updateCreditcardnumber", orders.openUpdateCreditcardnumber)
 app.post("/updateCreditcardnumber", orders.updateCreditcardnumber)
 
+//finalise order
+app.post("/confirmOrder", orders.finaliseOrder)
+//app.get("customer/finaliseOrder", orders.finaliseOrder)
 
-
-app.post("/payment", (req, res) => {
-    deliveryAddress = req.body.dropDown3
-    res.render("user/payment", {
-        title: "Select Payment",
-        Restaurant: Restaurant,
-        orderItems: orderedItems,
-        deliveryAddress: deliveryAddress,
-    })
-});
+app.get("/createOrder", orders.createOrder)
+app.post("/createOrder", orders.createOrder)
 
 /**
  * Customers
