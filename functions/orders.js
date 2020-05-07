@@ -309,16 +309,19 @@ let finaliseOrder = (request, response) => {
 
     let totalRounded = Math.round(total)
     Request(Constants.serverURL + 'promo/' + code + '/' + totalRounded, (error, res, body) => {
-        console.log('hereee')
-        console.log(body)
         if (error) {
             response.render("error", Errors.backendRequestError)
         }
 
-        promo = (JSON.parse(body)[0].amount)
+        if (body = []) {
+            //incorrect promo code
+            promo = null
+            final = total + deliveryFee
+        } else {
+            promo = (JSON.parse(body)[0].amount)
+            final = total - promo + deliveryFee
+        }
         
-        final = total - promo + deliveryFee
-
         response.render("customer/finaliseOrder", {
             Restaurant: currentRestaurant,
             orderedItems: orderedItems, 
