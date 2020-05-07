@@ -687,26 +687,17 @@ const createNewOrder = (request, response) => {
     })
 }
 
-const updateOrderWithRiderInfo = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
 
 /**
  * Customer Promos
  */
 
-const checkCustomerPromoEligibility = (request, response) => {
+const checkPromoEligibility = (request, response) => {
     const code = request.params.code
+    const total = parseInt(request.params.total)
 
-    pool.query('SELECT code, amount, maxUses FROM custPromo WHERE code = $1 AND maxUses > 1', 
-        [code], (error, results) => {
+    pool.query('SELECT amount FROM Promos WHERE code = $1 AND $2 > minSpend', 
+        [code, total], (error, results) => {
         if (error) {
             response.status(500).send(error.message)
             return
@@ -1046,15 +1037,22 @@ const getRestaurantPromoSummary = (request, response) => {
     
     var query = (SQL
                 `WITH promoSummary AS (
-                    select P.code, P.endDate - P.startDate as duration, COUNT(distinct C.OrderId) as totalOrders
+                    select P.code, COUNT(distinct C.OrderId) as totalOrders
                     from completedOrders C 
-                    inner join Promos P on (C.promoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
-                    where C.restaurantId = $1
-                    group by P.code, P.endDate, P.startDate
+                    inner join Promos P on (C.promoCode = P.code)
+                    where C.restaurantId = 26
+                    group by P.code
                     order by P.endDate
+                ), endedPromos AS (
+                    select code, endDate - startDate as duration
+                    from promos 
+                    where restaurantid = 26 
+                    and enddate < date_trunc('day', CURRENT_TIMESTAMP)::date   
                 )
-                SELECT code, duration, ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))) as averageOrders, totalorders
-                FROM promoSummary;`
+               
+                SELECT code, duration, COALESCE(ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))), 0) AS averageOrders, COALESCE(totalorders, 0)
+                FROM promoSummary 
+                RIGHT JOIN endedPromos using (code);`
                 )
 
     pool.query(query,[restId], (error, results) => {    
@@ -1122,9 +1120,8 @@ module.exports = {
     getOrders,
     getOrder,
     createNewOrder,
-    updateOrderWithRiderInfo,
 
-    checkCustomerPromoEligibility,
+    checkPromoEligibility,
     addCustomerPromo,
     updateCustomerPromo,
 
