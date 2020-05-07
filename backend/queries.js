@@ -624,6 +624,10 @@ const addReview = (request, response) => {
     })
 }
 
+const addRating = (request, response) => {
+    
+}
+
 /**
  * Orders
  */
@@ -1147,6 +1151,7 @@ module.exports = {
 
     getReviews,
     addReview,
+    addRating,
 
     getOrders,
     getOrder,
