@@ -128,14 +128,6 @@ const createCustomer = (request, response) => {
 const getCustomerOrders = (request, response) => {
     const cid = parseInt(request.params.uid)
 
-    // var query = (SQL 
-    //     `select restaurantname, SUM(price) as totalCost, timeRiderDelivered
-    //     from CompletedOrders C, Restaurants R
-    //     where C.cid = $1
-    //     and R.restaurantId = C.restaurantId
-    //     group by C.restaurantId;`
-    // )
-
     var query = (SQL 
         `
         select restaurantname
@@ -572,12 +564,13 @@ const updateMenuItem = (request, response) => {
 }
 
 const updateMenuItemQuant = (request, response) => {
+    console.log('here')
     const foodid = parseInt(request.params.foodid)
-    const { quant, restaurantId } = request.body
+    const { restaurantId, quant } = request.body
+
     pool.query('UPDATE Menu SET maxAvailable = maxAvailable - $1 WHERE foodId = $2 AND restaurantId = $3', 
-        [parseInt(quant), foodid, parseInt(restaurantId)],
-    (error, results) => {
-        console.log(results)
+    [parseInt(quant), foodid, parseInt(restaurantId)],
+        (error, results) => {
         if (error) {
             response.status(500).send(error.message)
             return
@@ -796,10 +789,10 @@ const updateRestaurantPromo = (request, response) => {
  */
 
 const getOrderItemInfo = (request, response) => {
-    const restaurantId = request.params.restaurantId
+    const restaurantname = request.params.restaurantname
     const fooditemname = request.params.foodname
-    pool.query('SELECT foodId FROM Menu M, Restaurants R WHERE R.restaurantId = M.restaurantId AND R.restaurantId = $1 AND M.foodname = $2', 
-        [restaurantId, fooditemname], (error, results) => {
+    pool.query('SELECT foodId FROM Menu M, Restaurants R WHERE R.restaurantname = $1 AND R.restaurantId = M.restaurantId AND M.foodname = $2', 
+        [restaurantname, fooditemname], (error, results) => {
         if (error) {
             response.status(500).send("An error has occured.")
             return

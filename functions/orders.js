@@ -161,7 +161,7 @@ let addAddress = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
-        } else if (restaurantId == -1) {
+        } else if (currentRestaurant === "") {
             response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectAddress")
@@ -227,7 +227,7 @@ let updateCreditcardnumber = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
-        } else if (restaurantId == -1) {
+        } else if (currentRestaurant === "") {
             response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectPayment")
@@ -306,44 +306,50 @@ let createOrder = (request, response) => {
         creditCardNumber = request.payment
     }
 
-    let options = {
-        url: Constants.serverURL + 'order/new/' + Shared.currentUserID, 
-        form: {
-            cid: Shared.currentUserID,
-            restaurantId: restaurantId,
-            riderId: null,
-            aid: aid,
-            deliveryFee: deliveryFee,
-            byCash: byCash,
-            creditCardNumber: creditCardNumber,
-            custPromo: null,
-            restPromo: null
-        }
-    }
+    Request(Constants.serverURL + 'restaurants/find/' + currentRestaurant, 
+    (err, res, body) => {
+        restaurantId = (JSON.parse(body)[0]).restaurantid
 
-    Request.post(options, (error, res, body) => {
-        if (error) {
-            response.render("error", Errors.backendRequestError)
+        let options = {
+            url: Constants.serverURL + 'order/new/' + Shared.currentUserID, 
+            form: {
+                cid: Shared.currentUserID,
+                restaurantId: restaurantId,
+                riderId: null,
+                aid: aid,
+                deliveryFee: deliveryFee,
+                byCash: byCash,
+                creditCardNumber: creditCardNumber,
+                custPromo: null,
+                restPromo: null
+            }
         }
-        
-        if (body == "[]") {
-            response.render("error", Errors.backendRequestError)
-        } else {
-            let oid = JSON.parse(body)[0].orderid
-            addFoodItems(oid)
-            rewardUser()
-            resetOrder()
-            response.redirect(302, "/customer/home")
-        }
+
+        Request.post(options, (error, res, body) => {
+            if (error) {
+                response.render("error", Errors.backendRequestError)
+            }
+            
+            if (body == "[]") {
+                response.render("error", Errors.backendRequestError)
+            } else {
+                let oid = JSON.parse(body)[0].orderid
+                addFoodItems(oid, currentRestaurant)
+                rewardUser()
+                resetOrder()
+                response.redirect(302, "/customer/home")
+            }
+        })
     })
 
 }
 
-function addFoodItems(oid) {
+function addFoodItems(oid, currentRestaurant) {
+    console.log(currentRestaurant)
     for (ord in orderedItems) {
         let foodname = orderedItems[ord].item
         let quantity = orderedItems[ord].quantity
-        Request(Constants.serverURL + 'orderItems/' + restaurantId + '/' + foodname, 
+        Request(Constants.serverURL + 'orderItems/' + currentRestaurant + '/' + foodname, 
             (error, res, body) => {
                 let foodid = JSON.parse(body)[0].foodid
             
@@ -360,27 +366,32 @@ function addFoodItems(oid) {
                         response.render("error", Errors.backendRequestError)
                     }
                 })
-                updateQuant(quantity, foodid)
+                updateQuant(quantity, foodid, currentRestaurant)
         })
     }
 }
 
 //update Food Item maxavailable
-function updateQuant(quantity, foodid) {
-    let options = {
-        url: Constants.serverURL + 'menu/quant/' + foodid,
-        form: {
-            quant: quantity,
-            restaurantId: restaurantId
-        }
-    }
+function updateQuant(quantity, foodid, currentRestaurant) {
 
-    Request.post(options, (error, res, body) => {
-        if (error) {
-            response.render("error", Errors.backendRequestError)
+    Request(Constants.serverURL + 'restaurants/find/' + currentRestaurant, 
+    (err, res, body) => {
+        restaurantId = (JSON.parse(body)[0]).restaurantid
+
+        let options = {
+            url: Constants.serverURL + 'menu/quant/' + foodid,
+            form: {
+                restaurantId: restaurantId,
+                quant: quantity
+            }
         }
+
+        Request.post(options, (error, res, body) => {
+            if (error) {
+                response.render("error", Errors.backendRequestError)
+            }
+        })
     })
-
 }
 
 function rewardUser() {
