@@ -662,11 +662,12 @@ const getOrder = (request, response) => {
 }
 
 const createNewOrder = (request, response) => {
-    const { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, custPromo, restPromo } 
+    var { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, Promo } 
         = request.body
     let cash = false;
     if ((request.body.byCash.toLowerCase() === 'true')) {
         cash = true;
+        creditCardNumber = null;
     }
 
     var query = (SQL 
@@ -675,8 +676,7 @@ const createNewOrder = (request, response) => {
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING orderId`)
 
-
-    pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
+    pool.query(query, [cid, restaurantId, null, aid, deliveryFee, cash, 
                         creditCardNumber, null], 
         (error, results) => {
         if (error) {

@@ -313,13 +313,15 @@ let finaliseOrder = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
 
-        if (body = []) {
+        if (body == undefined) {
             //incorrect promo code
             promo = null
             final = total + deliveryFee
+            final = Math.round(final * 100) / 100
         } else {
             promo = (JSON.parse(body)[0].amount)
             final = total - promo + deliveryFee
+            final = Math.round(final * 100) / 100 
         }
         
         response.render("customer/finaliseOrder", {
@@ -339,6 +341,8 @@ let finaliseOrder = (request, response) => {
 let createOrder = (request, response) => {
     if (!byCash) {
         creditCardNumber = payment
+    } else {
+        creditCardNumber = null
     }
 
     Request(Constants.serverURL + 'restaurants/find/' + currentRestaurant, 
