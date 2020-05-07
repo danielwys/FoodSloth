@@ -585,7 +585,6 @@ const updateMenuItem = (request, response) => {
 }
 
 const updateMenuItemQuant = (request, response) => {
-    console.log('here')
     const foodid = parseInt(request.params.foodid)
     const { restaurantId, quant } = request.body
 
