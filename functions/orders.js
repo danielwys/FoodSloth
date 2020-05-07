@@ -384,7 +384,6 @@ let createOrder = (request, response) => {
 }
 
 function addFoodItems(oid, currentRestaurant) {
-    console.log(currentRestaurant)
     for (ord in orderedItems) {
         let foodname = orderedItems[ord].item
         let quantity = orderedItems[ord].quantity

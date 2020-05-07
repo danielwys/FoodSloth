@@ -88,7 +88,6 @@ function getRiderStatsList(response, completion) {
             if (currentItem.time != null) {
                 let currentTime = currentItem.time
                 let string = ""
-                console.log(currentTime.hours)
                 if (currentTime.hours != null) {
                     string = string + currentTime.hours + ' hours '
                 }

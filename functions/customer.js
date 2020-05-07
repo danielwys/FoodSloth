@@ -29,7 +29,6 @@ let showCustomerHome = (request, response) => {
 
 let getProfile = (request, response) => {
     let address = new Object()
-    console.log(address)
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
