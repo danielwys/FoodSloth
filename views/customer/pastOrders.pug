@@ -13,8 +13,7 @@ block layout-content
           th= 'Rider'
           th= 'Items'
           th= 'Total Cost'
-          th= 'Review Restaurant?'
-          th= 'Rate Rider?'
+          th= 'Rate Rider, Review Restaurant?'
         tr
           for item in orders
             tr.odd(role='row')
@@ -30,11 +29,7 @@ block layout-content
               th
                 div.NavButton(text-align: center)
                     a(href="/customer/review/" + item.orderid)
-                        div.NavButton Review
-              th
-                div.NavButton(text-align: center)
-                    a(href="/customer/rate/" + item.orderid)
-                        div.NavButton Rate
+                        div.NavButton Rate and Review
       <br>
         div.NavButton(text-align: center)
             a(href="/customer/home")
