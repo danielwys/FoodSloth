@@ -573,11 +573,11 @@ const updateMenuItem = (request, response) => {
 
 const updateMenuItemQuant = (request, response) => {
     const foodid = parseInt(request.params.foodid)
-    let quant = parseInt(request.body.quant)
-    let restaurantId = parseInt(restaurantId)
-    pool.query('UPDATE menu SET maxavailable = maxavailable - $1 WHERE foodid = $2 AND restaurantid = $3', 
-        [quant, foodid, restaurantId],
+    const { quant, restaurantId } = request.body
+    pool.query('UPDATE Menu SET maxAvailable = maxAvailable - $1 WHERE foodId = $2 AND restaurantId = $3', 
+        [parseInt(quant), foodid, parseInt(restaurantId)],
     (error, results) => {
+        console.log(results)
         if (error) {
             response.status(500).send(error.message)
             return
