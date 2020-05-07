@@ -672,13 +672,13 @@ const createNewOrder = (request, response) => {
 
     var query = (SQL 
     `INSERT INTO Orders (cid, restaurantId, riderId, aid, deliveryFee, byCash, 
-        creditCardNumber, custPromo, restPromo) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        creditCardNumber, promo) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING orderId`)
 
 
     pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
-                        creditCardNumber, null, null], 
+                        creditCardNumber, null], 
         (error, results) => {
         if (error) {
             response.status(500).send(error.message)
@@ -762,7 +762,7 @@ const getCurrentRestPromos = (request, response) => {
     const restaurantId = parseInt(request.params.uid)
     var query = (SQL
         `SELECT code, amount, minspend, date_trunc('day', startdate)::date as startdate, date_trunc('day',enddate)::date as enddate
-        FROM restpromo 
+        FROM promos 
         WHERE restaurantid = $1
         AND date_trunc('day',CURRENT_TIMESTAMP)::date <= endDate
         AND date_trunc('day',CURRENT_TIMESTAMP)::date >= startDate;`
@@ -780,7 +780,7 @@ const getCurrentRestPromos = (request, response) => {
 const addRestaurantPromo = (request, response) => {
     const { restaurantid, code, amount, minSpend, startDate, endDate } = request.body
 
-    pool.query('INSERT INTO restPromo (restaurantId, code, amount, minSpend, startDate, endDate) VALUES ($1, $2, $3, $4, $5, $6)',
+    pool.query('INSERT INTO Promos (restaurantId, code, amount, minSpend, startDate, endDate) VALUES ($1, $2, $3, $4, $5, $6)',
     [restaurantid, code, amount, minSpend, startDate, endDate],
     (error, results) => {
         if (error) {
@@ -1049,7 +1049,7 @@ const getRestaurantPromoSummary = (request, response) => {
                 `WITH promoSummary AS (
                     select P.code, P.endDate - P.startDate as duration, COUNT(distinct C.OrderId) as totalOrders
                     from completedOrders C 
-                    inner join restPromo P on (C.restPromoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
+                    inner join Promos P on (C.promoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
                     where C.restaurantId = $1
                     group by P.code, P.endDate, P.startDate
                     order by P.endDate

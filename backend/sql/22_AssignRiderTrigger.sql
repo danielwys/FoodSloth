@@ -4,7 +4,7 @@ DECLARE
     rider     integer;
 
 BEGIN
-    SELECT W.riderid into rider
+    SELECT W.riderid INTO rider
     FROM WorkingRiders W
     ORDER BY W.currentorders ASC
     LIMIT 1;
@@ -12,6 +12,7 @@ BEGIN
     IF rider IS NOT NULL THEN
         NEW.riderid = rider;
     END IF;
+
     RETURN NEW;
 
 END;
