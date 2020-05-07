@@ -978,57 +978,13 @@ const getOrdersPerLocation = (request, response) => {
     })
 }
 
-const getRiderOrdersStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderHoursWorked = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderSalaries = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderAvgDeliveryTime = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderRatings = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
 const getRiderSummary = (request, response) => {
-    pool.query('', (error, results) => {
+    pool.query('SELECT * FROM riderstatistics', (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
-        // do something with response
+        response.status(200).json(results.rows)
     })
 }
 
@@ -1183,11 +1139,6 @@ module.exports = {
     getMonthlySummaryStatistic,
     getCustomerStatistics,
     getOrdersPerLocation,
-    getRiderOrdersStatistic,
-    getRiderHoursWorked,
-    getRiderSalaries,
-    getRiderAvgDeliveryTime,
-    getRiderRatings,
     getRiderSummary,
 
     getRestaurantOrderStatistic,

@@ -58,7 +58,35 @@ function getAreaSummaryList(response, completion) {
     })
 }
 
+let showRiderStats = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        res.render("error", Errors.notLoggedIn)
+    } else if (Shared.wrongUserType("manager")) {
+        res.render("error", Errors.incorrectUserType)
+    } else {
+        let completion = (riderlist) => {
+            response.render("manager/riderSummary", {
+                summary: riderlist
+            })
+        }
+        getRiderStatsList(response, completion)    
+    }
+}
+
+function getRiderStatsList(response, completion) {
+    Request(Constants.serverURL + 'manager/riderstats', (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var riderlist = JSON.parse(body);
+        completion(riderlist)
+    })
+}
+
 module.exports = {
     showManagerHome,
-    showAreaStats
+    showAreaStats,
+    showRiderStats
 }
