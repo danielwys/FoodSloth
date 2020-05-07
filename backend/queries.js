@@ -130,10 +130,11 @@ const getCustomerOrders = (request, response) => {
 
     var query = (SQL 
         `
-        select restaurantname
-        from Orders O, Restaurants R
+        select orderid, restaurantname, addresstext, postalcode
+        from Orders O, Restaurants R, Addresses A
         where O.cid = $1
-        and R.restaurantId = O.restaurantId;`
+        and R.restaurantId = O.restaurantId
+        and O.aid = A.aid;`
     )
     
     pool.query(query, [cid], (error, results) => {

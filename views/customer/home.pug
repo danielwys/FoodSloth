@@ -8,7 +8,7 @@ block layout-content
       table
         tr
             th= "Make a New Order"
-            th= "Current Activity"
+            th= "Recent Activity"
         tr
             td= ""
                 div.NavButtons
@@ -17,14 +17,14 @@ block layout-content
             td= ""
               table
                   tr
+                    th=''
                     th= 'Restaurant'
-                    th= 'Items'
-                    th= 'Total price'
+                    th= 'Delivery location'
                   each ord in Orders
                     tr
+                      td=ord.orderid
                       td=ord.restaurant
-                      td=ord.totalCost
-                      td=ord.timeDelivered
+                      td=ord.address+' '+ord.postalcode
     <br>              
     h2.Message View Completed Orders
       div.NavButtons

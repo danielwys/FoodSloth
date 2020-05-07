@@ -15,10 +15,11 @@ let showCustomerHome = (request, response) => {
             let orders = []
 
             for (const ord in ordersjson) {
+                let oid = ordersjson[ord].orderid
                 let restaurant = ordersjson[ord].restaurantname
-                let totalCost = '$10'
-                let timeDelivered = '5 May 2020'
-                let orderNow = {restaurant: restaurant, totalCost: totalCost, timeDelivered: timeDelivered}
+                let address = ordersjson[ord].addresstext
+                let postalcode = ordersjson[ord].postalcode
+                let orderNow = {orderid: oid, restaurant: restaurant, address: address, postalcode: postalcode}
                 orders.push(orderNow)
             }
             response.render("customer/home", {Orders: orders})
