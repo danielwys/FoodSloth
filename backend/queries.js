@@ -573,11 +573,11 @@ const updateMenuItem = (request, response) => {
 
 const updateMenuItemQuant = (request, response) => {
     const foodid = parseInt(request.params.foodid)
-    let quant = parseInt(request.body.quant)
-    let restaurantId = parseInt(restaurantId)
-    pool.query('UPDATE menu SET maxavailable = maxavailable - $1 WHERE foodid = $2 AND restaurantid = $3', 
-        [quant, foodid, restaurantId],
+    const { quant, restaurantId } = request.body
+    pool.query('UPDATE Menu SET maxAvailable = maxAvailable - $1 WHERE foodId = $2 AND restaurantId = $3', 
+        [parseInt(quant), foodid, parseInt(restaurantId)],
     (error, results) => {
+        console.log(results)
         if (error) {
             response.status(500).send(error.message)
             return
@@ -975,57 +975,13 @@ const getOrdersPerLocation = (request, response) => {
     })
 }
 
-const getRiderOrdersStatistic = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderHoursWorked = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderSalaries = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderAvgDeliveryTime = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
-const getRiderRatings = (request, response) => {
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
-
 const getRiderSummary = (request, response) => {
-    pool.query('', (error, results) => {
+    pool.query('SELECT * FROM riderstatistics', (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send("An error has occured.")
+            return
         }
-        // do something with response
+        response.status(200).json(results.rows)
     })
 }
 
@@ -1179,11 +1135,6 @@ module.exports = {
     getMonthlySummaryStatistic,
     getCustomerStatistics,
     getOrdersPerLocation,
-    getRiderOrdersStatistic,
-    getRiderHoursWorked,
-    getRiderSalaries,
-    getRiderAvgDeliveryTime,
-    getRiderRatings,
     getRiderSummary,
 
     getRestaurantOrderStatistic,

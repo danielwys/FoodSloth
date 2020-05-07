@@ -97,7 +97,7 @@ app.get('/menu/show/:restaurantname/check/:item', db.checkItemAvail)
 app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
-app.put('/menu/quant/:foodid', db.updateMenuItemQuant)
+app.post('/menu/quant/:foodid', db.updateMenuItemQuant)
 app.delete('/menu/:foodId', db.deleteMenuItem)
 
 /**
@@ -159,13 +159,7 @@ app.get('/manager/stats', db.getMonthlySummaryStatistic)
 
 app.get('/manager/customerstats/:month', db.getCustomerStatistics)
 app.get('/manager/areastats', db.getOrdersPerLocation)
-
-app.get('rider/riderOrders', db.getRiderOrdersStatistic)
-app.get('rider/hoursWorked', db.getRiderHoursWorked)
-app.get('rider/salary', db.getRiderSalaries)
-app.get('rider/avgDeliveryTime', db.getRiderAvgDeliveryTime)
-app.get('rider/ratings', db.getRiderRatings)
-app.get('rider/summary', db.getRiderSummary)
+app.get('/manager/riderstats', db.getRiderSummary)
 
 app.get('/restaurant/orders/:uid', db.getRestaurantOrderStatistic)
 app.get('/restaurant/favourites/:month/:uid', db.getRestaurantOrderTopFive)

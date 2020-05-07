@@ -12,6 +12,7 @@ let aid = -1;
 let deliveryFee = -1;
 let byCash = false;
 let total = 0;
+let promo = 0;
 
 let getAllOrders = (request, response) => {
     Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
@@ -254,18 +255,23 @@ let deleteItem = (request, response) => {
 }
 
 let finaliseOrder = (request, response) => {
-    payment = request.body.dropDown4
-    if (payment == "Cash payment") {
-        byCash = true;
+    if (request.body.dropDown4 == "") {
+        addPromo()
+    } else {
+        payment = request.body.dropDown4
+        if (payment == "Cash payment") {
+            byCash = true;
+        }
     }
-
+    
     let total = 0
 
     for (ord in orderedItems) {
         let price = (orderedItems[ord].price).slice(1)
         total += parseFloat(price) * orderedItems[ord].quantity
     }
-    total = Math.round(total * 100) / 100
+    total = Math.round(total * 100) / 100 
+    final = total - promo + deliveryFee
 
     response.render("customer/finaliseOrder", {
         Restaurant: currentRestaurant,
@@ -273,12 +279,13 @@ let finaliseOrder = (request, response) => {
         Total: total, 
         Address: address, 
         Payment: payment,
-        Promo: 0,
-        Final: total
+        Promo: promo,
+        DeliveryFee: deliveryFee,
+        Final: final
     })
 }
 
-let addPromo = (request, response) => {
+function addPromo() {
     code = request.body.code
 
     Request(Constants.serverURL + 'custPromo/' + code, (error, res, body) => {
@@ -288,14 +295,8 @@ let addPromo = (request, response) => {
         }
         let custPromojson = JSON.parse(body)[0]
         console.log(custPromojson)
-        response.render("customer/finaliseOrder", {
-            orderedItems: orderedItems, 
-            Total: total, 
-            Address: address, 
-            Payment: payment,
-            Promo: custPromojson.amount,
-            Final: total - custPromojson.amount
-        })    
+        promo = custPromojson.amount
+        console.log('here '+promo)
     })
 }
 
@@ -359,23 +360,27 @@ function addFoodItems(oid) {
                         response.render("error", Errors.backendRequestError)
                     }
                 })
-
-                //update Food Item maxavailable
-                options = {
-                    url: Constants.serverURL + 'menu/quant/' + foodid,
-                    form: {
-                        quant: quantity,
-                        restaurantId: restaurantId
-                    }
-                }
-                Request.post(options, (error, res, body) => {
-                    if (error) {
-                        response.render("error", Errors.backendRequestError)
-                    }
-                })
+                updateQuant(quantity, foodid)
         })
-
     }
+}
+
+//update Food Item maxavailable
+function updateQuant(quantity, foodid) {
+    let options = {
+        url: Constants.serverURL + 'menu/quant/' + foodid,
+        form: {
+            quant: quantity,
+            restaurantId: restaurantId
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+    })
+
 }
 
 function rewardUser() {
@@ -402,6 +407,7 @@ function resetOrder() {
     deliveryFee = -1;
     byCash = false;
     total = 0
+    promo = 0
 }
 
 module.exports = { 

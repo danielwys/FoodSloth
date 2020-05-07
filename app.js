@@ -230,6 +230,8 @@ app.get("/manager/customerstats/:month", (req, res) => {
 
 app.get("/manager/areastats", managers.showAreaStats)
 
+app.get("/manager/riderstats", managers.showRiderStats)
+
 
 // template
 app.get("/data", (req, res) => {
