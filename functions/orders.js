@@ -360,23 +360,27 @@ function addFoodItems(oid) {
                         response.render("error", Errors.backendRequestError)
                     }
                 })
-
-                //update Food Item maxavailable
-                options = {
-                    url: Constants.serverURL + 'menu/quant/' + foodid,
-                    form: {
-                        quant: quantity,
-                        restaurantId: restaurantId
-                    }
-                }
-                Request.post(options, (error, res, body) => {
-                    if (error) {
-                        response.render("error", Errors.backendRequestError)
-                    }
-                })
+                updateQuant(quantity, foodid)
         })
-
     }
+}
+
+//update Food Item maxavailable
+function updateQuant(quantity, foodid) {
+    let options = {
+        url: Constants.serverURL + 'menu/quant/' + foodid,
+        form: {
+            quant: quantity,
+            restaurantId: restaurantId
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+    })
+
 }
 
 function rewardUser() {
