@@ -74,29 +74,20 @@ create table Menu (
     constraint maxAvailableAmt check (maxAvailable >= 0)
 );
 
-create table custPromo (
+create table Promos (
     code            varchar(50) primary key,
-    amount          integer,
-    maxUses         integer not null default 3,
-    startDate       date not null,
-    endDate         date,
-    constraint amountAmt check (amount > 0),
-    constraint maxUsesAmt check (maxUses > 0),
-    constraint dateCheck check (startDate < endDate)
-);
-
---amount: discount in percentage
-create table restPromo (
-    code            varchar(50) primary key,
-    restaurantId    integer not null,
+    restaurantId    integer,
+    cid             integer,
     amount          integer, 
     minSpend        money,
     startDate       date not null,
     endDate         date,
     foreign key (restaurantId) references Restaurants (restaurantId),
+    foreign key (cid) references Customers (cid),
     constraint amountAmt check (amount > 0),
     constraint minSpendAmt check (minSpend > '$0'),
-    constraint dateCheck check (startDate < endDate)
+    constraint dateCheck check (startDate < endDate),
+    constraint customerOrRestCheck check (COALESCE(cid, restaurantId) IS NOT NULL)
 );
 
 create table Addresses (
@@ -119,14 +110,12 @@ create table Orders (
     deliveryFee         money not null,
     byCash              boolean not null,
     creditCardNumber    bigint,
-    custPromo           varchar(50),
-    restPromo           varchar(50),
+    promo           varchar(50),
     foreign key (cid) references Customers (cid),
     foreign key (restaurantId) references Restaurants (restaurantId),
     foreign key (riderId) references Riders (riderId),
     foreign key (aid) references Addresses(aid),
-    foreign key (custPromo) references CustPromo(code),
-    foreign key (restPromo) references RestPromo(code),
+    foreign key (promo) references Promos(code),
     constraint cd_lower check ((creditCardNumber) > 999999999999999),
     constraint cd_upper check ((creditCardNumber) < 10000000000000000),
     constraint deliveryFeeAmt check (deliveryFee >= '$0')

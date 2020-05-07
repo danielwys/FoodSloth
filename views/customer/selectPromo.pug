@@ -6,7 +6,7 @@ block layout-content
     div.Message
       div.Title
         h1 Confirm your order
-        h4 with #{Restaurant}
+        h2 with #{Restaurant}
         <br>
         <br>
         table
@@ -20,16 +20,24 @@ block layout-content
                         td=rec.item
                         td=rec.price
                         td=rec.quantity
-        h4 Total amount: #{Total}
-        h4 Promo applied: #{Promo}
+        h4 Deliver to: #{Address}
+        h4 Total: #{Total}
         h4 Delivery fee: #{DeliveryFee} 
-        h4 Total: #{Final}
-        
-        <br>
+        h4 Total with Delivery fee: #{Final}
         h4 Deliver to: #{Address}
         h4 Payment by: #{Payment}
-      a(href="/createOrder")
-        div.NavButton Place Order
+        div.form-signin
+          h3 Have promo code?:
+          form(action='/confirmOrder' method="POST")
+            input(type="plaintext" name="promocode" id="promocode" class="form-control" placeholder="Promo Code" required autofocus)
+            <br>
+            <br>
+            div.NavButton
+              input(type='submit', value="Apply promo")
+          <br>
+          <br>
+          a(href="/customer/confirmOrder")
+            div.NavButton Proceed without promo
     div.NavButtons  
       a(href="/customer/selectPayment")
         div.NavButton Back

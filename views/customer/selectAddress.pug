@@ -11,12 +11,14 @@ block layout-content
         <br>
         table
             tr
-                td='Item'
-                td='Quantity'
+                th='Item'
+                th='Price per pax'
+                th='Quantity'
             tr
                 each rec in orderedItems
                     tr
                         td=rec.item
+                        td=rec.price
                         td=rec.quantity
         a(href="/editOrder")
             div.EditButton Edit
