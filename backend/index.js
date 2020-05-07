@@ -113,12 +113,11 @@ app.post('/reviews/:uid', db.addReview)
 app.get('/orders', db.getOrders)
 app.get('/order/:orderId', db.getOrder)
 app.post('/order/new/:cid', db.createNewOrder) // returns orderId
-app.put('/order/:orderId', db.updateOrderWithRiderInfo)
 
 /**
  * Customer Promos
  */
-app.get('/custPromo/:code', db.checkCustomerPromoEligibility)
+app.get('/promo/:code/:total', db.checkPromoEligibility)
 app.post('/custPromo', db.addCustomerPromo)
 app.put('/custPromo/:code', db.updateCustomerPromo)
 

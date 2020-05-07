@@ -307,15 +307,21 @@ let finaliseOrder = (request, response) => {
     code = request.body.promocode
     promo = code
 
-    Request(Constants.serverURL + 'promo/' + code, (error, res, body) => {
+    let totalRounded = Math.round(total)
+    Request(Constants.serverURL + 'promo/' + code + '/' + totalRounded, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
         }
 
-        promo = (JSON.parse(body)[0].amount)
+        if (body = []) {
+            //incorrect promo code
+            promo = null
+            final = total + deliveryFee
+        } else {
+            promo = (JSON.parse(body)[0].amount)
+            final = total - promo + deliveryFee
+        }
         
-        final = total - promo + deliveryFee
-
         response.render("customer/finaliseOrder", {
             Restaurant: currentRestaurant,
             orderedItems: orderedItems, 
@@ -326,20 +332,9 @@ let finaliseOrder = (request, response) => {
             DeliveryFee: deliveryFee,
             Final: final
         })
-
-        updatePromo(code)
-
     })
 }
 
-function updatePromo(code) {
-    Request(Constants.serverURL + 'promo/update/' + code,
-    (err, res, body) => {
-        if (error) {
-            response.render("error", Errors.backendRequestError)
-        }
-    })
-}
 
 let createOrder = (request, response) => {
     if (!byCash) {

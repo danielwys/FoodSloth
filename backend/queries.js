@@ -687,26 +687,17 @@ const createNewOrder = (request, response) => {
     })
 }
 
-const updateOrderWithRiderInfo = (request, response) => {
-    const { username, password, type } = request.body
-
-    pool.query('', (error, results) => {
-        if (error) {
-            throw error
-        }
-        // do something with response
-    })
-}
 
 /**
  * Customer Promos
  */
 
-const checkCustomerPromoEligibility = (request, response) => {
+const checkPromoEligibility = (request, response) => {
     const code = request.params.code
+    const total = parseInt(request.params.total)
 
-    pool.query('SELECT code, amount, maxUses FROM custPromo WHERE code = $1 AND maxUses > 1', 
-        [code], (error, results) => {
+    pool.query('SELECT amount FROM Promos WHERE code = $1 AND $2 > minSpend', 
+        [code, total], (error, results) => {
         if (error) {
             response.status(500).send(error.message)
             return
@@ -1129,9 +1120,8 @@ module.exports = {
     getOrders,
     getOrder,
     createNewOrder,
-    updateOrderWithRiderInfo,
 
-    checkCustomerPromoEligibility,
+    checkPromoEligibility,
     addCustomerPromo,
     updateCustomerPromo,
 

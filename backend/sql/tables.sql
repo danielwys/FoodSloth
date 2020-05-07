@@ -110,7 +110,7 @@ create table Orders (
     deliveryFee         money not null,
     byCash              boolean not null,
     creditCardNumber    bigint,
-    promo           varchar(50),
+    promo               varchar(50),
     foreign key (cid) references Customers (cid),
     foreign key (restaurantId) references Restaurants (restaurantId),
     foreign key (riderId) references Riders (riderId),
