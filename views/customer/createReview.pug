@@ -7,14 +7,11 @@ block layout-content
     div.Banner
       h1 Howdy Customer! 
       h1 Tell us more about this order...
-
-    script.
-        var oid = !{oid};
         
     div.form-signin
-      form(action='/createReview' method="POST")
+      form(action='/createReview/', method="POST")
       
-        input(type="number" name="orderid" id="inputReview" class="form-control" placeholder= '#{oid}' value='#{oid}' required autofocus)  
+        input(type="number" name="orderid" id="inputReview" class="form-control" placeholder= 'Order Code' value= oid required autofocus)  
         <br>
         input(type="number" name="rating" id="inputReview" class="form-control" placeholder="Rating for Rider (Max 5 Stars)" required autofocus)  
         <br>

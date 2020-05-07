@@ -141,7 +141,7 @@ app.get("/customer/profile", customers.getProfile)
 app.get("/customer/pastorders", customers.getPastOrders)
 app.get("/customer/review/:oid", (req, res) => {
     const oid = parseInt(req.params.oid);
-    res.render("customer/createReview", { oid: JSON.stringify(oid) })
+    res.render("customer/createReview", { oid: oid })
 })
 app.post("/createReview", customers.createReview)
 

@@ -70,7 +70,6 @@ Request.get(Constants.serverURL + 'customer/pastorders/' + Shared.currentUserID,
         response.render("error", Errors.backendRequestError)
         return
     }
-    console.log(body)
     var pastOrders = JSON.parse(body);
     completion(pastOrders)
 })
