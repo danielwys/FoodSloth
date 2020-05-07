@@ -942,10 +942,10 @@ const getMonthlySummaryStatistic = (request, response) => {
             group by month
             order by month DESC
         )
-        select CO.month, count(distinct CO.orderId) as totalOrders, SUM(CO.price * CO.quantity) as totalCost, NC.newCust as newCustCount
-        from completedOrders CO inner join newCustomersPerMonth NC using(month)
-        group by CO.month, newCustCount
-        order by CO.month DESC;`
+        select coalesce(CO.month, NC.month) as month, coalesce(count(distinct CO.orderId), 0) as totalOrders, coalesce(SUM(CO.price * CO.quantity), '$0') as totalCost, coalesce(NC.newCust,0) as newCustCount
+        from completedOrders CO full outer join newCustomersPerMonth NC using(month)
+        group by CO.month, NC.month, newCustCount
+        order by month DESC;`
         )
     pool.query(query, (error, results) => {    
     if (error) {
@@ -1001,9 +1001,9 @@ const getRiderSummary = (request, response) => {
 const getRestaurantOrderStatistic = (request, response) => {
     const restId = parseInt(request.params.uid)
     var query = (SQL
-                `select month, count(distinct orderId) as totalOrders, SUM(price * quantity) as totalCost
-                from completedOrders
-                where restaurantId = $1
+                `select month, COUNT(distinct orderid) as totalorders, SUM(cost) as totalcost
+                from discountedorders
+                where restaurantid = $1
                 group by month
                 order by month DESC;`
                 )
@@ -1049,17 +1049,17 @@ const getRestaurantPromoSummary = (request, response) => {
                     select P.code, COUNT(distinct C.OrderId) as totalOrders
                     from completedOrders C 
                     inner join Promos P on (C.promoCode = P.code)
-                    where C.restaurantId = 26
+                    where C.restaurantId = $1
                     group by P.code
                     order by P.endDate
                 ), endedPromos AS (
                     select code, endDate - startDate as duration
                     from promos 
-                    where restaurantid = 26 
+                    where restaurantid = $1
                     and enddate < date_trunc('day', CURRENT_TIMESTAMP)::date   
                 )
                
-                SELECT code, duration, COALESCE(ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))), 0) AS averageOrders, COALESCE(totalorders, 0)
+                SELECT code, duration, COALESCE(ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))), 0) AS averageOrders, COALESCE(totalorders, 0) as totalorders
                 FROM promoSummary 
                 RIGHT JOIN endedPromos using (code);`
                 )

@@ -23,3 +23,4 @@ insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, credi
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (21, 26, 43, 9, 5, false, 6971228378719276, 'jductl');
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (6, 26, 43, 9, 5, false, 8672837358133000, 'jductl');
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (12, 26, 43, 9, 5, false, 8672837358133000, 'asdfg');
+insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (9, 26, 38, 9, 5, false, 8672117358133000, 'asdfg');
