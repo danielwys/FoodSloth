@@ -27,13 +27,115 @@ let showCustomerHome = (request, response) => {
 }
 
 let getProfile = (request, response) => {
-    response.render("customer/profile", {
-        rewardPoints: "", 
-        creditCardNo: ""
+    let address = new Object()
+    console.log(address)
+    Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        address = JSON.parse(body)
+    })
+    
+    Request(Constants.serverURL + 'customers/' + Shared.currentUserID, (error, res, body) => {
+        let customerinfo = JSON.parse(body)[0]
+        let rewardPoints = customerinfo.rewardpoints
+        let creditcardnumber = customerinfo.creditcardnumber
+        response.render("customer/profile", {
+            rewardPoints: rewardPoints,
+            creditcardnumber: creditcardnumber,
+            address: address
+        })
+    })
+}
+
+function getAddress() {
+    let address = new Object()
+    
+}
+
+let getPastOrders = (request, response) => {
+    let completion = (pastOrders) => {
+        response.render("customer/pastOrders", {
+            orders: pastOrders
+        })
+    }
+    getPastSummaryList(response, completion)
+}
+
+function getPastSummaryList(response, completion) {
+Request.get(Constants.serverURL + 'customer/pastorders/' + Shared.currentUserID, (error, res, body) => {
+    if (error) {
+        console.log(error)
+        response.render("error", Errors.backendRequestError)
+        return
+    }
+    console.log(body)
+    var pastOrders = JSON.parse(body);
+    completion(pastOrders)
+})
+}
+
+const createReview = (request, response) => {
+    let orderId = request.body.orderid
+    let rating = request.body.rating
+    let review = request.body.review
+
+    let options = {
+        url: Constants.serverURL + 'reviews/' + Shared.currentUserID, 
+        form: {
+            orderId: orderId, 
+            rating: rating, 
+            review: review
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("error",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/home")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
+const createRating = (request, response) => {
+    let orderId = request.body.orderid
+    let rating = request.body.rating
+
+    let options = {
+        url: Constants.serverURL + 'ratings/' + Shared.currentUserID, 
+        form: {
+            orderId: orderId, 
+            rating: rating
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("error",  {errorMessage: body })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/customer/home")
+        } else {
+            response.render("error")
+        }
     })
 }
 
 module.exports = {
     showCustomerHome,
-    getProfile
+    getProfile,
+    getPastOrders,
+    createReview,
+    createRating
 }

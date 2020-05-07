@@ -114,7 +114,6 @@ app.post("/selectItems", orders.selectItems)
 app.get("/customer/selectFoodItems", orders.selectItems)
 
 //select address
-app.post("/selectAddress", orders.confirmOrder)
 app.get("/customer/selectAddress", orders.selectAddress)
 app.get("/customer/addAddress", orders.openAddAddress)
 app.post("/addAddress", orders.addAddress)
@@ -130,7 +129,7 @@ app.post("/updateCreditcardnumber", orders.updateCreditcardnumber)
 
 //finalise order
 app.post("/confirmOrder", orders.finaliseOrder)
-//app.get("customer/finaliseOrder", orders.finaliseOrder)
+app.post("/addPromo", orders.addPromo)
 
 app.get("/createOrder", orders.createOrder)
 app.post("/createOrder", orders.createOrder)
@@ -139,6 +138,17 @@ app.post("/createOrder", orders.createOrder)
  * Customers
  */
 app.get("/customer/profile", customers.getProfile)
+app.get("/customer/pastorders", customers.getPastOrders)
+app.get("/customer/review/:oid", (req, res) => {
+    const oid = parseInt(req.params.oid);
+    res.render("customer/createReview", { oid: JSON.stringify(oid) })
+})
+app.post("/createReview", customers.createReview)
+app.get("/customer/rating/:oid", (req, res) => {
+    const oid = parseInt(req.params.oid);
+    res.render("customer/createRating", { oid: JSON.stringify(oid) })
+})
+app.post("/createRating", customers.createRating)
 
 /**
  * Restaurants
@@ -177,6 +187,7 @@ app.get("/restaurant/favourites/:month", (req, res) => {
     })
     
 })
+app.get("/restaurant/promoSummary", restaurants.showPromoSummary)
 
 //profile
 app.get("/restaurant/profile", restaurants.showProfile)

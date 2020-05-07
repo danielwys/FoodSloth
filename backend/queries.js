@@ -193,6 +193,21 @@ const updateCreditCard = (request, response) => {
         })
 }
 
+const updateCustomerReward = (request, response) => {
+    const cid = parseInt(request.params.uid)
+    const { rewardpoints } = request.body
+
+    pool.query('UPDATE Customers SET rewardpoints = rewardpoints + $1 WHERE cid = $2 RETURNING rewardpoints',
+    [rewardpoints, cid],
+    (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const customerAddAddress = (request, response) => {
     const { uid, area, addressText, postalCode } = request.body
 
@@ -206,6 +221,25 @@ const customerAddAddress = (request, response) => {
             response.status(200).send("success")
             
         })
+}
+
+const getPastOrders = (request, response) => {
+    const cid = parseInt(request.params.uid)
+
+    var query = (SQL
+        `SELECT C.orderid, date_trunc('day', C.timeRiderDelivered)::date as date, C.rider, SUM(C.price * C.quantity) as totalCost, R.restaurantname
+        FROM CompletedOrders C inner join Restaurants R using (restaurantid)
+        WHERE C.cid = $1
+        GROUP BY C.orderid, date, C.rider, R.restaurantname;`
+        )
+
+    pool.query(query, [cid], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
 }
 
 /**
@@ -469,33 +503,16 @@ const getMenuForRestaurant = (request, response) => {
 
 const checkItemAvail = (request, response) => {
     const restaurantname = request.params.restaurantname
-    const orderedItems = request.body.items
+    const item = request.params.item
 
-    console.log(orderedItems)
-    let outOfBounds = []
-
-    for (const ord in orderedItems) {
-        let item = orderedItems[ord].item
-        let quant = orderedItems[ord].quantity
-        var query = (SQL `
-        SELECT item, maxavailable 
-        FROM orderedItems I, menu M, restaurants R
-        WHERE R.restaurantname = ${restaurantname}
-        AND R.restaurantId = M.restaurantId
-        AND ${item} = M.foodname
-        AND ${quant} > M.maxavailable
-        `)
-
-        pool.query(query, (error, results) => {
-            if (error) {
-                response.status(500).send("An error has occured")
-                return
-            }
-            outOfBounds.push(orderedItems[ord])
-        })
-    }
-
-    response.status(200).json(outOfBounds.rows)
+    pool.query('SELECT maxavailable FROM menu M, restaurants R WHERE R.restaurantid = M.restaurantid AND R.restaurantname = $1 AND M.foodname = $2', 
+        [restaurantname, item], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
 
 }
 
@@ -550,9 +567,23 @@ const updateMenuItem = (request, response) => {
                 response.status(500).send(error.message)
                 return
             } 
-            response.status(200).send(`success`)
-            
+            response.status(200).send(`success`) 
         })
+}
+
+const updateMenuItemQuant = (request, response) => {
+    const foodid = parseInt(request.params.foodid)
+    let quant = parseInt(request.body.quant)
+    let restaurantId = parseInt(restaurantId)
+    pool.query('UPDATE menu SET maxavailable = maxavailable - $1 WHERE foodid = $2 AND restaurantid = $3', 
+        [quant, foodid, restaurantId],
+    (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
 }
 
 const deleteMenuItem = (request, response) => {
@@ -582,13 +613,14 @@ const getReviews = (request, response) => {
 }
 
 const addReview = (request, response) => {
-    const { username, password, type } = request.body
+    const { orderId, rating, review } = request.body
 
-    pool.query('', (error, results) => {
+    pool.query('INSERT INTO reviews (orderid, rating, review) VALUES ($1, $2, $3)',
+    [orderId, rating, review], (error, results) => {
         if (error) {
-            throw error
+            response.status(500).send(error.message)
         }
-        // do something with response
+        response.status(200).send("success")
     })
 }
 
@@ -618,7 +650,6 @@ const getOrder = (request, response) => {
 const createNewOrder = (request, response) => {
     const { cid, restaurantId, riderId, aid, deliveryFee, byCash, creditCardNumber, custPromo, restPromo } 
         = request.body
-    console.log(request.body)
     let cash = false;
     if ((request.body.byCash.toLowerCase() === 'true')) {
         cash = true;
@@ -634,7 +665,6 @@ const createNewOrder = (request, response) => {
     pool.query(query, [cid, restaurantId, null, aid, deliveryFee, byCash, 
                         creditCardNumber, null, null], 
         (error, results) => {
-        console.log(results)
         if (error) {
             response.status(500).send(error.message)
             return
@@ -756,6 +786,39 @@ const updateRestaurantPromo = (request, response) => {
         // do something with response
     })
 }
+
+/**
+ * Order Items
+ */
+
+const getOrderItemInfo = (request, response) => {
+    const restaurantId = request.params.restaurantId
+    const fooditemname = request.params.foodname
+    pool.query('SELECT foodId FROM Menu M, Restaurants R WHERE R.restaurantId = M.restaurantId AND R.restaurantId = $1 AND M.foodname = $2', 
+        [restaurantId, fooditemname], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const addOrderItems = (request, response) => {
+    const orderId = parseInt(request.params.orderId)
+    let foodId = parseInt(request.body.foodid)
+    let quantity = parseInt(request.body.quantity)
+
+    pool.query('INSERT INTO OrderItems (orderId, foodId, quantity) VALUES ($1, $2, $3)',
+        [orderId, foodId, quantity], (error, results) => {
+        if (error) {
+            response.status(500).send("An error has occured.")
+            return
+        }
+        response.status(200).send(`success`)
+    })
+}
+
 
 /**
  * Order Timings
@@ -1008,6 +1071,32 @@ const getRestaurantOrderTopFive = (request, response) => {
     })
 }
 
+const getRestaurantPromoSummary = (request, response) => {
+    const restId = parseInt(request.params.uid)
+    
+    var query = (SQL
+                `WITH promoSummary AS (
+                    select P.code, P.endDate - P.startDate as duration, COUNT(distinct C.OrderId) as totalOrders
+                    from completedOrders C 
+                    inner join restPromo P on (C.restPromoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
+                    where C.restaurantId = $1
+                    group by P.code, P.endDate, P.startDate
+                    order by P.endDate
+                )
+                SELECT code, duration, ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))) as averageOrders, totalorders
+                FROM promoSummary;`
+                )
+
+    pool.query(query,[restId], (error, results) => {    
+        if (error) {
+            console.log(error)
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).json(results.rows)
+    })
+}
+
 
 module.exports = {
     login,
@@ -1024,7 +1113,9 @@ module.exports = {
     getCustomerAddress,
     getCustomerOrders,
     updateCreditCard,
+    updateCustomerReward,
     customerAddAddress,
+    getPastOrders,
 
     getRestaurants,
     createRestaurant,
@@ -1051,6 +1142,7 @@ module.exports = {
     getMenuInfo,
     addMenuItem,
     updateMenuItem,
+    updateMenuItemQuant,
     deleteMenuItem,
 
     getReviews,
@@ -1069,6 +1161,9 @@ module.exports = {
     getCurrentRestPromos,
     addRestaurantPromo,
     updateRestaurantPromo,
+
+    getOrderItemInfo,
+    addOrderItems,
 
     getOrderTimes,
     updateRiderArrives,
@@ -1091,5 +1186,6 @@ module.exports = {
     getRiderSummary,
 
     getRestaurantOrderStatistic,
-    getRestaurantOrderTopFive
+    getRestaurantOrderTopFive,
+    getRestaurantPromoSummary
 }

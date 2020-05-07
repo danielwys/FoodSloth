@@ -4,7 +4,6 @@ const Constants = require('./constants')
 const Shared = require('./shared')
 const Errors = require('./error.js')
 
-let currentRestaurantList = []
 let currentRestaurant = ""
 let restaurantId = -1;
 let orderedItems = []
@@ -12,6 +11,7 @@ let address = ""
 let aid = -1;
 let deliveryFee = -1;
 let byCash = false;
+let total = 0;
 
 let getAllOrders = (request, response) => {
     Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
@@ -32,6 +32,7 @@ let getAllOrders = (request, response) => {
 }
 
 let selectRestaurant = (request, response) => {
+    resetOrder()
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -63,26 +64,42 @@ let selectItems = (request, response) => {
         let item = request.body.dropDown1
         let quant = request.body.dropDown2
         
-        var cont = 0
-        for (const val of orderedItems) {
-            if (item.localeCompare(val.item) == 0) {
-                //item already exists in order list
-                val.quantity = parseInt(val.quantity) + parseInt(quant)
-                cont = 1
-                break
-            }
+        Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/check/' + item, 
+        (error, res, body) => {
+        if (error) {
+            res.render("error", Errors.backendRequestError)
+            return
         }
+        let num = JSON.parse(body)[0]
+        let ans = num.maxavailable - quant
 
-        if (cont == 0) {
-            Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
-            (error, res, body) => {
-                let price = JSON.parse(body)[0].price
-                if (quant != 0) {
-                    let newItem = {item: item, price: price, quantity: quant}
-                    orderedItems.push(newItem)
+            var cont = 0
+            for (const val of orderedItems) {
+                if (item.localeCompare(val.item) == 0) {
+                    //item already exists in order list
+                    quant = parseInt(val.quantity) + parseInt(quant)
+                    if (ans < 0) {
+
+                    } else {
+                        val.quantity = quant
+                        cont = 1
+                        break
+                    }
                 }
-            })
-        }
+            }
+
+
+            if (cont == 0 && ans >= 0) {
+                Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
+                (error, res, body) => {
+                    let price = JSON.parse(body)[0].price
+                    if (quant != 0) {
+                        let newItem = {item: item, price: price, quantity: quant}
+                        orderedItems.push(newItem)
+                    }
+                })
+            }
+        })
     }
 
     Request(Constants.serverURL + 'menu/show/' + currentRestaurant, (error, res, body) => {
@@ -102,26 +119,8 @@ let selectItems = (request, response) => {
     })
 }
 
-function confirmOrder(orderedItems) {
-    let options =  {
-        url: Constants.serverURL + 'menu/show/' + currentRestaurant + '/check',
-        form: {
-            items: orderedItems
-        }
-    }
-    Request.post(options, (error, res, body) => {
-        //console.log('reached here')
-        if (error) {
-            response.render("error", Errors.backendRequestError)
-            return
-        }
-        
-        //console.log(JSON.parse(body))
-    })
-}
 
 let selectAddress = (request, response) => {
-    //confirmOrder(orderedItems)
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
@@ -161,6 +160,8 @@ let addAddress = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
+        } else if (restaurantId == -1) {
+            response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectAddress")
         } else {
@@ -225,6 +226,8 @@ let updateCreditcardnumber = (request, response) => {
         }
         if(res.statusCode == 500) {
             response.render("duplicateError",  {errorMessage: body })
+        } else if (restaurantId == -1) {
+            response.redirect(302, "/customer/profile")
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/selectPayment")
         } else {
@@ -269,25 +272,29 @@ let finaliseOrder = (request, response) => {
         orderedItems: orderedItems, 
         Total: total, 
         Address: address, 
-        Payment: payment
+        Payment: payment,
+        Promo: 0,
+        Final: total
     })
 }
 
 let addPromo = (request, response) => {
     code = request.body.code
 
-    Request(Constants.serverURL + 'custPromo/' + Shared.currentUserID, (error, res, body) => {
+    Request(Constants.serverURL + 'custPromo/' + code, (error, res, body) => {
         if (error) {
             response.render("error", Errors.backendRequestError)
             return
         }
-        let custPromo = JSON.parse(body)
-        //console.log(creditcards)
-        response.render("customer/addPromo", {
+        let custPromojson = JSON.parse(body)[0]
+        console.log(custPromojson)
+        response.render("customer/finaliseOrder", {
             orderedItems: orderedItems, 
             Total: total, 
             Address: address, 
-            Payment: payment
+            Payment: payment,
+            Promo: custPromojson.amount,
+            Final: total - custPromojson.amount
         })    
     })
 }
@@ -321,22 +328,85 @@ let createOrder = (request, response) => {
         if (body == "[]") {
             response.render("error", Errors.backendRequestError)
         } else {
-            console.log(body)
-            let oid = JSON.parse(body)
-            console.log(oid)
-            //add fooditem
-            //completion(uid, type)
+            let oid = JSON.parse(body)[0].orderid
+            addFoodItems(oid)
+            rewardUser()
+            resetOrder()
             response.redirect(302, "/customer/home")
         }
     })
 
 }
 
+function addFoodItems(oid) {
+    for (ord in orderedItems) {
+        let foodname = orderedItems[ord].item
+        let quantity = orderedItems[ord].quantity
+        Request(Constants.serverURL + 'orderItems/' + restaurantId + '/' + foodname, 
+            (error, res, body) => {
+                let foodid = JSON.parse(body)[0].foodid
+            
+                //add Food Item
+                let options = {
+                    url: Constants.serverURL + 'orderItems/' + oid, 
+                    form: {
+                        foodid: foodid, 
+                        quantity: quantity
+                    }
+                }
+                Request.post(options, (error, res, body) => {
+                    if (error) {
+                        response.render("error", Errors.backendRequestError)
+                    }
+                })
+
+                //update Food Item maxavailable
+                options = {
+                    url: Constants.serverURL + 'menu/quant/' + foodid,
+                    form: {
+                        quant: quantity,
+                        restaurantId: restaurantId
+                    }
+                }
+                Request.post(options, (error, res, body) => {
+                    if (error) {
+                        response.render("error", Errors.backendRequestError)
+                    }
+                })
+        })
+
+    }
+}
+
+function rewardUser() {
+    let options = {
+        url: Constants.serverURL + 'customers/reward/' + Shared.currentUserID, 
+        form: {
+            rewardpoints: 10
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+    })
+}
+
+function resetOrder() {
+    currentRestaurant = ""
+    restaurantId = -1;
+    orderedItems = []
+    address = ""
+    aid = -1;
+    deliveryFee = -1;
+    byCash = false;
+    total = 0
+}
 
 module.exports = { 
     selectRestaurant,
     selectItems,
-    confirmOrder,
     selectAddress,
     openAddAddress,
     addAddress,

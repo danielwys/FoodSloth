@@ -57,6 +57,8 @@ app.get('/customers/address/:uid', db.getCustomerAddress)
 app.get('/customers/orders/:uid', db.getCustomerOrders)
 app.post('/customers/:uid', db.updateCreditCard)
 app.post('/customers/adress/add/:uid', db.customerAddAddress)
+app.post('/customers/reward/:uid', db.updateCustomerReward)
+app.get('/customer/pastorders/:uid', db.getPastOrders)
 
 /**
  * Restaurants
@@ -91,10 +93,11 @@ app.post('/rider/wws/delete', db.deleteParttimeSlot)
 app.get('/menu/:uid', db.getMenuInfo) // returns foodname, price, category & maxavailability
 app.get('/menu', db.getMenu)
 app.get('/menu/show/:restaurantname', db.getMenuForRestaurant)
-app.post('/menu/show/:restaurantname/check', db.checkItemAvail)
+app.get('/menu/show/:restaurantname/check/:item', db.checkItemAvail)
 app.get('/menu/show/:restaurantname/:item', db.getItemInfo)
 app.post('/menu/:uid', db.addMenuItem)
 app.put('/menu/:foodName', db.updateMenuItem)
+app.put('/menu/quant/:foodid', db.updateMenuItemQuant)
 app.delete('/menu/:foodId', db.deleteMenuItem)
 
 /**
@@ -102,6 +105,7 @@ app.delete('/menu/:foodId', db.deleteMenuItem)
  */
 app.get('/reviews/:uid', db.getReviews)
 app.post('/reviews/:uid', db.addReview)
+app.post('/ratings/:uid', db.addRating)
 
 /**
  * Orders
@@ -125,6 +129,12 @@ app.get('/restPromo/:code&:uid', db.checkRestaurantPromoEligibility)
 app.get('/restaurant/currentpromos/:uid', db.getCurrentRestPromos)
 app.post('/restPromo', db.addRestaurantPromo)
 app.put('/restPromo/:code', db.updateRestaurantPromo)
+
+/**
+ * Order Items
+ */
+app.get('/orderItems/:restaurantId/:foodname', db.getOrderItemInfo)
+app.post('/orderItems/:orderId', db.addOrderItems)
 
 /**
  * Order Timings
@@ -160,6 +170,7 @@ app.get('rider/summary', db.getRiderSummary)
 
 app.get('/restaurant/orders/:uid', db.getRestaurantOrderStatistic)
 app.get('/restaurant/favourites/:month/:uid', db.getRestaurantOrderTopFive)
+app.get('/restaurant/promoSummary/:uid', db.getRestaurantPromoSummary)
 
 /**
  * Server Activation

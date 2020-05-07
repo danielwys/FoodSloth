@@ -149,6 +149,36 @@ function getSummaryList(response, completion) {
     })
 }
 
+let showPromoSummary = (request, response) => {
+    if (Shared.notLoggedIn()) {
+        response.render("error", Errors.notLoggedIn)
+
+    } else if (Shared.wrongUserType("restaurant")) {
+        response.render("error", Errors.incorrectUserType)
+
+    } else {
+
+        let completion = (promoSummary) => {
+            response.render("restaurant/promoSummary", {
+                summary: promoSummary
+            })
+        }
+        getPromoSummaryList(response, completion)
+    }
+}
+
+function getPromoSummaryList(response, completion) {
+    Request.get(Constants.serverURL + 'restaurant/promoSummary/' + Shared.currentUserID, (error, res, body) => {
+        if (error) {
+            console.log(error)
+            response.render("error", Errors.backendRequestError)
+            return
+        }
+        var promoSummary = JSON.parse(body);
+        completion(promoSummary)
+    })
+}
+
 let showProfile = (request, response) => {
     if (Shared.notLoggedIn()) {
         response.render("error", Errors.notLoggedIn)
@@ -341,6 +371,7 @@ module.exports = {
     selectMenuItem,
     editMenuItem,
     showRestaurantSummary,
+    showPromoSummary,
     showProfile,
     editProfile,
     createPromo,
