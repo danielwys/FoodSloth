@@ -242,6 +242,26 @@ const getPastOrders = (request, response) => {
     })
 }
 
+const getPastItems = (request, response) => {
+    const cid = parseInt(request.params.uid)
+    const oid = parseInt(request.params.oid)
+
+    var query = (SQL
+        `SELECT foodname, quantity, price
+        FROM CompletedOrders 
+        WHERE cid = $1
+        AND orderid = $2;`
+        )
+
+    pool.query(query, [cid, oid], (error, results) => {
+        if (error) {
+            response.status(500).send(error.message)
+            return
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 /**
  * Restaurants
  */
@@ -1073,6 +1093,7 @@ module.exports = {
     updateCustomerReward,
     customerAddAddress,
     getPastOrders,
+    getPastItems,
 
     getRestaurants,
     createRestaurant,

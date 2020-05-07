@@ -139,6 +139,21 @@ app.post("/createOrder", orders.createOrder)
  */
 app.get("/customer/profile", customers.getProfile)
 app.get("/customer/pastorders", customers.getPastOrders)
+app.get("/customer/pastItems/:oid", (req, res) => {
+    const oid = parseInt(req.params.oid);
+    Request(Constants.serverURL + 'customer/pastitems/' + oid + "/" + Shared.currentUserID , (error, response, body) => {
+        if (error) {
+            console.log(error)
+            res.render("error", Errors.backendRequestError)
+            return
+        }
+        var itemslist = JSON.parse(body);
+        res.render("customer/pastItems", {
+            items: itemslist
+          });
+    })
+    
+})
 app.get("/customer/review/:oid", (req, res) => {
     const oid = parseInt(req.params.oid);
     res.render("customer/createReview", { oid: oid })
