@@ -60,9 +60,9 @@ function getAreaSummaryList(response, completion) {
 
 let showRiderStats = (request, response) => {
     if (Shared.notLoggedIn()) {
-        res.render("error", Errors.notLoggedIn)
+        response.render("error", Errors.notLoggedIn)
     } else if (Shared.wrongUserType("manager")) {
-        res.render("error", Errors.incorrectUserType)
+        response.render("error", Errors.incorrectUserType)
     } else {
         let completion = (riderlist) => {
             response.render("manager/riderSummary", {
@@ -81,6 +81,24 @@ function getRiderStatsList(response, completion) {
             return
         }
         var riderlist = JSON.parse(body);
+
+        for (item in riderlist) {
+            let currentItem = riderlist[item]
+
+            if (currentItem.time != null) {
+                let currentTime = currentItem.time
+                let string = ""
+                console.log(currentTime.hours)
+                if (currentTime.hours != null) {
+                    string = string + currentTime.hours + ' hours '
+                }
+                if (currentTime.minutes != null) {
+                    string = string + currentTime.minutes + ' minutes '
+                }
+                riderlist[item].time = string
+            }
+        }
+
         completion(riderlist)
     })
 }

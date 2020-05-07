@@ -1037,15 +1037,22 @@ const getRestaurantPromoSummary = (request, response) => {
     
     var query = (SQL
                 `WITH promoSummary AS (
-                    select P.code, P.endDate - P.startDate as duration, COUNT(distinct C.OrderId) as totalOrders
+                    select P.code, COUNT(distinct C.OrderId) as totalOrders
                     from completedOrders C 
-                    inner join Promos P on (C.promoCode = P.code) and (P.endDate < date_trunc('day', CURRENT_TIMESTAMP)::date)
-                    where C.restaurantId = $1
-                    group by P.code, P.endDate, P.startDate
+                    inner join Promos P on (C.promoCode = P.code)
+                    where C.restaurantId = 26
+                    group by P.code
                     order by P.endDate
+                ), endedPromos AS (
+                    select code, endDate - startDate as duration
+                    from promos 
+                    where restaurantid = 26 
+                    and enddate < date_trunc('day', CURRENT_TIMESTAMP)::date   
                 )
-                SELECT code, duration, ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))) as averageOrders, totalorders
-                FROM promoSummary;`
+               
+                SELECT code, duration, COALESCE(ROUND(CAST(totalorders AS NUMERIC(10,3))/CAST(duration AS NUMERIC(10,3))), 0) AS averageOrders, COALESCE(totalorders, 0)
+                FROM promoSummary 
+                RIGHT JOIN endedPromos using (code);`
                 )
 
     pool.query(query,[restId], (error, results) => {    
