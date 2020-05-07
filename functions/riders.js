@@ -301,6 +301,10 @@ let addSlot = (request, response) => {
         }
     }
 
+    console.log(dayno)
+    console.log(starthour)
+    console.log(endhour)
+
     Request.post(options, (error, res, body) => {
         if (error) {
             response.render("error")

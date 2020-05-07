@@ -83,8 +83,7 @@ BEGIN
 		FROM WWS W
 		WHERE W.riderid = NEW.riderid
 		AND W.day = NEW.day
-		AND NEW.hourstart - W.hourend < 1
-		OR W.hourstart - NEW.hourend < 1;
+		AND (NEW.hourstart - W.hourend < 1 OR W.hourstart - NEW.hourend < 1);
 	IF day IS NOT NULL THEN
 		RAISE EXCEPTION 'There must be a 1 hour break between slots.';
 		RETURN NULL;
