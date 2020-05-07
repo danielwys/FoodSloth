@@ -1,0 +1,31 @@
+extends ../layout
+
+block layout-content
+  div.View.ManagerView
+
+    div.Banner
+      h1 Howdy Manager! 
+      h1 I need to know more about this customer promo...
+
+    div.form-signin
+      form(action='/createCustPromo' method="POST")
+        input(type="plaintext" name="code" id="inputcode" class="form-control" placeholder="Promo Code" required autofocus) 
+        <br>
+        input(type="number" name="cid" id="inputid" class="form-control" placeholder="Customer ID" required autofocus)   
+        <br>
+        input(type="number" name="discount" id="inputdiscount" class="form-control" placeholder="Discount Amount" required autofocus)  
+        <br>
+        input(type="number" name="minSpend" id="minspend" class="form-control" placeholder="Minimum Spend" required autofocus)  
+        <br>
+        input(type="date" name="startDate" id="start" class="form-control" placeholder="Availability" required autofocus)  
+        <br>
+        input(type="date" name="endDate" id="end" class="form-control" placeholder="Cuisine" required autofocus)
+        <br>
+        <br>
+        div.NavButton
+          input(type='submit', value="Submit")
+    <br>
+
+    div.NavButtons
+      a(href="/restaurant/home")
+        div.NavButton Back

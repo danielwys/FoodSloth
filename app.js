@@ -248,6 +248,11 @@ app.get("/manager/areastats", managers.showAreaStats)
 
 app.get("/manager/riderstats", managers.showRiderStats)
 
+app.get("/manager/createCustPromo", (req, res) => {
+    res.render("manager/createCustPromo")
+})
+app.post("/createCustPromo", managers.createCustPromo)
+
 
 // template
 app.get("/data", (req, res) => {

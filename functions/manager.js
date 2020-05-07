@@ -103,8 +103,44 @@ function getRiderStatsList(response, completion) {
     })
 }
 
+const createCustPromo = (request, response) => {
+    let code = request.body.code
+    let discount = request.body.discount
+    let minSpend = request.body.minSpend
+    let startDate = request.body.startDate
+    let endDate = request.body.endDate
+    let cid = request.body.cid
+
+    let options = {
+        url: Constants.serverURL + 'custPromo', 
+        form: {
+            code: code, 
+            amount: discount, 
+            minSpend: minSpend,
+            startDate: startDate,
+            endDate: endDate,
+            cid: cid
+        }
+    }
+
+    Request.post(options, (error, res, body) => {
+
+        if (error) {
+            response.render("error", Errors.backendRequestError)
+        }
+        if(res.statusCode == 500) {
+            response.render("error",  {errorMessage: "promo code already exists! Try again?" })
+        } else if (res.statusCode == 200) {
+            response.redirect(302, "/manager/home")
+        } else {
+            response.render("error")
+        }
+    })
+}
+
 module.exports = {
     showManagerHome,
     showAreaStats,
-    showRiderStats
+    showRiderStats,
+    createCustPromo
 }

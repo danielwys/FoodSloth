@@ -51,3 +51,4 @@ insert into Users (username, password, type, createdAt) values ('dkorbae', '3FNr
 insert into Users (username, password, type, createdAt) values ('manager1', '9L2osh7K', 'manager', now());
 insert into Users (username, password, type, createdAt) values ('manager2', 'AUXDQyqzF1e', 'manager', now());
 insert into Users (username, password, type, createdAt) values ('manager3', 'JHJhjkhSKJDj', 'manager', now());
+insert into Users (username, password, type, createdAt) values ('quaorjs', 'Czmd6F6S', 'customer', '2020-04-29 16:19:16.625881+08');

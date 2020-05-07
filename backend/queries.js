@@ -712,13 +712,16 @@ const checkPromoEligibility = (request, response) => {
 }
 
 const addCustomerPromo = (request, response) => {
-    const { username, password, type } = request.body
+    const { code, amount, minSpend, startDate, endDate, cid } = request.body
 
-    pool.query('', (error, results) => {
+    pool.query('INSERT INTO Promos (cid, code, amount, minSpend, startDate, endDate) VALUES ($1, $2, $3, $4, $5, $6)',
+    [cid, code, amount, minSpend, startDate, endDate],
+    (error, results) => {
         if (error) {
-            throw error
-        }
-        // do something with response
+            response.status(500).send(error.message)
+            return
+        } 
+        response.status(200).send(`success`)
     })
 }
 
