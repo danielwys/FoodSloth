@@ -341,6 +341,8 @@ let finaliseOrder = (request, response) => {
 let createOrder = (request, response) => {
     if (!byCash) {
         creditCardNumber = payment
+    } else {
+        creditCardNumber = null
     }
 
     Request(Constants.serverURL + 'restaurants/find/' + currentRestaurant, 
