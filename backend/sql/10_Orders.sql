@@ -4,7 +4,7 @@ insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, credi
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (12, 32, 46, 12, 9, true, 4159984082868999, null);
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (15, 29, 49, 15, 6, false, 8743017620194896, null);
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (21, 27, 43, 21, 9, false, 1896540939297600, null);
-insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, romo) values (13, 31, 42, 13, 5, false, 4389087265006533, null);
+insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (13, 31, 42, 13, 5, false, 4389087265006533, null);
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (9, 34, 48, 9, 10, true, 1878679326420695, null);
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (5, 31, 50, 5, 10, false, 6739587630107691, null);
 insert into Orders (cid, restaurantId, riderId, aid, deliveryFee,  byCash, creditCardNumber, promo) values (4, 26, 48, 4, 9, true, 2155972536465665, null);
