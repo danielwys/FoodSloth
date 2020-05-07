@@ -12,19 +12,21 @@ block layout-content
         table
             tr
                 td='Item'
+                td='Price per pax'
                 td='Quantity'
             tr
                 each rec in orderedItems
                     tr
                         td=rec.item
+                        td=rec.price
                         td=rec.quantity
         h4 Deliver to: #{Address}
         h2 How would you like to pay?
         <br>
         <br>
         div.dropdown
-          form(action='/confirmOrder' method="POST")
-            label(for='creditcardnumber') Payment method
+          form(action='/selectPromo' method="POST")
+            label(for='promocode') Payment type
             select(name='dropDown4', id='')
               each ccn in creditcardnumber
                 option=ccn.creditcardnumber

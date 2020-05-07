@@ -129,7 +129,8 @@ app.post("/updateCreditcardnumber", orders.updateCreditcardnumber)
 
 //finalise order
 app.post("/confirmOrder", orders.finaliseOrder)
-app.post("/addPromo", orders.addPromo)
+app.get("/customer/confirmOrder", orders.finaliseOrderNoPromo)
+app.post("/selectPromo", orders.addPromo)
 
 app.get("/createOrder", orders.createOrder)
 app.post("/createOrder", orders.createOrder)
