@@ -144,11 +144,6 @@ app.get("/customer/review/:oid", (req, res) => {
     res.render("customer/createReview", { oid: JSON.stringify(oid) })
 })
 app.post("/createReview", customers.createReview)
-app.get("/customer/rating/:oid", (req, res) => {
-    const oid = parseInt(req.params.oid);
-    res.render("customer/createRating", { oid: JSON.stringify(oid) })
-})
-app.post("/createRating", customers.createRating)
 
 /**
  * Restaurants

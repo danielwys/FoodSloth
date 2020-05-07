@@ -96,7 +96,7 @@ const createReview = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
         if(res.statusCode == 500) {
-            response.render("error",  {errorMessage: body })
+            response.render("error",  {errorMessage: "rating and review for this order already exists!" })
         } else if (res.statusCode == 200) {
             response.redirect(302, "/customer/home")
         } else {
@@ -105,37 +105,10 @@ const createReview = (request, response) => {
     })
 }
 
-const createRating = (request, response) => {
-    let orderId = request.body.orderid
-    let rating = request.body.rating
-
-    let options = {
-        url: Constants.serverURL + 'ratings/' + Shared.currentUserID, 
-        form: {
-            orderId: orderId, 
-            rating: rating
-        }
-    }
-
-    Request.post(options, (error, res, body) => {
-
-        if (error) {
-            response.render("error", Errors.backendRequestError)
-        }
-        if(res.statusCode == 500) {
-            response.render("error",  {errorMessage: body })
-        } else if (res.statusCode == 200) {
-            response.redirect(302, "/customer/home")
-        } else {
-            response.render("error")
-        }
-    })
-}
 
 module.exports = {
     showCustomerHome,
     getProfile,
     getPastOrders,
-    createReview,
-    createRating
+    createReview
 }

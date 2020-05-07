@@ -1,0 +1,24 @@
+extends ../MainLayout
+
+block layout-content
+  div.View.UserView
+    h1.Banner Here's your Past Items For this Order!
+    div.Message
+      h2(text-align: center) Items
+      table
+        tr
+          th= 'Food Item'
+          th= 'Quantity'
+          th= 'Price'
+        tr
+          for item in items
+            tr.odd(role='row')
+              td #{item.foodname}
+              td #{item.quantity}
+              td #{item.price}
+
+    <br>
+
+        div.NavButton(text-align: center)
+            a(href="/customer/pastOrders")
+                div.NavButton Back
