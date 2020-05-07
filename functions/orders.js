@@ -313,7 +313,7 @@ let finaliseOrder = (request, response) => {
             response.render("error", Errors.backendRequestError)
         }
 
-        if (body == undefined) {
+        if (JSON.parse(body)[0] == undefined) {
             //incorrect promo code
             promo = null
             final = total + deliveryFee
