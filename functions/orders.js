@@ -15,24 +15,9 @@ let total = 0;
 let payment = "";
 let promo = null;
 
-let getAllOrders = (request, response) => {
-    Request(Constants.serverURL + 'stats/order/ordersPerCustomer/' + Shared.currentUserID,
-    (error, res, body) => {
-        if (error) {
-            response.render("error", Errors.backendRequestError)
-            return
-        }
-        let ordersjson = JSON.parse(body)
-        orders = []
-
-        var i = 1
-        for (ord in ordersjson) {
-            //decide what info rgd past & present orders
-            //to show on the dashboard
-        }
-    })
-}
-
+/**
+ * Step 1: Select Restaurant
+ */
 let selectRestaurant = (request, response) => {
     resetOrder()
     Request(Constants.serverURL + 'restaurants', (error, res, body) => {
@@ -52,6 +37,10 @@ let selectRestaurant = (request, response) => {
         response.render("customer/selectRestaurant", { Restaurants: restaurants })
     })
 }
+
+/**
+ * Step 2: Select food items from the restaurant
+ */
 
 let selectItems = (request, response) => {
     if (request.body.dropDown != null) {
@@ -90,7 +79,6 @@ let selectItems = (request, response) => {
                 }
             }
 
-
             if (cont == 0 && ans >= 0) {
                 Request(Constants.serverURL + 'menu/show/' + currentRestaurant + '/' + item, 
                 (error, res, body) => {
@@ -121,6 +109,9 @@ let selectItems = (request, response) => {
     })
 }
 
+/**
+ * Step 3: Select delivery location
+ */
 
 let selectAddress = (request, response) => {
     Request(Constants.serverURL + 'customers/address/' + Shared.currentUserID, (error, res, body) => {
@@ -172,6 +163,11 @@ let addAddress = (request, response) => {
     })
 }
 
+/**
+ * Step 4: Select payment
+ *          Credit card: choose existing credit card or update new credit card
+ *          Cash: by cash
+ */
 
 let selectPayment = (request, response) => {
     if (request.body.dropDown3 != undefined) {
@@ -255,6 +251,9 @@ let deleteItem = (request, response) => {
     })
 }
 
+/**
+ * Step 5: Add promo if any
+ */
 
 let addPromo = (request, response) => {
     payment = request.body.dropDown4
@@ -279,6 +278,13 @@ let addPromo = (request, response) => {
         Final: final
     })
 }
+
+/**
+ * Step 6: Finalise order
+ *          - create new order entry
+ *          - update food item maxavailable
+ *          - update customer reward points
+ */
 
 let finaliseOrderNoPromo = (request, response) => {        
     final = total + deliveryFee
