@@ -1,4 +1,12 @@
-# cs2102
+# FoodSloth
+
+## Your food will always arrive!... eventually...
+
+FoodSloth is a proof-of-concept food delivery web application written as part of CS2102 Database Systems at the National University of Singapore.
+
+It uses Node.js and Pug for its frontend, and Node.js with Express for its backend. It uses PostgreSQL for its database.
+
+It is written with a primary focus on demonstrating the capabilities of PostgreSQL. As such, data validation and logical checks that would usually be integrated in code have been adapted to run as SQL triggers instead.
 
 ## Installation guide
 ### Frontend
@@ -31,3 +39,14 @@
 8. Follow step 2 - 4 of the Backend setup
 9. Run command: `npm i express pg` to install Express for the server and node-postgres (pg) to be able to connect to PostgreSQL
 10. Run command: `node index.js`, list of all users in json format available on http://localhost:8001/users
+
+## Screenshots
+
+### Login
+<img src="./screenshots/login.png" height="600">
+
+### Customer Home
+<img src="./screenshots/customer_home.png" height="600">
+
+### Restaurant Home
+<img src="./screenshots/restaurant_home.png" height="600">
